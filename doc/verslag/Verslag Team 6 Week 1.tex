@@ -1,0 +1,125 @@
+\documentclass{article}
+
+
+
+
+\usepackage[urlcolor=blue, linkcolor=black, colorlinks=true]{hyperref}
+\usepackage[dutch]{babel}
+\usepackage{minutes}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\makeatletter
+\addto\extrasdutch{%
+\def\min@textTask{Taak}%
+}
+\makeatother%
+\makeatletter
+\def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+
+
+
+\newcounter{team}
+
+% TODO: Enter team number here:
+\setcounter{team}{6}
+
+
+\begin{document}
+%	\tableofcontents
+	
+	\begin{Minutes}{Programming Project Databases \\ Wekelijks Verslag Team \arabic{team}}
+		\moderation{Arno Deceuninck}
+		\minutetaker{Arno Deceuninck}
+		\participant{Arno Deceuninck, Sam Peeters, Tim Sanders}
+		\missingNoExcuse{/}
+		\missingExcused{Sien Nuyens}
+%		\guest{\ldots}
+		\minutesdate{12 februari 2020}
+		\starttime{10}
+		\endtime{12u}
+		
+		\maketitle
+		
+		
+		
+		\topic{Status}
+			Dit is de eerste vergadering, dus er zijn nog geen taken afgesproken.
+		
+			\subtopic{Overzicht Taken}
+				\task*[done]{Teams vormen}
+				\task*[pending]{Selectie Technologi\"en}
+			
+
+			
+		\topic{Besproken Onderwerpen}
+				\subtopic{Wie wordt de coordinator deze week?}
+					Dit is beslist a.d.h.v. een poll.
+					\begin{Vote}
+    					\vote{Arno als co\"ordinator?}{3}{0}{1}
+					\end{Vote}
+				\subtopic{Overlopen opgave}
+					Individueel allemaal de opgave overlopen en indien nodig al wat idee\"en opgeschreven en vragen gesteld aan elkaar.
+				
+				\subtopic{Welke technologi\"en gaan we gebruiken?}
+					Alle vermelde technologi\"en in de opgave overlopen, vergelijken en eventueel vergelijken met dingen die we al kennen, maar niet in de opgave stonden. Meestal was de keuze hiervoor redelijk eenvoudig, aangezien er al iemand ervaring had met een van de voorbeelden. In sommige gevallen was er wel veel meer opzoekwerk nodig, omdat we nog niet echt een idee hadden wat het verschil was tussen de voorbeelden of waarvoor ze juist dienden.
+					
+				\subtopic{Welk communicatiemiddel gaan we gebruiken?}
+			
+				\begin{Opinions}
+					\item Discord
+					\item Slack
+					\item Messenger
+					\item irl
+				\end{Opinions}
+				
+				\begin{Argumentation}
+					\pro Discord en Slack kunnen meerdere kanalen hebben, zodat belangerijke berichten niet weggespamd worden.
+					\pro Messenger wordt door iedereen al gebruikt, en hierop is iedereen ook het snelst bereikbaar.
+					\contra Discord meldingen worden vaak over het hoofd gezien omdat er al veel andere meldingen zijn daarop van andere organisaties.
+					\contra Slack is niet volledig gratis
+					\contra voor Slack of Discord moeten sommigen nog een account aanmaken en alles downloaden.
+					\item We moeten sowieso regelmatig irl afspreken, omdat dit veel makkelijker is om dingen uit te leggen.
+					\result Onze hoofdcommunicatie wordt een messengergroep en we spreken weekelijks ook op de unief af (meestal op woensdag).
+				\end{Argumentation}
+
+		
+		\topic{Afspraken \& Planning}
+			\begin{itemize}
+				\item Tegen volgende vergadering maakt \textbf{Arno} al een overzicht van alle technologi\"en die er gebruikt worden die besproken zijn deze vergadering en hoe ze met elkaar in verband staan.
+				\item \textbf{Tim} gaat tegen volgende vergadering al een eerste versie van het ER-diagram afhebben. Deze zal dan ook ineens overlopen worden.
+				\item \textbf{Sam} en \textbf{Sien} proberen tegen volgende vergadering allebei al de template webapplicatie op Blackboard op hun eigen systeem te runnen. Als er problemen zijn proberen ze eerst elkaar te helpen, an anders dit in de groep te sturen.
+				\item De \textbf{co\"ordinator} maakt tegen volgende vergadering al het verslag aan, zodat we hiermee in het begin van de vergadering geen tijd verliezen. Hij vult hierin, indien er al zijn, de agendapunten in (opsomming, beschrijving tijdens de vergadering zelf).
+			\end{itemize}
+		
+		
+		\topic{Varia}
+			\emph{Eventuele varia punten. Hierbij vragen we ook aan alle aanwezigen of zij nog iets te zeggen hebben.}
+				\subtopic{Sam}
+					Geen opmerkingen.
+				\subtopic{Tim}
+					Geen opmerkingen.
+				\subtopic{Arno}
+					Hoe bepalen we de co\"ordinator voor volgende week? $\rightarrow$ aan het begin van volgende vergadering stemmen.
+			
+		
+		
+		\blfootnote{
+			\href{%
+				mailto:joey.depauw@uantwerpen.be%
+				?subject=PPDB 2019-2020: Wekelijks Verslag Team \arabic{team}%
+				&body=Dag Joey%0D%0A%
+				%0D%0A%
+				Gelieve ons wekelijks verslag terug te vinden in de bijlage.%0D%0A%
+				%0D%0A%
+				Groetjes%0D%0A%
+				Team \arabic{team}%0D%0A%
+			}{Klik hier} om mij op te sturen.
+		}
+		
+		
+	\end{Minutes}	
+\end{document}
