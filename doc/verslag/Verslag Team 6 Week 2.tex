@@ -1,0 +1,102 @@
+\documentclass{article}
+
+
+
+
+\usepackage[urlcolor=blue, linkcolor=black, colorlinks=true]{hyperref}
+\usepackage[dutch]{babel}
+\usepackage{minutes}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\makeatletter
+\addto\extrasdutch{%
+\def\min@textTask{Taak}%
+}
+\makeatother%
+\makeatletter
+\def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+
+
+
+\newcounter{team}
+
+% TODO: Enter team number here:
+\setcounter{team}{6}
+
+
+\begin{document}
+%	\tableofcontents
+	
+	\begin{Minutes}{Programming Project Databases \\ Wekelijks Verslag Team \arabic{team}}
+		\moderation{Arno Deceuninck}
+		\minutetaker{Arno Deceuninck}
+		\participant{Arno Deceuninck, Sam Peeters, Tim Sanders}
+		\missingNoExcuse{/}
+		\missingExcused{Sien Nuyens}
+%		\guest{\ldots}
+		\minutesdate{12 februari 2020}
+		\starttime{10}
+		\endtime{12u}
+		
+		\maketitle
+		
+		
+		
+		\topic{Status}
+		
+			\subtopic{Overzicht Taken}
+				\task*[status]{Overzicht Technologi\"en}
+				\task*[status]{Template Webapplicatie van BlackBoard testen}
+				\task*[status]{ER-Diagram}
+			
+
+			
+		\topic{Besproken Onderwerpen}
+				\subtopic{Wie wordt de coordinator deze week?}
+					%Dit is beslist a.d.h.v. een poll.
+					%\begin{Vote}
+    				%	\vote{Arno als co\"ordinator?}{3}{0}{1}
+					%\end{Vote}
+					
+				\subtopic{ER-Diagram}
+				
+				\subtopic{Technologi\"en overzicht}
+						\subsubtopic{Bootstrap, Material or Bulma}
+				\subtopic{Template Webapplicatie}
+			
+		
+		\topic{Afspraken \& Planning}
+			\begin{itemize}
+				\item Mockups van de site voor de presentatie maken
+			\end{itemize}
+		
+		
+		\topic{Varia}
+			\emph{Eventuele varia punten. Hierbij vragen we ook aan alle aanwezigen of zij nog iets te zeggen hebben.}
+				\subtopic{Sien}
+				\subtopic{Sam}
+				\subtopic{Tim}
+				\subtopic{Arno}
+			
+		
+		
+		\blfootnote{
+			\href{%
+				mailto:joey.depauw@uantwerpen.be%
+				?subject=PPDB 2019-2020: Wekelijks Verslag Team \arabic{team}%
+				&body=Dag Joey%0D%0A%
+				%0D%0A%
+				Gelieve ons wekelijks verslag terug te vinden in de bijlage.%0D%0A%
+				%0D%0A%
+				Groetjes%0D%0A%
+				Team \arabic{team}%0D%0A%
+			}{Klik hier} om mij op te sturen. UPDATE MIJ EERST NAAR DE NIEUWE VERSIE DIE JOEY OP BLACKBOARD GEUPDATED ZOU MOETEN HEBBEN.
+		}
+		
+		
+	\end{Minutes}	
+\end{document}
