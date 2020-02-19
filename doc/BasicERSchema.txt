@@ -1,0 +1,43 @@
+Table Car {
+  LicensePlate varchar [pk]// auto-increment
+  Color varchar
+  Model varchar
+  Seats int
+  ModelYear int
+  Brand varchar
+}
+
+Table User {
+  Username varchar [pk]
+  Name varchar
+  Email varchar
+  Age int
+  Gender char
+  ProfilePicture varchar
+}
+
+Table Owns {
+  LicensePlate varchar
+  NameOwner varchar
+}
+
+Table Route {
+  Creator varchar
+  Expired bool
+  DepartureTime timestamp
+  ArrivalTime timestamp [pk]
+  DepartureLocation varchar
+  ArrivalLocation varchar [pk]
+}
+
+Table Preferences {
+  Username varchar [pk]
+}
+
+Ref: "Car"."LicensePlate" < "Owns"."LicensePlate"
+
+Ref: "User"."Username" < "Owns"."NameOwner"
+
+Ref: "User"."Username" < "Route"."Creator"
+
+Ref: "User"."Username" - "Preferences"."Username"
