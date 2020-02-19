@@ -32,11 +32,11 @@
 %	\tableofcontents
 	
 	\begin{Minutes}{Programming Project Databases \\ Wekelijks Verslag Team \arabic{team}}
-		\moderation{Arno Deceuninck}
+		\moderation{Sien Nuyens}
 		\minutetaker{Arno Deceuninck}
-		\participant{Arno Deceuninck, Sam Peeters, Tim Sanders}
+		\participant{Arno Deceuninck, Sam Peeters, Sien Nuyens, Tim Sanders}
 		\missingNoExcuse{/}
-		\missingExcused{Sien Nuyens}
+		\missingExcused{}
 %		\guest{\ldots}
 		\minutesdate{12 februari 2020}
 		\starttime{10}
@@ -45,42 +45,74 @@
 		\maketitle
 		
 		
-		
+		\topic{Coordinator Vergadering}
+		\begin{itemize}
+			\item Werk verdelen per pagina (bv. login)
+			\item Public IP in verslag
+			\item Aantal gebruikers simulatie doorsturen 
+		\end{itemize}
 		\topic{Status}
 		
 			\subtopic{Overzicht Taken}
-				\task*[status]{Overzicht Technologi\"en}
-				\task*[status]{Template Webapplicatie van BlackBoard testen}
-				\task*[status]{ER-Diagram}
+				\task*[Done]{Overzicht Technologi\"en}
+				\task*[Partially Done]{Template Webapplicatie van BlackBoard testen}
+				\task*[Done]{ER-Diagram}
 			
 
 			
 		\topic{Besproken Onderwerpen}
 				\subtopic{Wie wordt de coordinator deze week?}
-					%Dit is beslist a.d.h.v. een poll.
-					%\begin{Vote}
-    				%	\vote{Arno als co\"ordinator?}{3}{0}{1}
-					%\end{Vote}
+					Dit is beslist a.d.h.v. een poll.
+					\begin{Vote}
+    					\vote{Sien als co\"ordinator?}{2}{0}{2}
+					\end{Vote}
 					
 				\subtopic{ER-Diagram}
-				
+					Gebaseerd op ER Diagram uit opgave: verplichte entiteiten in diagram (staat op GitHub (pdf+code)
 				\subtopic{Technologi\"en overzicht}
 						\subsubtopic{Bootstrap, Material or Bulma}
+							Opzoeken hiervan tegen volgende week. Iedereen een framework. Iedereen probeert een login form hiervoor te implementeren.
+							Arno: Bulma
+							Bootstrap: Tim
+							Sam: Bootstrap
 				\subtopic{Template Webapplicatie}
-			
-		
+					Moeilijkheden op Windows en Mac OS X opgelost
+				\subtopic{Essential Pagina's}
+					\begin{itemize}
+						\item Home
+						\item Home Logged in
+							Verschillend voor als je een bestuurder bent of een gast. Tijd tot de rit er is. 
+						\item Ride history	
+						\item Create ride form
+						\item About
+						\item Registreren
+						\item Login 
+						\item Account configuratie
+					\end{itemize}
+				\subtopic{Logo}
+					Autootje met muzieknoten erboven die tot de wielen komen.
+					
 		\topic{Afspraken \& Planning}
 			\begin{itemize}
-				\item Mockups van de site voor de presentatie maken
+				\item De ssh keys moeten in orde komen. Sam zorgt tegen volgende week dat iedereen op de Google Cloud Server kan.
+				\item Bootstrap, Bulma en Material moeten getest worden. Dit zal respectievelijk gebeuren door Tim, Arno en Sam. Zij maken elks de layout voor een login form hierin.
+				\item Uitzoeken hoe we PostgreSQL request best doen vanuit Python (Sien).
+				\item Tekeningen (mockups) van de mogelijke layout van de site worden nog gemaakt door Arno.
 			\end{itemize}
 		
 		
 		\topic{Varia}
 			\emph{Eventuele varia punten. Hierbij vragen we ook aan alle aanwezigen of zij nog iets te zeggen hebben.}
 				\subtopic{Sien}
+					Geen.
 				\subtopic{Sam}
+					De webserver moet ook nog gefixt worden. Best deze namiddag nog, omdat je dan nog vragen Joey kan stellen. 
 				\subtopic{Tim}
+					Satisfied.
 				\subtopic{Arno}
+					Aparte nottulist als co\"ordinator. Volgende keer verslag best in overleaf tijdens vergadering zodat iedereen de aanpassingen direct kan zien.
+					Om hoe laat afspreken volgende keer? Er gaan geen lessen meer komen voor. Co\"ordinator moet er zijn om 10u (denk ik). Volgende keer om 11u af. Sien checkt het uur nog. Sam en Tim missen wel calculus hierdoor (vonden dit niet echt erg)
+					Coordinator is ook verantwoordelijk voor verslag opsturen naar Joey en agendapunten voor volgende week voorbereiden.
 			
 		
 		
@@ -88,13 +120,13 @@
 			\href{%
 				mailto:joey.depauw@uantwerpen.be%
 				?subject=PPDB 2019-2020: Wekelijks Verslag Team \arabic{team}%
-				&body=Dag Joey%0D%0A%
-				%0D%0A%
-				Gelieve ons wekelijks verslag terug te vinden in de bijlage.%0D%0A%
-				%0D%0A%
-				Groetjes%0D%0A%
-				Team \arabic{team}%0D%0A%
-			}{Klik hier} om mij op te sturen. UPDATE MIJ EERST NAAR DE NIEUWE VERSIE DIE JOEY OP BLACKBOARD GEUPDATED ZOU MOETEN HEBBEN.
+				&body=Liefste Joey\%0D\%0A%
+				\%0D\%0A%
+				Gelieve ons wekelijks verslag terug te vinden in de bijlage.\%0D\%0A%
+				\%0D\%0A%
+				Groetjes\%0D\%0A%
+				Team \arabic{team}\%0D\%0A%
+			}{Klik hier} om mij op te sturen.
 		}
 		
 		
