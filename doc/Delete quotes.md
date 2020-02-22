@@ -1,4 +1,4 @@
-Login met de postgres user:
+Login met de postgres user (op de Google Cloud Server):
 ```
 sudo su postgres
 ```
