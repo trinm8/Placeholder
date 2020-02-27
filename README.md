@@ -4,7 +4,12 @@ Hold a place in a car, with the music you like
 
 ## Installation
 
-TODO: step by step explanation of how to get the system running
+```
+compile.sh && run.sh
+```
+
+## Pycharm configuration
+Edit configurations > "+" > "Flask Server" > Leave everything as the default, except the "Python interpreter", this must go to [PlaceHoleder Location]/venv/bin/python
 
 ## Autors
 Arno Deceuninck, Sam Peeters, Sien Nuyens and Tim Sanders
