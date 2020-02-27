@@ -18,3 +18,32 @@ def login():
         flash('Login requested for {}'.format(form.email.data))
         return redirect(url_for('index'))
     return render_template('login.html', title='Login', form=form)
+
+@app.route('/users/register')
+def register():
+    return "W.I.P."
+
+@app.route('/users/auth')
+def register():
+    return "W.I.P."
+
+@app.route('/drives')
+def register():
+    return "W.I.P."
+
+# Driver id and passenger id can be variable!
+@app.route('/drives/drive_id/passengers')
+def register():
+    return "W.I.P."
+
+@app.route('/drives/drive_id/passenger-requests')
+def register():
+    return "W.I.P."
+
+@app.route('/drives/drive_id/passenger-requests/user-id')
+def register():
+    return "W.I.P."
+
+@app.route('/drives/search')
+def register():
+    return "W.I.P."
