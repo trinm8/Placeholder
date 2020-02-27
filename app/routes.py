@@ -24,26 +24,26 @@ def register():
     return "W.I.P."
 
 @app.route('/users/auth')
-def register():
+def auth():
     return "W.I.P."
 
 @app.route('/drives')
-def register():
+def drives():
     return "W.I.P."
 
 # Driver id and passenger id can be variable!
 @app.route('/drives/drive_id/passengers')
-def register():
+def drivePassengers():
     return "W.I.P."
 
 @app.route('/drives/drive_id/passenger-requests')
-def register():
+def passengerRequests():
     return "W.I.P."
 
 @app.route('/drives/drive_id/passenger-requests/user-id')
-def register():
+def user():
     return "W.I.P."
 
 @app.route('/drives/search')
-def register():
+def search():
     return "W.I.P."
