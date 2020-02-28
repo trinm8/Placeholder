@@ -21,29 +21,34 @@ def login():
 
 @app.route('/users/register')
 def register():
-    return "W.I.P."
+    return render_template('wip.html', title='W.I.P.')
 
 @app.route('/users/auth')
 def auth():
-    return "W.I.P."
+    return render_template('wip.html', title='W.I.P.')
 
 @app.route('/drives')
 def drives():
-    return "W.I.P."
+    return render_template('wip.html', title='W.I.P.')
 
 # Driver id and passenger id can be variable!
-@app.route('/drives/drive_id/passengers')
-def drivePassengers():
-    return "W.I.P."
+@app.route('/drives/<drive_id>/passengers')
+def drivePassengers(drive_id):
+    return render_template('wip.html', title='W.I.P.')
 
-@app.route('/drives/drive_id/passenger-requests')
-def passengerRequests():
-    return "W.I.P."
+@app.route('/drives/<drive_id>/passenger-requests')
+def passengerRequests(drive_id):
+    return render_template('wip.html', title='W.I.P.')
 
-@app.route('/drives/drive_id/passenger-requests/user-id')
-def user():
-    return "W.I.P."
+@app.route('/drives/<drive_id>/passenger-requests/<user_id>')
+def user(drive_id, user_id):
+    return render_template('wip.html', title='W.I.P.')
 
 @app.route('/drives/search')
 def search():
-    return "W.I.P."
+    return render_template('wip.html', title='W.I.P.')
+
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return "Page Not Found (I still have to make a fancier page for this)", 404
