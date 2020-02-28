@@ -51,4 +51,5 @@ def search():
 @app.errorhandler(404)
 def page_not_found(e):
     # note that we set the 404 status explicitly
-    return "Page Not Found (I still have to make a fancier page for this)", 404
+    return render_template('404.html', title='Page not found')
+
