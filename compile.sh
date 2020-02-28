@@ -2,7 +2,7 @@
 # wget https://github.com/jgthms/bulma/releases/download/0.8.0/bulma-0.8.0.zip
 # unzip bulma-0.8.0.zip
 
-sudo apt-get install python3-venv
+sudo apt-get install python3-venv psycopg2 libpq-dev python-dev
 python3 -m venv venv # Create a virtual environment
 
 # Activate the virtual environment
@@ -12,6 +12,13 @@ source venv/bin/activate # Warning: this is different on windows: venv\Scripts\a
 pip install flask
 pip install flask-wtf
 pip install python-dotenv
+pip install flask-sqlalchemy
+pip install flask-migrate
+pip install psycopg2
 
 echo "FLASK_APP=placeholder.py" > .flaskenv
+
+flask db init
+flask db migrate -m "users table"
+flask db upgrade
 

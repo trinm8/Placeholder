@@ -1,0 +1,117 @@
+\documentclass{article}
+
+
+\usepackage[urlcolor=blue, linkcolor=black, colorlinks=true]{hyperref}
+\usepackage[dutch]{babel}
+\usepackage{minutes}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\makeatletter
+\addto\extrasdutch{%
+\def\min@textTask{Taak}%
+}
+\makeatother%
+\makeatletter
+\def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+
+
+
+\newcounter{team}
+
+% TODO: Enter team number here:
+\setcounter{team}{6}
+
+
+\begin{document}
+%	\tableofcontents
+	
+	\begin{Minutes}{Programming Project Databases \\ Wekelijks Verslag Team \arabic{team}}
+		\moderation{Sam Peeters}
+		\minutetaker{Arno Deceuninck}
+		\participant{Arno Deceuninck, Sam Peeters, Sien Nuyens, Tim Sanders}
+		\missingNoExcuse{/}
+		\missingExcused{/}
+%		\guest{\ldots}
+		\minutesdate{26 februari 2020}
+		\starttime{11u}
+		\endtime{}
+		
+		\maketitle
+		
+		\topic{Coordinator Vergadering}
+		\begin{itemize}
+			\item Van alles kleine gevallen maken en daarop verder werken
+		\end{itemize}
+		
+		\topic{Status}
+		
+			\subtopic{Overzicht Taken}
+				\task*[DONE]{Template Webapplicatie}
+				\task*[WIP]{Google Cloud Server (ssh keys)}
+				\task*[DONE]{Bulma}
+				\task*[DONE]{Bootstrap}
+				\task*[DONE]{Material}
+				\task*[DONE]{Psycopg2}
+				\task*[DONE]{Mockups}
+
+			
+
+			
+		\topic{Besproken Onderwerpen}
+				\subtopic{Wie wordt de coordinator deze week?}
+					Dit is beslist a.d.h.v. schaar, steen, papier.
+					Sam wordt de Co\"ordinator
+				\subtopic{Bootstrap, Material or Bulma}
+						    Bij Material moest je veel extra dingen typpen. Bulma ziet er het mooiste uit. Bootstrap was eenvoudig. We gaan Bulma gebruiken.
+				\subtopic{Template Webapplicatie}
+				    Werkt bij iedereen, behalve team.
+			    \subtopic{Google Cloud Server (ssh keys)}
+			        SSH werkt bij iedereen, maar iedereen moet nog toegevoegd worden via mail aan de Google Cloud.
+				\subtopic{Psycopg2}
+				    Werkende gekregen. Gaf eerst errors bij de import, maar throwt nog exceptions omdat er geen database is aangemaakt.
+				\subtopic{Mockups}
+				    Van meeste pagina's is er een algemeen idee gemaakt van hoe ze eruit moeten zien.
+				\subtopic{Presentatie}
+				    Deze is op 11 maart. Tegen 8 maart moeten we wel een tussentijds rapport maken. Onder andere het design van het programma als geheel, ER diagram van databank en beschrijving van de functionaliteit en overzicht afgewerkte taken van elk teamlid.
+				
+					
+		\topic{Afspraken \& Planning}
+			\begin{itemize}
+			\item We moeten requests kunnen handelen. Er moet dus al een zelf gemaakte pagina online komen. Voorstel: Login pagina die de requests al naar de server stuurt (hou hierbij rekening met de \url{https://ppdb.docs.apiary.io/}{api}). Hiervoor moet de pagina gemaakt worden, template van Joey aanpassen, zodat het enkel die pagina kan laten zien (en dus niet te veel andere trash). Arno bewerkt het Flask bestand en duid aan waar Sien haar request naar de database moet doen. Sien stuurt de gegevens dan door. Sam zorgt voor de hosting.
+			\item Layout voor alle andere pagina's maken in Bulma. Kijk hiervoor eens na wat Flask CreateAppPattern kan doen. Op de pagina's met een map kunnen we gewoon een afbeelding van een map doen. Tim kijkt hoe we een map op de pagina kunnen laten zien. Hierop wachtend gebruiken we gewoon een afbeelding van een map. Arno maakt de pagina voor logged in homepage, Tim voor \"Add Route\", Sam voor \"Settings\" en \"Home\", Sien voor \"Account\" en Sien voor \"About\" en \"Account\". Arno gaat nog duidelijker tekeningen hiervoor uploaden (vandaag nog)
+			\item Tim moet zijn Template Webapplicatie nog aan de praat krijgen.
+			\end{itemize}
+		
+		
+		\topic{Varia}
+			\emph{Eventuele varia punten. Hierbij vragen we ook aan alle aanwezigen of zij nog iets te zeggen hebben.}
+				\subtopic{Sien}
+				    Niets te zeggen.
+				\subtopic{Sam}
+				    Belangerijk dat iedereen Flask grondig bekijkt en zelf al wat test dus. Eventueel bekijk je iets van "The MEGA flask tutorial" waar Mano reclame voor maakt.
+				\subtopic{Tim}
+				    Tim is satisfied.
+				\subtopic{Arno}
+				    Eens nakijken wat je allemaal kan doen met Flask CreateAppPattern
+		
+		
+		\blfootnote{
+			\href{%
+				mailto:joey.depauw@uantwerpen.be%
+				?subject=PPDB 2019-2020: Wekelijks Verslag Team \arabic{team}%
+				&body=Liefste Joey\%0D\%0A%
+				\%0D\%0A%
+				Gelieve ons wekelijks verslag terug te vinden in de bijlage.\%0D\%0A%
+				\%0D\%0A%
+				Groetjes\%0D\%0A%
+				Team \arabic{team}\%0D\%0A%
+			}{Klik hier} om mij op te sturen.
+		}
+		
+		
+	\end{Minutes}	
+\end{document}

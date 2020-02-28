@@ -8,6 +8,7 @@ Table Car {
 }
 
 Table User {
+  ID int
   Username varchar [pk]
   Name varchar
   Email varchar
