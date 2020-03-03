@@ -122,12 +122,18 @@
         <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons">
+                    {% if current_user.is_anonymous %}
                     <a class="button is-primary">
                         <strong>Sign up</strong>
                     </a>
                     <a class="button is-light" href="{{ url_for('login') }}">
-                        Log in
+                        Login
                     </a>
+                    {% else %}
+                    <a class="button is-light" href="{{ url_for('logout') }}">
+                        Logout
+                    </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

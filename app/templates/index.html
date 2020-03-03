@@ -16,7 +16,11 @@
                         <!--            Info column-->
                         <div class="container">
                             <h1 class="title">
+                                {% if current_user.is_anonymous %}
                                 Welcome to [PlaceHolder]
+                                {% else %}
+                                Welcome, {{ current_user.name }}
+                                {% endif %}
                             </h1>
                             <p class="subtitle">
                                 This is just a sample page!
