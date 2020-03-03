@@ -1,0 +1,109 @@
+\documentclass{article}
+
+
+
+
+\usepackage[urlcolor=blue, linkcolor=black, colorlinks=true]{hyperref}
+\usepackage[dutch]{babel}
+\usepackage{minutes}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\makeatletter
+\addto\extrasdutch{%
+\def\min@textTask{Taak}%
+}
+\makeatother%
+\makeatletter
+\def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+
+
+
+\newcounter{team}
+
+% TODO: Enter team number here:
+\setcounter{team}{6}
+
+
+\begin{document}
+%	\tableofcontents
+	
+	\begin{Minutes}{Programming Project Databases \\ Wekelijks Verslag Team \arabic{team}}
+		\moderation{}
+		\minutetaker{}
+		\participant{Arno Deceuninck, Sam Peeters, Sien Nuyens, Tim Sanders}
+		\missingNoExcuse{/}
+		\missingExcused{/}
+%		\guest{\ldots}
+		\minutesdate{26 februari 2020}
+		\starttime{11u}
+		\endtime{}
+		
+		\maketitle
+		
+		\topic{Coordinator Vergadering}
+		\begin{itemize}
+			\item 
+			
+			
+		\end{itemize}
+		\topic{Status}
+		
+			\subtopic{Overzicht Taken}
+				\task*[]{Template Webapplicatie}
+				\task*[]{Google Cloud Server (ssh keys)}
+				\task*[]{Bulma}
+				\task*[]{Bootstrap}
+				\task*[]{Material}
+				\task*[]{Psycopg2}
+				\task*[]{Mockups}
+
+			
+
+			
+		\topic{Besproken Onderwerpen}
+				\subtopic{Wie wordt de coordinator deze week?}
+					Dit is beslist a.d.h.v. een poll.
+					\begin{Vote}
+    					\vote{... als co\"ordinator?}{}{}{}
+					\end{Vote}
+					
+				\subtopic{ER-Diagram}
+				\subtopic{Technologi\"en overzicht}
+						\subsubtopic{Bootstrap, Material or Bulma}
+				\subtopic{Template Webapplicatie}
+				\subtopic{Logo}
+					Autootje met muzieknoten erboven die tot de wielen komen.
+					
+		\topic{Afspraken \& Planning}
+			\begin{itemize}
+			\end{itemize}
+		
+		
+		\topic{Varia}
+			\emph{Eventuele varia punten. Hierbij vragen we ook aan alle aanwezigen of zij nog iets te zeggen hebben.}
+				\subtopic{Sien}
+				\subtopic{Sam}
+				\subtopic{Tim}
+				\subtopic{Arno}
+		
+		
+		\blfootnote{
+			\href{%
+				mailto:joey.depauw@uantwerpen.be%
+				?subject=PPDB 2019-2020: Wekelijks Verslag Team \arabic{team}%
+				&body=Liefste Joey\%0D\%0A%
+				\%0D\%0A%
+				Gelieve ons wekelijks verslag terug te vinden in de bijlage.\%0D\%0A%
+				\%0D\%0A%
+				Groetjes\%0D\%0A%
+				Team \arabic{team}\%0D\%0A%
+			}{Klik hier} om mij op te sturen.
+		}
+		
+		
+	\end{Minutes}	
+\end{document}
