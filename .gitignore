@@ -73,7 +73,7 @@ fabric.properties
 venv
 
 # TODO: it might be possible this must be on git
-migrations
+#migrations
 
 bulma-0.8.0
 bulma-0.8.0.zip
