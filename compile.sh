@@ -16,6 +16,7 @@ pip3 install flask-sqlalchemy
 pip3 install flask-migrate
 pip3 install psycopg2
 pip3 install flask-login
+pip3 install python-dotenv
 
 echo "FLASK_APP=placeholder.py" > .flaskenv
 

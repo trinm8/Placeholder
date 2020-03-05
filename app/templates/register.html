@@ -1,30 +1,112 @@
 {% extends "base.html" %}
 
+{% block imports %}
+<link href="https://wikiki.github.io/css/documentation.css?v=201911011043" rel="stylesheet">
+{% endblock%}
+
 {% block body %}
-    <h1>Register</h1>
-    <form action="" method="post">
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.email.label }}<br>
-            {{ form.email(size=64) }}<br>
-            {% for error in form.email.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}<br>
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.password2.label }}<br>
-            {{ form.password2(size=32) }}<br>
-            {% for error in form.password2.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
-    </form>
+
+{% for error in form.username.errors %}
+<div class="notification is-danger">
+    <button class="delete"></button>
+    {{ error }}
+</div>
+{% endfor %}
+
+{% for error in form.firstname.errors %}
+<div class="notification is-danger">
+    <button class="delete"></button>
+    {{ error }}
+</div>
+{% endfor %}
+
+{% for error in form.lastname.errors %}
+<div class="notification is-danger">
+    <button class="delete"></button>
+    {{ error }}
+</div>
+{% endfor %}
+
+{% for error in form.password.errors %}
+<div class="notification is-danger">
+    <button class="delete"></button>
+    {{ error }}
+</div>
+{% endfor %}
+
+{% for error in form.password2.errors %}
+<div class="notification is-danger">
+    <button class="delete"></button>
+    {{ error }}
+</div>
+{% endfor %}
+
+
+<!--<section class="section">-->
+<div id="div">
+    <section class="section">
+        <div class="columns is-desktop is-vcentered">
+            <div class="column is-2"></div>
+            <div class="column is-8">
+                <div class="columns">
+                    <div class="column is-6">
+                        <!--            Info column-->
+                        <div class="container">
+                            <h1 class="title">
+                                Welcome to [PlaceHolder]
+                            </h1>
+                            <p class="subtitle">
+                                Please <strong>login</strong> to continue!
+                            </p>
+                        </div>
+                    </div>
+                    <div class="is-divider-vertical"></div>
+                    <div class="column is-6">
+                        <form action="" method="post" novalidate>
+                            {{ form.hidden_tag() }}
+                            <!--            Login form column-->
+                            <div class="container">
+                                <!--                src: https://bulma.io/documentation/form/input/-->
+                                <div class="field">
+                                    {{ form.username(class="input", placeholder="username", type="text") }}
+                                </div>
+
+                                <div class="columns">
+                                    <div class="column">
+                                        <div class="field">
+                                            {{ form.firstname(class="input", type="text", placeholder="Firstname")}}
+                                        </div>
+                                    </div>
+
+                                    <div class="column">
+                                        <div class="field">
+                                            {{ form.lastname(class="input", type="text", placeholder="Lastname")}}
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="field">
+                                    {{ form.password(class="input", type="password", placeholder="Password") }}
+                                </div>
+
+                                <div class="field">
+                                    {{ form.password2(class="input", type="password", placeholder="Password") }}
+                                </div>
+
+                                <br>
+                                <div class="level">
+                                    <div class="level-left">
+                                        <div class="buttons">
+                                            {{ form.submit(class="button is-primary") }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                <div class="column is-2"></div>
+        </div>
+    </section>
+</div>
 {% endblock %}
