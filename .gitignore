@@ -81,3 +81,6 @@ bulma-0.8.0.zip
 .idea/*
 doc/verslag/*
 !doc/verslag/Verslag Team 6 Week *.tex
+
+migrations
+
