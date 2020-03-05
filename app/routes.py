@@ -116,3 +116,7 @@ def search():
 def page_not_found(e):
     # note that we set the 404 status explicitly
     return render_template('404.html', title='Page not found')
+
+@app.errorhandler(405)
+def method_not_allowed(e):
+    return render_template('405.html', title='Method not allowed')
