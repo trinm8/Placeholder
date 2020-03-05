@@ -37,16 +37,40 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/users/register', methods=['GET', 'POST'])
+def register_user(username: str, firstname: str, lastname: str, password: str) -> int:
+
+    # TODO: prevent duplicate code
+    user = User.query.filter_by(username=username).first()
+    if user is not None:
+        return -1
+
+    user = User(username=username, firstname=firstname, lastname=lastname)
+    user.set_password(password)
+    db.session.add(user)
+    db.session.commit()
+    return user.id
+
+
+@app.route('/users/register', methods=['POST'])
+def register_api():
+    username = request.json.get('username')
+    firstname = request.json.get('firstname')
+    lastname = request.json.get('lastname')
+    password = request.json.get('password')
+
+    id = register_user(username, firstname, lastname, password)
+
+    return {'id': str(id)}
+
+
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, firstname=form.firstname.data, lastname=form.lastname.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
+        register_user(username=form.username.data, firstname=form.firstname.data, lastname=form.lastname.data,
+                      password=form.password.data)
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
