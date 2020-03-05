@@ -20,7 +20,7 @@ pip3 install python-dotenv
 
 echo "FLASK_APP=placeholder.py" > .flaskenv
 
-#flask db init
-#flask db migrate -m "users table"
+flask db init
+flask db migrate
 flask db upgrade
 
