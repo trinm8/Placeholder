@@ -23,6 +23,19 @@ def index():
         return render_template('main_logged_in.html', title='Dashboard', trips=trips, trip=trips[0])
     return render_template('index.html', title='Welcome')
 
+@app.route('/about')
+def about():
+    return render_template('wip.html', title='About')
+
+@app.route('/account')
+def account():
+    return render_template('wip.html', title='Account')
+
+@app.route('/addroute')
+def addRoute():
+    flash("Warning: this page won't submit anything to the database yet. We're working on it.")
+    return render_template('wip.html', title='New Route')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
