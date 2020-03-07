@@ -35,9 +35,6 @@
             margin: 0;
         }
 
-        #div {
-            margin-top: 10%;
-        }
 
         .Site {
             display: flex;
@@ -49,17 +46,7 @@
             flex: 1;
         }
 
-        {
-        %
-        block
-        styles
-        %
-        }
-        {
-        %
-        endblock
-        %
-        }
+        {% block styles %}{% endblock %}
 
     </style>
 

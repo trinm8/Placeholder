@@ -9,6 +9,18 @@ from werkzeug.urls import url_parse
 @app.route('/index')
 @app.route('/')
 def index():
+    if current_user.is_authenticated:
+        class trip:
+            description = "From Middelheimlaan to Edegemsesteenweg"
+            time = "07:00 - 5 March 2020"
+            driver="Arno Deceuninck"
+            passengers = ["Sien Nuyens", "Sam Peeters", "Tim Sanders"]
+            departure = "Middelheimlaan 1, 2020 Antwerpen"
+            destination = "Edegemsesteenweg 100, 2020 Antwerpen"
+            stops = ["Randomstraat 69, 2020 Antwerpen", "Timisgaystraat 420, 2020 Antwerpen"]
+        trips = [trip(), trip(), trip(), trip(), trip(), trip()]
+
+        return render_template('main_logged_in.html', title='Dashboard', trips=trips, trip=trips[0])
     return render_template('index.html', title='Welcome')
 
 

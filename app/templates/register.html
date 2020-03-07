@@ -4,6 +4,12 @@
 <link href="https://wikiki.github.io/css/documentation.css?v=201911011043" rel="stylesheet">
 {% endblock%}
 
+{% block styles %}
+#div {
+margin-top: 10%;
+}
+{% endblock %}
+
 {% block body %}
 
 {% for error in form.username.errors %}
