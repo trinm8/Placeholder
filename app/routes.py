@@ -39,6 +39,7 @@ def account():
 @app.route('/account/settings')
 @login_required
 def account_settings():
+    flash("Warning: this page won't submit anything to the database yet. We're working on it.")
     form_profile = ProfileSettings()
     form_music = MusicSettings()
     form_car = CarSettings()
