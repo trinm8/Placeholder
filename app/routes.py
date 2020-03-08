@@ -34,7 +34,7 @@ def account():
 @app.route('/addroute')
 def addRoute():
     flash("Warning: this page won't submit anything to the database yet. We're working on it.")
-    return render_template('wip.html', title='New Route')
+    return render_template('addRoute.html', title='New Route')
 
 
 @app.route('/login', methods=['GET', 'POST'])
