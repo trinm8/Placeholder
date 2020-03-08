@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
-from app.forms import LoginForm, RegistrationForm
+from app.forms import *
 from app.models import User
 from werkzeug.urls import url_parse
 
@@ -13,27 +13,38 @@ def index():
         class trip:
             description = "From Middelheimlaan to Edegemsesteenweg"
             time = "07:00 - 5 March 2020"
-            driver="Arno Deceuninck"
+            driver = "Arno Deceuninck"
             passengers = ["Sien Nuyens", "Sam Peeters", "Tim Sanders"]
             departure = "Middelheimlaan 1, 2020 Antwerpen"
             destination = "Edegemsesteenweg 100, 2020 Antwerpen"
             stops = ["Randomstraat 69, 2020 Antwerpen", "Timisgaystraat 420, 2020 Antwerpen"]
+
         trips = [trip(), trip(), trip(), trip(), trip(), trip()]
 
         return render_template('main_logged_in.html', title='Dashboard', trips=trips, trip=trips[0])
     return render_template('home.html', title='Welcome')
 
+
 @app.route('/about')
 def about():
     return render_template('wip.html', title='About')
+
 
 @app.route('/account')
 def account():
     return render_template('wip.html', title='Account')
 
+
 @app.route('/account/settings')
 def account_settings():
-    return render_template('settings.html', title='Account Settings')
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form_profile = ProfileSettings()
+    form_music = MusicSettings()
+    form_car = CarSettings()
+    return render_template('settings.html', title='Account Settings', form_profile=form_profile, form_music=form_music,
+                           form_car=form_car)
+
 
 @app.route('/addroute')
 def addRoute():
@@ -67,7 +78,6 @@ def logout():
 
 
 def register_user(username: str, firstname: str, lastname: str, password: str) -> int:
-
     # TODO: prevent duplicate code
     user = User.query.filter_by(username=username).first()
     if user is not None:
@@ -145,6 +155,7 @@ def search():
 def page_not_found(e):
     # note that we set the 404 status explicitly
     return render_template('404.html', title='Page not found')
+
 
 @app.errorhandler(405)
 def method_not_allowed(e):

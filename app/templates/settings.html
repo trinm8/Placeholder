@@ -12,13 +12,14 @@
     <section class="section">
         <div class="container box">
             <form action="" method="post" novalidate>
+                {{ form_profile.hidden_tag() }}
                 <p class="subtitle">Edit profile</p>
                 <div class="columns">
                     <div class="column is-2">
                         <p>First name:</p>
                     </div>
                     <div class="column is-5">
-                        <input type="text" class="input" placeholder="First name">
+                        {{ form_profile.firstname(type="text", class="input", placeholder="First name") }}
                     </div>
                 </div>
 
@@ -27,7 +28,7 @@
                         <p>Last name:</p>
                     </div>
                     <div class="column is-5">
-                        <input type="text" class="input" placeholder="Last name">
+                        {{ form_profile.lastname(type="text", class="input", placeholder="Last name") }}
                     </div>
                 </div>
 
@@ -38,7 +39,7 @@
                     <div class="column is-5">
                         <div class="field">
                             <p class="control has-icons-left has-icons-right">
-                                <input class="input" type="email" placeholder="Email">
+                                {{ form_profile.email(type="text", class="input", placeholder="Email") }}
                                 <span class="icon is-small is-left">
                                      <i class="fas fa-envelope"></i>
                                 </span>
@@ -54,7 +55,7 @@
                     <div class="column is-5">
                         <div class="field">
                             <p class="control has-icons-left has-icons-right">
-                                <input class="input" type="password" placeholder="New password">
+                                {{ form_profile.password(type="password", class="input", placeholder="New password") }}
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-lock"></i>
                                 </span>
@@ -126,7 +127,7 @@
                         <p>Color:</p>
                     </div>
                     <div class="column is-5">
-                        <input type="text" class="input" placeholder="Color">
+                        {{ form_car.color(type="input", class="input", placeholder="Color") }}
                     </div>
                 </div>
 
@@ -135,7 +136,7 @@
                         <p>Brand:</p>
                     </div>
                     <div class="column is-5">
-                        <input type="text" class="input" placeholder="Brand">
+                        {{ form_car.brand(type="input", class="input", placeholder="Brand") }}
                     </div>
                 </div>
 
@@ -144,7 +145,7 @@
                         <p>License plate:</p>
                     </div>
                     <div class="column is-5">
-                        <input type="text" class="input" placeholder="1-aaa-000">
+                        {{ form_car.plate(type="input", class="input", placeholder="1-aaa-000") }}
                     </div>
                 </div>
 
