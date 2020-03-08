@@ -8,9 +8,12 @@ Table Car {
 }
 
 Table User {
-  Username varchar [pk]
-  Name varchar
-  Email varchar
+  Username varchar
+  FirstName varchar
+  LastName varchar
+  password varchar
+  ID varchar [pk]
+  Email varchar unique
   Age int
   Gender char
   ProfilePicture varchar
@@ -24,20 +27,46 @@ Table Owns {
 Table Route {
   Creator varchar
   Expired bool
+  From1 double
+  From2 double
+  To1 double
+  To2 double
   DepartureTime timestamp
-  ArrivalTime timestamp [pk]
+  ArrivalTime timestamp
   DepartureLocation varchar
-  ArrivalLocation varchar [pk]
+  ArrivalLocation varchar
+  Seats int
+  ID varchar [pk]
+  DriverID varchar
+}
+
+Table PassengerIDs {
+  RideID varchar
+  PassengerID varchar
 }
 
 Table Preferences {
-  Username varchar [pk]
+  ID varchar [pk]
+}
+
+Table PassengerRequest {
+  ID varchar [pk]
+  Username varchar
+  Status varchar
+  Time_created timestamp
+  Time_updated timestamp
 }
 
 Ref: "Car"."LicensePlate" < "Owns"."LicensePlate"
 
-Ref: "User"."Username" < "Owns"."NameOwner"
+Ref: "User"."ID" < "Owns"."NameOwner"
 
-Ref: "User"."Username" < "Route"."Creator"
+Ref: "User"."ID" < "Route"."Creator"
 
-Ref: "User"."Username" - "Preferences"."Username"
+Ref: "User"."ID" - "Preferences"."ID"
+
+Ref: "Route"."ID" < "PassengerIDs"."RideID"
+
+Ref: "PassengerIDs"."PassengerID" > "User"."ID"
+
+Ref: "User"."ID" < "PassengerRequest"."Username"

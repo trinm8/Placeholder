@@ -8,13 +8,14 @@
     {% block metadata %}{%endblock%}
 
     {% if title %}
-    <title>{{ title }} - [PlaceHolder]</title>
+        <title>{{ title }} - [PlaceHolder]</title>
     {% else %}
-    <title> [PlaceHolder] </title>
+        <title> [PlaceHolder] </title>
     {% endif %}
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
 
+<!--    Javascript for deleting notifications-->
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script>document.addEventListener('DOMContentLoaded', () => {
         (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
@@ -26,6 +27,35 @@
         });
     });</script>
 
+<!--    Javascript for the burger menu-->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // Get all "navbar-burger" elements
+      const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+      // Check if there are any navbar burgers
+      if ($navbarBurgers.length > 0) {
+
+        // Add a click event on each of them
+        $navbarBurgers.forEach( el => {
+          el.addEventListener('click', () => {
+
+            // Get the target from the "data-target" attribute
+            const target = el.dataset.target;
+            const $target = document.getElementById(target);
+
+            // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+            el.classList.toggle('is-active');
+            $target.classList.toggle('is-active');
+
+          });
+        });
+      }
+
+    });
+    </script>
+
     {% block imports %}{% endblock %}
 
     <style type="text/css">
@@ -35,9 +65,6 @@
             margin: 0;
         }
 
-        #div {
-            margin-top: 10%;
-        }
 
         .Site {
             display: flex;
@@ -49,17 +76,7 @@
             flex: 1;
         }
 
-        {
-        %
-        block
-        styles
-        %
-        }
-        {
-        %
-        endblock
-        %
-        }
+        {% block styles %}{% endblock %}
 
     </style>
 
@@ -72,8 +89,9 @@
 <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item" href="{{ url_for('index') }}">
-            <!--            <img src="https://content.web-repository.com/s/549548298795753201/uploads/Images/logo_1-3019618.png" width="100" height="28">-->
-            <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+            <img src="/static/logo-01.png" width="13" height="28">
+            <strong> [PlaceHolder]</strong>
+            <!--            <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">-->
             <!--            <strong>[PlaceHolder]</strong>-->
         </a>
 
@@ -87,46 +105,34 @@
 
     <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
-            <a class="navbar-item">
+            <a class="navbar-item" href="{{ url_for('index') }}">
                 Home
             </a>
 
-            <a class="navbar-item">
-                Documentation
+            <a class="navbar-item" href="{{ url_for('about') }}">
+                About
             </a>
 
-            <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">
-                    More
-                </a>
-
-                <div class="navbar-dropdown">
-                    <a class="navbar-item">
-                        About
-                    </a>
-                    <a class="navbar-item">
-                        Jobs
-                    </a>
-                    <a class="navbar-item">
-                        Contact
-                    </a>
-                    <hr class="navbar-divider">
-                    <a class="navbar-item">
-                        Report an issue
-                    </a>
-                </div>
-            </div>
         </div>
 
         <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons">
-                    <a class="button is-primary">
+                    {% if current_user.is_anonymous %}
+                    <a class="button is-primary" href="{{ url_for('register') }}">
                         <strong>Sign up</strong>
                     </a>
                     <a class="button is-light" href="{{ url_for('login') }}">
-                        Log in
+                        Login
                     </a>
+                    {% else %}
+                    <a class="navbar-item" href="{{ url_for('account') }}">
+                        {{ current_user.firstname }} {{ current_user.lastname }}
+                    </a>
+                    <a class="button is-light" href="{{ url_for('logout') }}">
+                        Logout
+                    </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -150,7 +156,7 @@
 </main>
 
 <footer class="footer">
-    <div class="content has-text-centered">
+    <div class="contW.I.P.ent has-text-centered">
         <p>
             <strong>[PlaceHolder]</strong> by Arno Deceuninck, Sam Peeters, Sien Nuyens and Tim Sanders.
         </p>
@@ -159,3 +165,4 @@
 
 </body>
 </html>
+i

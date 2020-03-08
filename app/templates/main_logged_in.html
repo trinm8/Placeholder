@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% from "card.html" import card %}
+{% import "map.html" as map %}
+
+{% block imports %}
+{{ map.imports() }}
+{% endblock %}
+
+{% block styles %}
+#mapid {
+    height: 100%;
+}
+{% endblock %}
+
+{% block body %}
+    <!--<section class="section">-->
+    <div id="div">
+        <section class="section">
+            <div class="columns">
+                <div class="column is-2">
+                    {{ card("Add a new trip", link='/addroute') }}
+
+                    {% for trip in trips %}
+                        {{ card(trip.description, trip.time) }}
+                    {% endfor %}
+                </div>
+
+                <div class="column">
+                    <h1 class="title">{{ trip.description }}</h1>
+                    <h2 class="subtitle">{{ trip.time }}</h2>
+                    {{ map.map() }}
+                </div>
+                <div class="column is-2">
+                    <div class="card">
+                        <div class="card-content">
+                            <i class="fas fa-car"></i><a href="#"> {{ trip.driver }} </a><br>
+                            {% for passenger in trip.passengers %}
+                            <i class="fas fa-user"></i><a href="#"> {{ passenger }} </a><br>
+                            {% endfor %}
+                        </div>
+                    </div><br>
+
+                    {{ card("FROM:", trip.departure) }}
+
+                    {% for stop in trip.stops %}
+                        {{ card("STOP:", stop) }}
+                    {% endfor %}
+
+                    {{ card("TO:", trip.destination) }}
+
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

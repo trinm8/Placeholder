@@ -1,0 +1,10 @@
+{% macro card(text='', subtext='', link='#') %}
+<div class="card">
+    <a href="{{ link }}">
+        <div class="card-content">
+            <strong>{{ text }}</strong><br>
+            {{ subtext }}
+        </div>
+    </a>
+</div>
+{% endmacro %}
