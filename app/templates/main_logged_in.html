@@ -36,7 +36,7 @@
                         <div class="card-content">
                             <i class="fas fa-car"></i><a href="{{ url_for('account') }} "> {{ trip.driver }} </a><br>
                             {% for passenger in trip.passengers %}
-                            <i class="fas fa-user"></i><a href="#"> {{ passenger }} </a><br>
+                            <i class="fas fa-user"></i><a href="{{ url_for('account') }}"> {{ passenger }} </a><br>
                             {% endfor %}
                         </div>
                     </div><br>
