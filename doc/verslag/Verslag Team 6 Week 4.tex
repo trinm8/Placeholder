@@ -1,0 +1,113 @@
+\documentclass{article}
+
+
+\usepackage[urlcolor=blue, linkcolor=black, colorlinks=true]{hyperref}
+\usepackage[dutch]{babel}
+\usepackage{minutes}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\makeatletter
+\addto\extrasdutch{%
+\def\min@textTask{Taak}%
+}
+\makeatother%
+\makeatletter
+\def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+
+
+
+\newcounter{team}
+
+% TODO: Enter team number here:
+\setcounter{team}{6}
+
+
+\begin{document}
+%	\tableofcontents
+	
+	\begin{Minutes}{Programming Project Databases \\ Wekelijks Verslag Team \arabic{team}}
+		\moderation{Arno Deceuninck}
+		\minutetaker{Arno Deceuninck}
+		\participant{Arno Deceuninck, Sam Peeters, Sien Nuyens, Tim Sanders}
+		\missingNoExcuse{/}
+		\missingExcused{/}
+%		\guest{\ldots}
+		\minutesdate{26 februari 2020}
+		\starttime{11u00}
+		\endtime{11u30}
+		
+		\maketitle
+		
+		\topic{Coordinator Vergadering}
+		\begin{itemize}
+			\item Volgende week presentatie over wat we al gedaan hebben. We moeten tonen dat we effectief al bezig zijn met het project. Je mag kiezen hoe je het presenteert. Pagina's al online zetten, zodat we de demo kunnen laten zien en foto's als backup kunnen gebruiken.
+			\item Geen coordinatorvergadering volgende week
+			\item Als je een demo doet, dan doe je da best niet live (maar met foto's of filmpjes)
+			\item Best alles dat je al hebt gedaan zeggen op de presentatie, want alles is interessant. 
+			\item Geen te technische dingen in de presentatie. Het mag niet saai zijn. Veel foto's, het is de bedoeling dat je de aandacht van de prof kan houden.
+			\item Belangerijk om te tonen wat je project uniek maakt. 
+		\end{itemize}
+		
+		\topic{Status}
+		
+			\subtopic{Overzicht Taken}
+				\task*[WIP]{Google Cloud Server (ssh keys)}
+				\task*[DONE]{Mockups}
+				\task*[TODO]{Tussentijds rapport}
+
+			
+
+	
+		\topic{Besproken Onderwerpen}
+				\subtopic{Wie wordt de coordinator deze week?}
+				    Rondgehoord wie de coordinator wordt deze week, aangezien er volgende week geen coordinatorvergadering is. Arno wordt deze week coordinator.
+				\subtopic{Google Cloud Server (ssh keys)}
+			        SSH werkt bij iedereen, maar iedereen moet nog toegevoegd worden via mail aan de Google Cloud. Dit is ondertussen nog niet gebeurd. Sam doet dat vandaag van iedereen. Stuur hiervoor wel je emailadres door naar Sam.
+				\subtopic{Tussentijds rapport}
+				    ER diagram is al een basis. Het tussentijds rapport zal in LaTeX gemaakt worden. Dit moet bevatten: Alle feautures die we al hebben, ER diagram, wie wat heeft gedaan en de mockups. Iedereen schrijft wat hij zelf gedaan heeft, met extra uitleg best. Voeg eveneens foto's toe van de mockups die je al gemaakt hebt. Planning voor de toekomst is nog niet nodig. 
+				\subtopic{Presentatie}
+				    Dit gaan we doen aan de hand van een slideshow op Google Slides. Hierin moeten vooral veel afbeeldingen staan. We moeten de aandacht van de professor kunnen houden. Deze moeten we al tegen zondag afhebben, maandag ofzo samenkomen om deze presentatie al eens in te oefenen. Probeer de muziek ook zeker in de presentatie te verwerken. Arno denkt dit wel verder uit. We tonen de mockups die we al hebben. 
+				\subtopic{Logo}
+        		    Arno heeft al gexperimenteerd met het logo, maar veel logos bevatte teveel details zodat ze niet meer zichtbaar waren op de website. Het eerste idee was om een toonladder te nemen waar een auto op reed. het nieuwe desgin is een sol-sleutel waar er centraal een wiel staat.Eventueel kunnen we ook een muzieknoot met vierkante haken rond pakken (e.g. bassleutel)
+					
+		\topic{Afspraken \& Planning}
+			\begin{itemize}
+			\item Iedereen moet de flask site runnend krijgen. 
+			\item Iedereen moet zijn gemaakte html pagina omzetten naar Jinja. Deze wordt dan geplaatst in de folder app/templates. Als je afbeeldingen gebruikt moeten die ofwel ergens online staan, ofwel in de app/static folder.
+			\item Puntjes rapport invullen 
+			\item Presentatie voorbereiden tegen zondag, zodat we dat maandag kunnen inoefenen. Het inoefenen doen we maandag om 14u. Wie wil kan om 13u al komen om samen met Tim te eten.
+			\end{itemize}
+		
+		
+		\topic{Varia}
+			\emph{Eventuele varia punten. Hierbij vragen we ook aan alle aanwezigen of zij nog iets te zeggen hebben.}
+				\subtopic{Sien}
+				    Sien heeft nogsteeds een probleem met pushen.
+				\subtopic{Sam}
+				    Virtualenv werkt niet bij hem.
+				\subtopic{Tim}
+				    Tim is satisfied.
+				\subtopic{Arno}
+				    Bekijk "The Flask Mega tutorial. Eerst ./install.sh runnen en dan ./run.sh
+		
+		
+		\blfootnote{
+			\href{%
+				mailto:joey.depauw@uantwerpen.be%
+				?subject=PPDB 2019-2020: Wekelijks Verslag Team \arabic{team}%
+				&body=Liefste Joey\%0D\%0A%
+				\%0D\%0A%
+				Gelieve ons wekelijks verslag terug te vinden in de bijlage.\%0D\%0A%
+				\%0D\%0A%
+				Groetjes\%0D\%0A%
+				Team \arabic{team}\%0D\%0A%
+			}{Klik hier} om mij op te sturen.
+		}
+		
+		
+	\end{Minutes}	
+\end{document}

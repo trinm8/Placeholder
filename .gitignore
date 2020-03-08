@@ -82,5 +82,7 @@ bulma-0.8.0.zip
 doc/verslag/*
 !doc/verslag/Verslag Team 6 Week *.tex
 
-migrations
+migrations/*
 
+app/__pycache__/*
+*.pyc
