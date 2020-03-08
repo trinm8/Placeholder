@@ -31,14 +31,14 @@ def about():
 
 
 @app.route('/account')
+@login_required
 def account():
     return render_template('account.html', title='Account')
 
 
 @app.route('/account/settings')
+@login_required
 def account_settings():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
     form_profile = ProfileSettings()
     form_music = MusicSettings()
     form_car = CarSettings()
@@ -47,6 +47,7 @@ def account_settings():
 
 
 @app.route('/addroute')
+@login_required
 def addRoute():
     flash("Warning: this page won't submit anything to the database yet. We're working on it.")
     return render_template('addRoute.html', title='New Route')

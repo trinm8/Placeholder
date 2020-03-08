@@ -113,6 +113,9 @@
                 About
             </a>
 
+            <a class="navbar-item" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&feature=youtu.be">
+                Don't click here
+            </a>
         </div>
 
         <div class="navbar-end">
@@ -128,6 +131,9 @@
                     {% else %}
                     <a class="navbar-item" href="{{ url_for('account') }}">
                         {{ current_user.firstname }} {{ current_user.lastname }}
+                    </a>
+                    <a class="navbar-item" href="{{ url_for('account_settings') }}">
+                        Settings
                     </a>
                     <a class="button is-light" href="{{ url_for('logout') }}">
                         Logout
