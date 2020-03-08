@@ -24,3 +24,22 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
             raise ValidationError('Please use a different username. The given one is already used.')
+
+
+class ProfileSettings(FlaskForm):
+    firstname = StringField('First name', validators=[DataRequired()])
+    lastname = StringField('Last name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired()])
+    password = PasswordField('Password')
+
+
+# TODO(Sam): Figure out how to do this with text areas for music settings
+class MusicSettings(FlaskForm):
+    liked_genres = StringField('Liked Genres')
+    disliked_genres = StringField('disliked Genres')
+
+
+class CarSettings(FlaskForm):
+    color = StringField('Color', validators=[DataRequired()])
+    brand = StringField('Brand', validators=[DataRequired()])
+    plate = StringField('License plate', validators=[DataRequired()])
