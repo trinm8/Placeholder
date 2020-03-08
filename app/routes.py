@@ -21,7 +21,7 @@ def index():
         trips = [trip(), trip(), trip(), trip(), trip(), trip()]
 
         return render_template('main_logged_in.html', title='Dashboard', trips=trips, trip=trips[0])
-    return render_template('index.html', title='Welcome')
+    return render_template('home.html', title='Welcome')
 
 @app.route('/about')
 def about():
@@ -30,6 +30,10 @@ def about():
 @app.route('/account')
 def account():
     return render_template('wip.html', title='Account')
+
+@app.route('/account/settings')
+def account_settings():
+    return render_template('settings.html', title='Account Settings')
 
 @app.route('/addroute')
 def addRoute():
