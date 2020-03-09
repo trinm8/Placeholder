@@ -130,11 +130,12 @@
                         Login
                     </a>
                     {% else %}
-                    <a class="navbar-item" href="{{ url_for('account') }}">
-                        {{ current_user.firstname }} {{ current_user.lastname }}
-                    </a>
                     <a class="navbar-item" href="{{ url_for('account_settings') }}">
                         Settings
+                    </a>
+                    <a class="navbar-item" href="{{ url_for('account') }}">
+                        {{ current_user.firstname }} {{ current_user.lastname }}
+                        <img hspace="10" src="{{ current_user.avatar(128) }}">
                     </a>
                     <a class="button is-light" href="{{ url_for('logout') }}">
                         Logout

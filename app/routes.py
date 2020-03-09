@@ -13,7 +13,7 @@ def index():
         class trip:
             description = "From Middelheimlaan to Edegemsesteenweg"
             time = "07:00 - 5 March 2020"
-            driver = "Arno Deceuninck"
+            driver = "arnodece"
             passengers = ["Sien Nuyens", "Sam Peeters", "Tim Sanders"]
             departure = "Middelheimlaan 1, 2020 Antwerpen"
             destination = "Edegemsesteenweg 100, 2020 Antwerpen"
