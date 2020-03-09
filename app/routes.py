@@ -35,6 +35,12 @@ def about():
 def account():
     return render_template('account.html', title='Account')
 
+@app.route('/users/<username>')
+@login_required
+def user_page(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    return render_template('user.html', title='Account', user=user)
+
 
 @app.route('/account/settings')
 @login_required
