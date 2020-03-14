@@ -80,7 +80,7 @@ margin-top: 10%;
 
                                     <div class="buttons">
                                         {{ form.login(class="button is-primary") }}
-                                        <button class="button">Sign up</button>
+                                        <a class="button" href="{{ url_for('register') }}">Sign up</a>
                                     </div>
                                 </div>
                                 <div class="level-right">
@@ -89,13 +89,15 @@ margin-top: 10%;
                                     </div>
                                 </div>
                             </div>
+                        </form>
                     </div>
                 </div>
 
-                </form></div>
+<!--                </form>-->
+</div>
             <div class="column is-2"></div>
         </div>
-</div>
+<!--</div>-->
 </section>
 </div>
 {% endblock %}
