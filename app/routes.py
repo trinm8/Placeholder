@@ -5,7 +5,6 @@ from app.forms import *
 from app.models import User
 from werkzeug.urls import url_parse
 
-
 @app.route('/index')
 @app.route('/')
 def index():
@@ -169,6 +168,15 @@ def page_not_found(e):
 @app.errorhandler(405)
 def method_not_allowed(e):
     return render_template('405.html', title='Method not allowed'), 405
+
+# Function for deliberatly creating an error (for testing the error mailing system)
+@app.route('/internal_server_error')
+def internal_server_error():
+    user = User(username="johndoe", firstname="John", lastname="Doe")
+    user.set_password("test")
+    db.session.add(user)
+    db.session.commit()
+    return render_template("500.html", title="Internal error")
 
 @app.errorhandler(500)
 def internal_server_error(e):
