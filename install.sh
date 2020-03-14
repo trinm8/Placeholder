@@ -18,6 +18,8 @@ pip3 install psycopg2
 pip3 install flask-login
 pip3 install python-dotenv
 pip3 install SQLAlchemy
+pip3 install flask-mail
+pip3 install pyjwt
 
 echo "FLASK_APP=placeholder.py" > .flaskenv
 

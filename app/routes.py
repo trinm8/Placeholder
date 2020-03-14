@@ -89,7 +89,8 @@ def register_user(username: str, firstname: str, lastname: str, password: str) -
     # TODO: prevent duplicate code
     user = User.query.filter_by(username=username).first()
     if user is not None:
-        return -1
+        # flash("There is already an user with this username. Please choose another one.")
+        return 0
 
     user = User(username=username, firstname=firstname, lastname=lastname)
     user.set_password(password)
@@ -162,13 +163,13 @@ def search():
 @app.errorhandler(404)
 def page_not_found(e):
     # note that we set the 404 status explicitly
-    return render_template('404.html', title='Page not found')
+    return render_template('404.html', title='Page not found'), 404
 
 
 @app.errorhandler(405)
 def method_not_allowed(e):
-    return render_template('405.html', title='Method not allowed')
+    return render_template('405.html', title='Method not allowed'), 405
 
 @app.errorhandler(500)
 def internal_server_error(e):
-    return render_template('500.html', title='Internal error')
+    return render_template('500.html', title='Internal error'), 500
