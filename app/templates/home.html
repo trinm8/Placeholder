@@ -1,73 +1,55 @@
 {% extends "base.html" %}
 
+{% block styles %}
+.has-bg-img { background: url('/static/hero2.jpeg')center center; background-size:cover; background-attachment:fixed; }
+{% endblock %}
+
 {% block body %}
-    <section class="hero is-primary is-medium">
-        <div class="hero-body">
-            <div class="container">
-                <h1 class="title">[PlaceHolder]</h1>
-                <h2 class="subtitle">Select your groove, when you move</h2>
-            </div>
-        </div>
-    </section>
-
-    <section class="section">
+<section class="hero is-primary is-medium has-bg-img is-transparent">
+    <div class="hero-body">
+<!--        <img alt="Hero background" class="hero-background" src="https://codepromo.rtbf.be/media/images/goede-redenen-carpooling-post.jpg" />-->
         <div class="container">
-            <div class="columns">
-                <div class="column is-7">
-                    <p class="title">Project DB</p>
-                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum eget risus eget viverra.
-                        Sed vitae elit tortor. Morbi ut semper tortor. Cras fringilla id nibh eget euismod. Nulla
-                        ullamcorper vel quam ac sodales. Donec a lobortis sem. Donec iaculis justo ac lectus gravida,
-                        in vestibulum lectus consectetur. Duis urna arcu, accumsan in dui sed, consectetur posuere
-                        lectus. Fusce massa mauris, pharetra eu cursus laoreet, varius et neque. Mauris sit amet finibus
-                        libero. Sed tristique porta felis, feugiat mollis elit sodales eget. Sed ornare nisi vel
-                        consequat fermentum. Cras suscipit purus sit amet ligula porta interdum. Aliquam erat volutpat.
-                        Mauris rhoncus mauris mollis congue maximus.
-                        <br>
-                        Phasellus id dolor id elit eleifend condimentum sed a mauris. Vestibulum non velit eu libero
-                        placerat scelerisque a iaculis libero. Ut feugiat fringilla fermentum. Curabitur varius ante et
-                        iaculis fringilla. Donec vestibulum lacus libero, sit amet finibus ipsum malesuada a.
-                        Suspendisse euismod dolor est, vel ultricies tortor ornare sed. Donec consequat bibendum
-                        laoreet. Nulla maximus luctus dui eu fermentum. Aenean ac convallis sapien. Vestibulum ante
-                        ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Cras efficitur metus a
-                        elit convallis rutrum. Pellentesque quis arcu auctor, dignissim elit nec, varius nunc. Nunc sed
-                        tortor quis lorem porttitor ornare sit amet eget turpis. </p>
-                </div>
-                <div class="column is-offset-1">
-                    <img src="https://www.deutsche-finanzierung.com/assets/images/slides/fronts/slider_5.png"
-                         alt="some pic">
-                </div>
-            </div>
-            <hr class="hr">
+            <h1 class="title">[PlaceHolder]</h1>
+            <h2 class="subtitle">Select your groove, when you move</h2>
         </div>
+    </div>
+</section>
 
-        <div class="container">
-            <div class="columns">
-                <div class="column is-4">
-                    <img src="https://i.insider.com/56a7e43b58c32378008b55c8?width=750&format=jpeg&auto=webp"
-                         alt="some other pic">
-                </div>
-                <div class="column is-offset-1">
-                    <p class="title">Choose your music</p>
-                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum eget risus eget viverra.
-                        Sed vitae elit tortor. Morbi ut semper tortor. Cras fringilla id nibh eget euismod. Nulla
-                        ullamcorper vel quam ac sodales. Donec a lobortis sem. Donec iaculis justo ac lectus gravida,
-                        in vestibulum lectus consectetur. Duis urna arcu, accumsan in dui sed, consectetur posuere
-                        lectus. Fusce massa mauris, pharetra eu cursus laoreet, varius et neque. Mauris sit amet finibus
-                        libero. Sed tristique porta felis, feugiat mollis elit sodales eget. Sed ornare nisi vel
-                        consequat fermentum. Cras suscipit purus sit amet ligula porta interdum. Aliquam erat volutpat.
-                        Mauris rhoncus mauris mollis congue maximus.
-                        <br>
-                        Phasellus id dolor id elit eleifend condimentum sed a mauris. Vestibulum non velit eu libero
-                        placerat scelerisque a iaculis libero. Ut feugiat fringilla fermentum. Curabitur varius ante et
-                        iaculis fringilla. Donec vestibulum lacus libero, sit amet finibus ipsum malesuada a.
-                        Suspendisse euismod dolor est, vel ultricies tortor ornare sed. Donec consequat bibendum
-                        laoreet. Nulla maximus luctus dui eu fermentum. Aenean ac convallis sapien. Vestibulum ante
-                        ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Cras efficitur metus a
-                        elit convallis rutrum. Pellentesque quis arcu auctor, dignissim elit nec, varius nunc. Nunc sed
-                        tortor quis lorem porttitor ornare sit amet eget turpis. </p>
-                </div>
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-7">
+                <p class="title">Choose your music</p>
+                <p style="font-size:120%;"> You probably know the feeling: You want to save the environment, so you decide to go carpooling, but
+                    then, from the moment you enter the car, you only hear Jazz music, the music you hated most of all.
+                    <br>
+                    Well, we have a solution for you, because with [PlaceHolder], you can hold a place in someones car
+                    with the music you like. Yes, you read that right: [PlaceHolder] is a carpooling app which selects
+                    your optimal trip by taking the music preferences of the passengers into account. </p>
+            </div>
+            <div class="column is-offset-1">
+                <img alt="some pic"
+                     src="https://s1.dmcdn.net/v/PYSnS1SVMx_dmXGD2/x1080">
             </div>
         </div>
-    </section>
+        <hr class="hr">
+    </div>
+
+    <div class="container">
+        <div class="columns">
+            <div class="column is-4">
+                <img alt="some other pic"
+                     src="https://image.shutterstock.com/image-vector/music-note-design-element-doodle-260nw-616470623.jpg">
+            </div>
+            <div class="column is-offset-1">
+                <p class="title">Go in style</p>
+                <p style="font-size:120%;"> You can sign up and add your first ride in less than a minute (we tested it). Once signed in, your
+                    greeted with our minimal design for optimal functionality. I can keep talking about it, but it's
+                    best you're going to find it all out by yourself.<br>So why are you still reading this? Let's select
+                    your groove, while you move.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
