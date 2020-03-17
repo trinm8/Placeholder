@@ -91,8 +91,9 @@ def account_settings():
 @app.route('/addroute')
 @login_required
 def addRoute():
+    form = AddRoute()
     flash("Warning: this page won't submit anything to the database yet. We're working on it.")
-    return render_template('addRoute.html', title='New Route')
+    return render_template('addRoute.html', title='New Route', form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])

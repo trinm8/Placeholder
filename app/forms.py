@@ -56,7 +56,7 @@ class CarSettings(FlaskForm):
 
 
 class AddRoute(FlaskForm):
-    type = RadioField('type', choices=[('Driver', ''), ('Passenger', '')], validators=[DataRequired()])
+    type = RadioField('type', choices=[('value', 'Driver'), ('value_2', 'Passenger')], validators=[DataRequired()])
     start = StringField('start', validators=[DataRequired()])
     destination = StringField('destination', validators=[DataRequired()])
     date = DateField('date', format='%d-%m-%Y', validators=[DataRequired()])
