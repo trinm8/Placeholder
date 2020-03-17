@@ -77,6 +77,12 @@
             flex: 1;
         }
 
+        .navigation {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
         {% block styles %}{% endblock %}
 
     </style>
@@ -87,7 +93,7 @@
 
 <body class="Site">
 
-<nav class="navbar" role="navigation" aria-label="main navigation">
+<nav class="navbar navigation" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item" href="{{ url_for('index') }}">
             <img src="/static/logo-01.png" width="13" height="28">
