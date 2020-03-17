@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, RadioField, DateField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import User
 
@@ -53,3 +53,11 @@ class CarSettings(FlaskForm):
     color = StringField('Color', validators=[DataRequired()])
     brand = StringField('Brand', validators=[DataRequired()])
     plate = StringField('License plate', validators=[DataRequired()])
+
+
+class AddRoute(FlaskForm):
+    type = RadioField('type', choices=[('Driver', ''), ('Passenger', '')], validators=[DataRequired()])
+    start = StringField('start', validators=[DataRequired()])
+    destination = StringField('destination', validators=[DataRequired()])
+    date = DateField('date', format='%d-%m-%Y', validators=[DataRequired()])
+    submit = SubmitField('Confirm')
