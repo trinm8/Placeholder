@@ -41,18 +41,21 @@ class ProfileSettings(FlaskForm):
     lastname = StringField('Last name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired()])
     password = PasswordField('Password')
+    submit = SubmitField("Update Profile")
 
 
 # TODO(Sam): Figure out how to do this with text areas for music settings
 class MusicSettings(FlaskForm):
     liked_genres = StringField('Liked Genres')
-    disliked_genres = StringField('disliked Genres')
+    disliked_genres = StringField('Disliked Genres')
+    submit = SubmitField("Update Music")
 
 
 class CarSettings(FlaskForm):
     color = StringField('Color', validators=[DataRequired()])
     brand = StringField('Brand', validators=[DataRequired()])
     plate = StringField('License plate', validators=[DataRequired()])
+    submit = SubmitField("Update Car")
 
 
 class AddRouteForm(FlaskForm):
