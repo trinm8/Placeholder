@@ -19,7 +19,7 @@
                         <p>First name:</p>
                     </div>
                     <div class="column is-5">
-                        {{ form_profile.firstname(type="text", class="input", placeholder="First name") }}
+                        {{ form_profile.firstname(type="text", class="input", placeholder="First name", value=current_user.firstname) }}
                     </div>
                 </div>
 
@@ -28,7 +28,7 @@
                         <p>Last name:</p>
                     </div>
                     <div class="column is-5">
-                        {{ form_profile.lastname(type="text", class="input", placeholder="Last name") }}
+                        {{ form_profile.lastname(type="text", class="input", placeholder="Last name", value=current_user.lastname) }}
                     </div>
                 </div>
 
@@ -39,7 +39,7 @@
                     <div class="column is-5">
                         <div class="field">
                             <p class="control has-icons-left has-icons-right">
-                                {{ form_profile.email(type="text", class="input", placeholder="Email") }}
+                                {{ form_profile.email(type="text", class="input", placeholder="Email", value=current_user.email) }}
                                 <span class="icon is-small is-left">
                                      <i class="fas fa-envelope"></i>
                                 </span>
@@ -62,6 +62,10 @@
                             </p>
                         </div>
                     </div>
+                </div>
+
+                <div class="buttons">
+                    {{ form_profile.submit(class="button is-primary") }}
                 </div>
 
             </form>
@@ -113,6 +117,10 @@
                     </div>
                 </div>
 
+                <div class="buttons">
+                    {{ form_music.submit(class="button is-primary") }}
+                </div>
+
             </form>
         </div>
     </section>
@@ -127,7 +135,7 @@
                         <p>Color:</p>
                     </div>
                     <div class="column is-5">
-                        {{ form_car.color(type="input", class="input", placeholder="Color") }}
+                        {{ form_car.color(type="input", class="input", placeholder="Color", value=current_user.car_color) }}
                     </div>
                 </div>
 
@@ -136,7 +144,7 @@
                         <p>Brand:</p>
                     </div>
                     <div class="column is-5">
-                        {{ form_car.brand(type="input", class="input", placeholder="Brand") }}
+                        {{ form_car.brand(type="input", class="input", placeholder="Brand", value=current_user.car_brand) }}
                     </div>
                 </div>
 
@@ -145,8 +153,12 @@
                         <p>License plate:</p>
                     </div>
                     <div class="column is-5">
-                        {{ form_car.plate(type="input", class="input", placeholder="1-aaa-000") }}
+                        {{ form_car.plate(type="input", class="input", placeholder="1-aaa-000", value=current_user.car_plate) }}
                     </div>
+                </div>
+
+                <div class="buttons">
+                    {{ form_car.submit(class="button is-primary") }}
                 </div>
 
             </form>

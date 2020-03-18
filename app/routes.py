@@ -77,13 +77,34 @@ def user_page(username):
     return render_template('user.html', title='Account', user=user)
 
 
-@app.route('/account/settings')
+@app.route('/account/settings', methods=['GET', 'POST'])
 @login_required
 def account_settings():
     flash("Warning: this page won't submit anything to the database yet. We're working on it.")
+
     form_profile = ProfileSettings()
+    if form_profile.validate_on_submit():
+        user = User.query.filter_by(id=current_user.get_id()).first()
+        user.firstname = form_profile.firstname.data
+        user.lastname = form_profile.lastname.data
+        user.email = form_profile.email.data
+        if len(form_profile.password.data) > 0:
+            user.set_password(form_profile.password.data)
+        db.session.commit()
+
     form_music = MusicSettings()
+    if form_music.validate_on_submit():
+        user = User.query.filter_by(id=current_user.get_id()).first()
+        # TODO(Sam): etc...
+
     form_car = CarSettings()
+    if form_car.validate_on_submit():
+        user = User.query.filter_by(id=current_user.get_id()).first()
+        user.car_color = form_car.color
+        user.car_brand = form_car.brand
+        user.car_plate = form_car.plate
+        db.session.commit()
+
     return render_template('settings.html', title='Account Settings', form_profile=form_profile, form_music=form_music,
                            form_car=form_car)
 

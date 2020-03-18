@@ -16,8 +16,13 @@ class User(UserMixin, db.Model):
     lastname = db.Column(db.String(64), index=True)
     username = db.Column(db.String(64), index=True, unique=True)
     # age = db.Column(db.Integer)
-    # email = db.Column(db.String(120), index=True, unique=True)
+    email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+
+    # Car properties
+    car_color = db.Column(db.String(64), index=True)
+    car_brand = db.Column(db.String(64), index=True)
+    car_plate = db.Column(db.String(32), index=True, unique=True)
 
     def __repr__(self):
         return '<User {} {}>'.format(self.name, self.lastname)
