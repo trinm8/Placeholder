@@ -1,0 +1,111 @@
+\documentclass{article}
+
+
+\usepackage[urlcolor=blue, linkcolor=black, colorlinks=true]{hyperref}
+\usepackage[dutch]{babel}
+\usepackage{minutes}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\makeatletter
+\addto\extrasdutch{%
+\def\min@textTask{Taak}%
+}
+\makeatother%
+\makeatletter
+\def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+
+
+
+\newcounter{team}
+
+% TODO: Enter team number here:
+\setcounter{team}{6}
+
+
+\begin{document}
+%	\tableofcontents
+
+	\begin{Minutes}{Programming Project Databases \\ Wekelijks Verslag Team \arabic{team}}
+		\moderation{Arno Deceuninck}
+		\minutetaker{Arno Deceuninck}
+		\participant{Arno Deceuninck, Sam Peeters, Sien Nuyens, Tim Sanders}
+		\missingNoExcuse{/}
+		\missingExcused{/}
+%		\guest{\ldots}
+		\minutesdate{18 Maart 2020}
+		\starttime{11u00}
+		\endtime{11u30}
+
+		\maketitle
+
+		\topic{Coordinator Vergadering}
+		Niet geweest wegens coronavirus.
+
+		\topic{Status}
+
+			\subtopic{Overzicht Taken}
+				\task*[PENDING]{Routes toevoegen}
+				\task*[DONE]{Settings uit database}
+				\task*[TODO]{User info uit database}
+                \task*[DONE]{Password recovery mails}
+                \task*[DONE]{Tekst op homepage}
+
+
+
+		\topic{Besproken Onderwerpen}
+				\subtopic{Wie wordt de coordinator deze week?}
+				    Blijft Tim de co"ordinator tot de eerstvolgende coordinatoren vergadering? Voor Tim maakt het niet uit. Arno wordt vanaf nu co"ordinator, volgende co"ordinatorenmeeting gaat Tim wel.
+				\subtopic{Routes toevoegen}
+				    Tim licht dit toe. Alles staat op het moment klaar om naar database te doen. Momenteel werkt de database met langitude en longitude, dus kunnen we best de coordinaten van OpenStreetMap toevoegen. De route heeft een id van een driver, hoe toevoegen als een passenger? (en nog geen driver dus). Tim probeert dit zaterdag te fixen.
+			    \subtopic{Settings uit database}
+			        Sam licht dit toe. Da werkt voor alles behalve de music settings, dit gaat hij nog verder bekijken. Dit zou ook al naar de database sturen.
+			    \subtopic{User info uit database}
+			        Sien licht dit toe. Er waren veel problemen met Jinja (ivm gegevens uit routes.py doorgeven). Ze gaat zich verder baseren op user page en account page laten vallen, aangezien de eerstgenoemde al een meer uitgebreide versie is van de account page.
+			    \subtopic{Password recovery mails}
+			        Dit staat ondertussen al online. De inloggegevens voor het gmail account kan je terugvinden in messenger. Momenteel kan je wel voor eender welke username een emailadres opgeven. Vanaf er in de database een emailadres gekoppeld is aan een user willen we dit uiteraard enkel met dit emailadres laten resetten.
+
+		\topic{Afspraken \& Planning}
+			\begin{itemize}
+			    \item Tim gaat zaterdag de addRoute proberen te fixen, omdat veel andere dingen hierop steunen.
+			    \item Sien gaat tegen zaterdag de user page zien af te krijgen.
+			    \item Music settings: Genres aanpassen -> Moet ook nog in database. Dit doet Sam ook tegen zaterdag.
+			    \item Route request pagina aanmaken -> incl genres in request page. Arno probeert dit zaterdag te doen.
+			    \item Notifications toevoegen aan navbar. Sien doet dit.
+			    \item Request overview page. Sam doet dit.
+			    \item Request information in database. Arno doet dit waarschijnlijk samen met request pagina.
+			    \item Pagina om te laten weten dat route succesvol is aangemaakt. Tim gaat dit doen.
+			\end{itemize}
+
+
+		\topic{Varia}
+			\emph{Eventuele varia punten. Hierbij vragen we ook aan alle aanwezigen of zij nog iets te zeggen hebben.}
+				\subtopic{Sien}
+				    Niets te zeggen.
+				\subtopic{Sam}
+				    Niets te zeggen.
+				\subtopic{Tim}
+				    Ik ben aan het denken of er nog iets was dat ik wou zeggen. Ik denk het niet.
+				\subtopic{Arno}
+				    Als je ergens vast zit, laat da dan optijd weten, zodat er ook op tijd geholpen kan worden. Zou Joey dit verslag tot hier lezen?
+
+
+		\blfootnote{
+			\href{%
+				mailto:joey.depauw@uantwerpen.be%
+				?subject=PPDB 2019-2020: Wekelijks Verslag Team \arabic{team}%
+				&body=Liefste Joey\%0D\%0A%
+				\%0D\%0A%
+				Gelieve ons wekelijks verslag terug te vinden in de bijlage.\%0D\%0A%
+				\%0D\%0A%
+				Groetjes\%0D\%0A%
+				Je favoriete team: Team \arabic{team}\%0D\%0A%
+			}{Klik hier} om mij op te sturen.
+		}
+
+
+	\end{Minutes}
+\end{document}
