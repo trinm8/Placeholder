@@ -88,11 +88,15 @@ def account_settings():
                            form_car=form_car)
 
 
-@app.route('/addroute')
+@app.route('/addroute', methods=['GET', 'POST'])
 @login_required
 def addRoute():
     flash("Warning: this page won't submit anything to the database yet. We're working on it.")
-    return render_template('addRoute.html', title='New Route')
+    form = AddRouteForm()
+    if form.validate_on_submit():
+        flash('New route added')
+        return redirect(url_for('index'))
+    return render_template('addRoute.html', title='New Route', form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])

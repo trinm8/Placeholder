@@ -55,9 +55,9 @@ class CarSettings(FlaskForm):
     plate = StringField('License plate', validators=[DataRequired()])
 
 
-class AddRoute(FlaskForm):
-    type = RadioField('type', choices=[('Driver', ''), ('Passenger', '')], validators=[DataRequired()])
-    start = StringField('start', validators=[DataRequired()])
-    destination = StringField('destination', validators=[DataRequired()])
-    date = DateField('date', format='%d-%m-%Y', validators=[DataRequired()])
+class AddRouteForm(FlaskForm):
+    type = RadioField('type', choices=[('Driver', 'Driver'), ('Passenger', 'Passenger')])
+    start = StringField('start')
+    destination = StringField('destination')
+    date = DateField('date', format='%m/%d/%Y')
     submit = SubmitField('Confirm')
