@@ -25,16 +25,19 @@ class RegistrationForm(FlaskForm):
         if user is not None:
             raise ValidationError('Please use a different username. The given one is already used.')
 
+
 class ForgotPassword(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Send Reset Link')
+
 
 class ResetPasswordForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Update Password')
+
 
 class ProfileSettings(FlaskForm):
     firstname = StringField('First name', validators=[DataRequired()])

@@ -5,7 +5,7 @@ from app.email import send_password_reset_email
 from app.forms import *
 from app.models import User
 from werkzeug.urls import url_parse
-
+from random import uniform
 
 @app.route('/forgot_password', methods=['GET', 'POST'])
 def reset_password_request():
@@ -108,6 +108,25 @@ def account_settings():
     return render_template('settings.html', title='Account Settings', form_profile=form_profile, form_music=form_music,
                            form_car=form_car)
 
+def createRoute(form):
+    creator = User.query.filter_by(id=current_user.get_id()).first()
+    creatorname = creator.username
+    #Driver id is None wanneer de creator geen driver is zodat er later een driver zich kan aanbieden voor de route
+    if form.type.data == 'Driver':
+        driverid = creator.id
+    else:
+        driverid = None
+    departure_location_lat = uniform(49.536612, 51.464020)
+    departure_location_long = uniform(2.634966, 6.115877)
+    arrival_location_lat = uniform(49.536612, 51.464020)
+    arrival_location_long = uniform(2.634966, 6.115877)
+    route = app.models.Route(creator=creator, departure_location_lat=departure_location_lat,
+                             departure_location_long=departure_location_long, arrival_location_lat=arrival_location_lat,
+                             arrival_location_long=arrival_location_long, driverid=driverid)
+    db.session.add(route)
+    db.session.commit()
+
+
 
 @app.route('/addroute', methods=['GET', 'POST'])
 @login_required
@@ -116,6 +135,7 @@ def addRoute():
     form = AddRouteForm()
     if form.validate_on_submit():
         flash('New route added')
+        createRoute(form)
         return redirect(url_for('index'))
     return render_template('addRoute.html', title='New Route', form=form)
 
