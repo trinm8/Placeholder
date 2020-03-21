@@ -3,9 +3,10 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
 from app.email import send_password_reset_email
 from app.forms import *
-from app.models import User
+from app.models import User, Route
 from werkzeug.urls import url_parse
 from random import uniform
+from datetime import *
 
 @app.route('/forgot_password', methods=['GET', 'POST'])
 def reset_password_request():
@@ -120,9 +121,12 @@ def createRoute(form):
     departure_location_long = uniform(2.634966, 6.115877)
     arrival_location_lat = uniform(49.536612, 51.464020)
     arrival_location_long = uniform(2.634966, 6.115877)
-    route = app.models.Route(creator=creator, departure_location_lat=departure_location_lat,
+    d = form.date.data
+    #d = d.split('/')
+    #d = date(d[2], d[1], d[2])
+    route = Route(creator=creatorname, departure_location_lat=departure_location_lat,
                              departure_location_long=departure_location_long, arrival_location_lat=arrival_location_lat,
-                             arrival_location_long=arrival_location_long, driverid=driverid)
+                             arrival_location_long=arrival_location_long, driver_id=driverid, departure_time=d)
     db.session.add(route)
     db.session.commit()
 
@@ -134,8 +138,11 @@ def addRoute():
     flash("Warning: this page won't submit anything to the database yet. We're working on it.")
     form = AddRouteForm()
     if form.validate_on_submit():
-        flash('New route added')
+        if(form.date.data < date.today()):
+            flash("Date is invalid")
+            return render_template('addRoute.html', title='New Route', form=form)
         createRoute(form)
+        flash('New route added')
         return redirect(url_for('index'))
     return render_template('addRoute.html', title='New Route', form=form)
 
