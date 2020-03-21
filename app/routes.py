@@ -135,7 +135,7 @@ def createRoute(form):
 @app.route('/addroute', methods=['GET', 'POST'])
 @login_required
 def addRoute():
-    flash("Warning: this page won't submit anything to the database yet. We're working on it.")
+    #flash("Warning: this page won't submit anything to the database yet. We're working on it.")
     form = AddRouteForm()
     if form.validate_on_submit():
         if(form.date.data < date.today()):
