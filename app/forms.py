@@ -49,9 +49,10 @@ class ProfileSettings(FlaskForm):
 
 # TODO(Sam): Figure out how to do this with text areas for music settings
 class MusicSettings(FlaskForm):
-    liked_genres = StringField('Liked Genres')
-    disliked_genres = StringField('Disliked Genres')
-    submit = SubmitField("Update Music")
+    liked_genre = StringField('Liked Genre')
+    disliked_genre = StringField('Disliked Genre')
+    submit_liked = SubmitField("Add")
+    submit_disliked = SubmitField("Add")
 
 
 class CarSettings(FlaskForm):

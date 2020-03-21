@@ -82,18 +82,20 @@
                         <p>Add liked genre:</p>
                     </div>
                     <div class="column is-5">
-                        <input type="text" class="input" placeholder="Genre">
+                        {{ form_music.liked_genre(type="text", class="input", placeholder="Liked genre") }}
                     </div>
                     <div class="column is-1">
-                        <button class="button is-primary">
-                            Add
-                        </button>
+                        {{ form_music.submit_liked(class="button is-primary") }}
                     </div>
                 </div>
 
                 <div class="columns">
                     <div class="column is-6 is-offset-2">
-                        <textarea class="textarea is-success" placeholder="Liked genres" disabled></textarea>
+                        <textarea class="textarea is-success" placeholder="Liked genres" disabled>
+                            {% for genre in current_user.musicpref %}
+                                {{ genre }}
+                            {% endfor %}
+                        </textarea>
                     </div>
                 </div>
 
@@ -102,23 +104,21 @@
                         <p>Add disliked genre:</p>
                     </div>
                     <div class="column is-5">
-                        <input type="text" class="input" placeholder="Genre">
+                        {{ form_music.disliked_genre(type="text", class="input", placeholder="Disliked genre") }}
                     </div>
                     <div class="column is-1">
-                        <button class="button is-primary">
-                            Add
-                        </button>
+                        {{ form_music.submit_disliked(class="button is-primary") }}
                     </div>
                 </div>
 
                 <div class="columns">
                     <div class="column is-6 is-offset-2">
-                        <textarea class="textarea is-danger" placeholder="Disliked genres" disabled></textarea>
+                        <textarea class="textarea is-danger" placeholder="Disliked genres" disabled>
+                            {% for genre in current_user.musicpref %}
+                                {{ genre }}
+                            {% endfor %}
+                        </textarea>
                     </div>
-                </div>
-
-                <div class="buttons">
-                    {{ form_music.submit(class="button is-primary") }}
                 </div>
 
             </form>
