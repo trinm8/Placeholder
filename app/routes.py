@@ -86,31 +86,51 @@ def user_page(username):
 def account_settings():
     # flash("Warning: this page won't submit anything to the database yet. We're working on it.")
 
-    form_profile = ProfileSettings()
-    if form_profile.validate() and form_profile.submit.data:
-        user = User.query.filter_by(id=current_user.get_id()).first()
-        user.firstname = form_profile.firstname.data
-        user.lastname = form_profile.lastname.data
-        user.email = form_profile.email.data
-        if len(form_profile.password.data) > 0:
-            user.set_password(form_profile.password.data)
-        db.session.commit()
+    form = Settings()
 
-    form_music = MusicSettings()
-    if form_music.validate():
-        # TODO(Sam): Flask doet moeilijk bij meerdere forms => fix 1 enkele for voor settings
-        pass
+    if form.validate_on_submit():
 
-    form_car = CarSettings()
-    if form_car.validate() and form_car.submit.data:
-        user = User.query.filter_by(id=current_user.get_id()).first()
-        user.car_color = form_car.color
-        user.car_brand = form_car.brand
-        user.car_plate = form_car.plate
-        db.session.commit()
+        usr = User.query.filter_by(id=current_user.get_id()).first()
 
-    return render_template('settings.html', title='Account Settings', form_profile=form_profile, form_music=form_music,
-                           form_car=form_car)
+        # Profile settings
+        if form.submit_profile.data:
+            usr.firstname = form.firstname.data
+            usr.lastname = form.lastname.data
+            usr.email = form.email.data
+            if len(form.password.data) > 0:
+                usr.set_password(form.password.data)
+            db.session.commit()
+
+            flash("Profile settings updated!")
+
+        # Add liked genre
+        if form.submit_liked.data:
+            if len(form.liked_genre.data) > 0:
+                pref = MusicPref(user=usr.id, genre=form.liked_genre.data, likes=True)
+                db.session.add(pref)
+                db.session.commit()
+
+                flash("Liked genre added!")
+
+        # Add disliked genre
+        if form.submit_disliked.data:
+            if len(form.disliked_genre.data) > 0:
+                pref = MusicPref(user=usr.id, genre=form.disliked_genre.data, likes=False)
+                db.session.add(pref)
+                db.session.commit()
+
+                flash("Disliked genre added!")
+
+        # Car settings
+        if form.submit_car.data:
+            usr.car_color = form.color.data
+            usr.car_brand = form.brand.data
+            usr.car_plate = form.plate.data
+            db.session.commit()
+
+            flash("Car settings updated!")
+
+    return render_template('settings.html', title='Account Settings', form=form)
 
 
 def createRoute(form):
