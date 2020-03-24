@@ -9,17 +9,18 @@
         </div>
     </section>
 
-    <section class="section">
-        <div class="container box">
-            <form action="" method="post" novalidate>
-                {{ form_profile.hidden_tag() }}
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <section class="section">
+            <div class="container box">
+
                 <p class="subtitle">Edit profile</p>
                 <div class="columns">
                     <div class="column is-2">
                         <p>First name:</p>
                     </div>
                     <div class="column is-5">
-                        {{ form_profile.firstname(type="text", class="input", placeholder="First name", value=current_user.firstname) }}
+                        {{ form.firstname(type="text", class="input", placeholder="First name", value=current_user.firstname) }}
                     </div>
                 </div>
 
@@ -28,7 +29,7 @@
                         <p>Last name:</p>
                     </div>
                     <div class="column is-5">
-                        {{ form_profile.lastname(type="text", class="input", placeholder="Last name", value=current_user.lastname) }}
+                        {{ form.lastname(type="text", class="input", placeholder="Last name", value=current_user.lastname) }}
                     </div>
                 </div>
 
@@ -39,7 +40,7 @@
                     <div class="column is-5">
                         <div class="field">
                             <p class="control has-icons-left has-icons-right">
-                                {{ form_profile.email(type="text", class="input", placeholder="Email", value=current_user.email) }}
+                                {{ form.email(type="text", class="input", placeholder="Email", value=current_user.email) }}
                                 <span class="icon is-small is-left">
                                      <i class="fas fa-envelope"></i>
                                 </span>
@@ -55,7 +56,7 @@
                     <div class="column is-5">
                         <div class="field">
                             <p class="control has-icons-left has-icons-right">
-                                {{ form_profile.password(type="password", class="input", placeholder="New password") }}
+                                {{ form.password(type="password", class="input", placeholder="New password") }}
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-lock"></i>
                                 </span>
@@ -65,16 +66,16 @@
                 </div>
 
                 <div class="buttons">
-                    {{ form_profile.submit(class="button is-primary") }}
+                    {{ form.submit_profile(class="button is-primary") }}
                 </div>
 
-            </form>
-        </div>
-    </section>
 
-    <section class="section">
-        <div class="container box">
-            <form action="" method="post" novalidate>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container box">
+
                 <p class="subtitle">Music Settings</p>
 
                 <div class="columns">
@@ -82,18 +83,25 @@
                         <p>Add liked genre:</p>
                     </div>
                     <div class="column is-5">
-                        <input type="text" class="input" placeholder="Genre">
+                        {{ form.liked_genre(type="text", class="input", placeholder="Liked genre") }}
                     </div>
                     <div class="column is-1">
-                        <button class="button is-primary">
-                            Add
-                        </button>
+                        {{ form.submit_liked(class="button is-primary") }}
                     </div>
                 </div>
 
                 <div class="columns">
                     <div class="column is-6 is-offset-2">
-                        <textarea class="textarea is-success" placeholder="Liked genres" disabled></textarea>
+                        <div class="block">
+                            {% for genre in current_user.musicpref %}
+                                {% if genre.likes %}
+                                    <span class="tag is-success is-large">
+                                        {{ genre.genre }}
+                                        <button class="delete"></button>
+                                    </span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
 
@@ -102,32 +110,35 @@
                         <p>Add disliked genre:</p>
                     </div>
                     <div class="column is-5">
-                        <input type="text" class="input" placeholder="Genre">
+                        {{ form.disliked_genre(type="text", class="input", placeholder="Disliked genre") }}
                     </div>
                     <div class="column is-1">
-                        <button class="button is-primary">
-                            Add
-                        </button>
+                        {{ form.submit_disliked(class="button is-primary") }}
                     </div>
                 </div>
 
                 <div class="columns">
                     <div class="column is-6 is-offset-2">
-                        <textarea class="textarea is-danger" placeholder="Disliked genres" disabled></textarea>
+                        <div class="block">
+                            {% for genre in current_user.musicpref %}
+                                {% if not genre.likes %}
+                                    <span class="tag is-large is-danger">
+                                        {{ genre.genre }}
+                                        <button class="delete"></button>
+                                    </span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
 
-                <div class="buttons">
-                    {{ form_music.submit(class="button is-primary") }}
-                </div>
 
-            </form>
-        </div>
-    </section>
+            </div>
+        </section>
 
-    <section class="section">
-        <div class="container box">
-            <form action="" method="post" novalidate>
+        <section class="section">
+            <div class="container box">
+
                 <p class="subtitle">Car Settings</p>
 
                 <div class="columns">
@@ -135,7 +146,7 @@
                         <p>Color:</p>
                     </div>
                     <div class="column is-5">
-                        {{ form_car.color(type="input", class="input", placeholder="Color", value=current_user.car_color) }}
+                        {{ form.color(type="input", class="input", placeholder="Color", value=current_user.car_color) }}
                     </div>
                 </div>
 
@@ -144,7 +155,7 @@
                         <p>Brand:</p>
                     </div>
                     <div class="column is-5">
-                        {{ form_car.brand(type="input", class="input", placeholder="Brand", value=current_user.car_brand) }}
+                        {{ form.brand(type="input", class="input", placeholder="Brand", value=current_user.car_brand) }}
                     </div>
                 </div>
 
@@ -153,15 +164,16 @@
                         <p>License plate:</p>
                     </div>
                     <div class="column is-5">
-                        {{ form_car.plate(type="input", class="input", placeholder="1-aaa-000", value=current_user.car_plate) }}
+                        {{ form.plate(type="input", class="input", placeholder="1-aaa-000", value=current_user.car_plate) }}
                     </div>
                 </div>
 
                 <div class="buttons">
-                    {{ form_car.submit(class="button is-primary") }}
+                    {{ form.submit_car(class="button is-primary") }}
                 </div>
 
-            </form>
-        </div>
-    </section>
+
+            </div>
+        </section>
+    </form>
 {% endblock %}

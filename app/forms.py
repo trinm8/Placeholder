@@ -39,26 +39,25 @@ class ResetPasswordForm(FlaskForm):
     submit = SubmitField('Update Password')
 
 
-class ProfileSettings(FlaskForm):
+class Settings(FlaskForm):
+    # Profile settings
     firstname = StringField('First name', validators=[DataRequired()])
     lastname = StringField('Last name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired()])
     password = PasswordField('Password')
-    submit = SubmitField("Update Profile")
+    submit_profile = SubmitField("Update Profile")
 
+    # Music settings
+    liked_genre = StringField('Liked Genre')
+    disliked_genre = StringField('Disliked Genre')
+    submit_liked = SubmitField("Add")
+    submit_disliked = SubmitField("Add")
 
-# TODO(Sam): Figure out how to do this with text areas for music settings
-class MusicSettings(FlaskForm):
-    liked_genres = StringField('Liked Genres')
-    disliked_genres = StringField('Disliked Genres')
-    submit = SubmitField("Update Music")
-
-
-class CarSettings(FlaskForm):
+    # Car settings
     color = StringField('Color', validators=[DataRequired()])
     brand = StringField('Brand', validators=[DataRequired()])
     plate = StringField('License plate', validators=[DataRequired()])
-    submit = SubmitField("Update Car")
+    submit_car = SubmitField("Update Car")
 
 
 class AddRouteForm(FlaskForm):
@@ -67,3 +66,7 @@ class AddRouteForm(FlaskForm):
     destination = StringField('destination')
     date = DateField('date', format='%m/%d/%Y')
     submit = SubmitField('Confirm')
+
+class RequestForm(FlaskForm):
+    accept = SubmitField('Accept')
+    reject = SubmitField('Reject')

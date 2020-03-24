@@ -5,10 +5,13 @@ from flask_login import UserMixin
 from hashlib import md5
 import jwt
 from time import time
+import enum
+
 
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -18,6 +21,9 @@ class User(UserMixin, db.Model):
     # age = db.Column(db.Integer)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+
+    # Music preferences
+    musicpref = db.relationship('MusicPref')
 
     # Car properties
     car_color = db.Column(db.String(64), index=True)
@@ -66,3 +72,21 @@ class Route(db.Model):
     def __repr__(self):
         return '<Route from {}, {} to {}, {}>'.format(self.departure_location_lat, self.departure_location_long,
                                                       self.arrival_location_lat, self.arrival_location_long)
+class RequestStatus(enum.Enum):
+    pending = 1
+    accepted = 2
+    rejected = 3
+
+class RouteRequest(db.Model):
+    route_id = db.Column(db.Integer, db.ForeignKey('route.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    status = db.Column(db.Enum(RequestStatus))
+
+class MusicPref(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.Integer, db.ForeignKey('user.id'))
+    genre = db.Column(db.String(64))
+    likes = db.Column(db.Boolean)
+
+    def __repr__(self):
+        return '<User {} {} genre {}'.format(self.user, 'likes' if self.likes else 'dislikes', self.genre)

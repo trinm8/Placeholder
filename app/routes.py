@@ -3,7 +3,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
 from app.email import send_password_reset_email
 from app.forms import *
-from app.models import User, Route
+from app.models import *
 from werkzeug.urls import url_parse
 from random import uniform
 from datetime import *
@@ -18,13 +18,15 @@ def reset_password_request():
         user = User.query.filter_by(username=form.username.data).first()
         if user:
             send_password_reset_email(user, form.email.data)
-            flash("Check your email for the instructions to reset your password. Check your junk mail too when you didn't receive anything")
+            flash(
+                "Check your email for the instructions to reset your password. Check your junk mail too when you didn't receive anything")
             return redirect(url_for('login'))
         else:
             flash('No user found with the given name.')
             return redirect(url_for('reset_password_request'))
     return render_template('forgot_password.html',
                            title='Reset Password', form=form)
+
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
@@ -82,38 +84,59 @@ def user_page(username):
 @app.route('/account/settings', methods=['GET', 'POST'])
 @login_required
 def account_settings():
-    flash("Warning: this page won't submit anything to the database yet. We're working on it.")
+    # flash("Warning: this page won't submit anything to the database yet. We're working on it.")
 
-    form_profile = ProfileSettings()
-    if form_profile.validate_on_submit():
-        user = User.query.filter_by(id=current_user.get_id()).first()
-        user.firstname = form_profile.firstname.data
-        user.lastname = form_profile.lastname.data
-        user.email = form_profile.email.data
-        if len(form_profile.password.data) > 0:
-            user.set_password(form_profile.password.data)
-        db.session.commit()
+    form = Settings()
 
-    form_music = MusicSettings()
-    if form_music.validate_on_submit():
-        user = User.query.filter_by(id=current_user.get_id()).first()
-        # TODO(Sam): etc...
+    if form.validate_on_submit():
 
-    form_car = CarSettings()
-    if form_car.validate_on_submit():
-        user = User.query.filter_by(id=current_user.get_id()).first()
-        user.car_color = form_car.color
-        user.car_brand = form_car.brand
-        user.car_plate = form_car.plate
-        db.session.commit()
+        usr = User.query.filter_by(id=current_user.get_id()).first()
 
-    return render_template('settings.html', title='Account Settings', form_profile=form_profile, form_music=form_music,
-                           form_car=form_car)
+        # Profile settings
+        if form.submit_profile.data:
+            usr.firstname = form.firstname.data
+            usr.lastname = form.lastname.data
+            usr.email = form.email.data
+            if len(form.password.data) > 0:
+                usr.set_password(form.password.data)
+            db.session.commit()
+
+            flash("Profile settings updated!")
+
+        # Add liked genre
+        if form.submit_liked.data:
+            if len(form.liked_genre.data) > 0:
+                pref = MusicPref(user=usr.id, genre=form.liked_genre.data, likes=True)
+                db.session.add(pref)
+                db.session.commit()
+
+                flash("Liked genre added!")
+
+        # Add disliked genre
+        if form.submit_disliked.data:
+            if len(form.disliked_genre.data) > 0:
+                pref = MusicPref(user=usr.id, genre=form.disliked_genre.data, likes=False)
+                db.session.add(pref)
+                db.session.commit()
+
+                flash("Disliked genre added!")
+
+        # Car settings
+        if form.submit_car.data:
+            usr.car_color = form.color.data
+            usr.car_brand = form.brand.data
+            usr.car_plate = form.plate.data
+            db.session.commit()
+
+            flash("Car settings updated!")
+
+    return render_template('settings.html', title='Account Settings', form=form)
+
 
 def createRoute(form):
     creator = User.query.filter_by(id=current_user.get_id()).first()
     creatorname = creator.username
-    #Driver id is None wanneer de creator geen driver is zodat er later een driver zich kan aanbieden voor de route
+    # Driver id is None wanneer de creator geen driver is zodat er later een driver zich kan aanbieden voor de route
     if form.type.data == 'Driver':
         driverid = creator.id
     else:
@@ -133,14 +156,13 @@ def createRoute(form):
     db.session.commit()
 
 
-
 @app.route('/addroute', methods=['GET', 'POST'])
 @login_required
 def addRoute():
-    #flash("Warning: this page won't submit anything to the database yet. We're working on it.")
+    # flash("Warning: this page won't submit anything to the database yet. We're working on it.")
     form = AddRouteForm()
     if form.validate_on_submit():
-        if(form.date.data < date.today()):
+        if (form.date.data < date.today()):
             flash("Date is invalid")
             return render_template('addRoute.html', title='New Route', form=form)
         createRoute(form)
@@ -237,10 +259,23 @@ def passengerRequests(drive_id):
     return render_template('wip.html', title='W.I.P.')
 
 
-@app.route('/drives/<drive_id>/passenger-requests/<user_id>')
+@app.route('/drives/<drive_id>/passenger-requests/<user_id>', methods=['GET', 'POST'])
 @login_required
 def user(drive_id, user_id):
-    return render_template('wip.html', title='W.I.P.')
+    form = RequestForm()
+    trip = Route.query.filter_by(id=drive_id).first_or_404()
+    user = User.query.filter_by(id=user_id).first_or_404()
+    request = RouteRequest.query.filter_by(drive_id=drive_id, user_id=user_id).first_or_404()
+
+
+    if form.validate_on_submit():
+        if form.accept.data:
+            flash("The route request was successfully accepted. (not yet, I still have to finish this part of the page)")
+        elif form.reject.data:
+            flash("The route request was successfully rejected. (not yet, I still have to finish this part of the page)")
+        return redirect(url_for("index"))
+
+    return render_template('route_request.html', form=form, user=user, trip=trip, title='W.I.P.')
 
 
 @app.route('/drives/search')
