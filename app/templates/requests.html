@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+    <section class="section">
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Status</th>
+                <th>User</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Time</th>
+            </tr>
+            </thead>
+
+            {% for request in requests %}
+                <tr>
+                    <td>{{ request['status'] }}</td>
+                    <td>{{ request['user'] }}</td>
+                    <td>{{ request['from'] }}</td>
+                    <td>{{ request['to'] }}</td>
+                    <td>{{ request['time'] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    </section>
+
+{% endblock %}
