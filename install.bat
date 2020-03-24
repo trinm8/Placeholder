@@ -21,6 +21,7 @@ pip3 install python-dotenv
 pip3 install SQLAlchemy
 pip3 install flask-mail
 pip3 install pyjwt
+pip3 install geopy
 
 echo "FLASK_APP=placeholder.py" > .flaskenv
 
