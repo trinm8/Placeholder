@@ -66,3 +66,7 @@ class AddRouteForm(FlaskForm):
     destination = StringField('destination')
     date = DateField('date', format='%m/%d/%Y')
     submit = SubmitField('Confirm')
+
+class RequestForm(FlaskForm):
+    accept = SubmitField('Accept')
+    reject = SubmitField('Reject')

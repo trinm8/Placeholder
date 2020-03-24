@@ -5,6 +5,7 @@ from flask_login import UserMixin
 from hashlib import md5
 import jwt
 from time import time
+import enum
 
 
 @login.user_loader
@@ -71,7 +72,15 @@ class Route(db.Model):
     def __repr__(self):
         return '<Route from {}, {} to {}, {}>'.format(self.departure_location_lat, self.departure_location_long,
                                                       self.arrival_location_lat, self.arrival_location_long)
+class RequestStatus(enum.Enum):
+    pending = 1
+    accepted = 2
+    rejected = 3
 
+class RouteRequest(db.Model):
+    route_id = db.Column(db.Integer, db.ForeignKey('route.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    status = db.Column(db.Enum(RequestStatus))
 
 class MusicPref(db.Model):
     id = db.Column(db.Integer, primary_key=True)

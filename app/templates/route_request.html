@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% import "map.html" as map %}
+{% import "datepicker.html" as dtpick %}
+
+{% block imports %}
+    {{ map.imports() }}
+    {{ dtpick.imports() }}
+{% endblock %}
+
+
+{% block styles %}
+    #mapid {
+    height: 100%;
+    }
+{% endblock %}
+
+{% block body %}
+    <section class="section">
+        <div class="columns">
+            <div class="column">
+                {{ map.map() }}
+            </div>
+            <form class="column" action="" method="POST" novalidate>
+                <div class="tile is-vertical">
+                        {{ form.hidden_tag() }}
+                    <h1 class="title">John wants to ride with you!</h1>
+                    <div class="columns">
+                    <div class="column">
+                    <h2 class="subtitle">Trip information</h2>
+                    <p> From: Here</p>
+                    <p> To: There </p>
+                    <p> Time: 8:00 </p>
+                    <p> 1 january 1970</p>
+                        </div>
+                <div class="column">
+                    <h2 class="subtitle">User information</h2>
+                    <figure class="image is-128x128">
+                            <img class="is-rounded" src="{{ user.avatar(128) }}">
+                        </figure><br>
+                        <p> Name: John Doe </p>
+                        <p> email: john.doe@gmail.com </p>
+                            </div>
+                        </div><br><br>
+                    <div class="buttons">
+                        {{ form.accept(class="button is-success") }}
+                        {{ form.reject(class="button is-danger") }}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock %}

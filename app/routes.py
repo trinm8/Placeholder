@@ -3,7 +3,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
 from app.email import send_password_reset_email
 from app.forms import *
-from app.models import User, Route, MusicPref
+from app.models import *
 from werkzeug.urls import url_parse
 from random import uniform
 from datetime import *
@@ -258,10 +258,23 @@ def passengerRequests(drive_id):
     return render_template('wip.html', title='W.I.P.')
 
 
-@app.route('/drives/<drive_id>/passenger-requests/<user_id>')
+@app.route('/drives/<drive_id>/passenger-requests/<user_id>', methods=['GET', 'POST'])
 @login_required
 def user(drive_id, user_id):
-    return render_template('wip.html', title='W.I.P.')
+    form = RequestForm()
+    trip = Route.query.filter_by(id=drive_id).first_or_404()
+    user = User.query.filter_by(id=user_id).first_or_404()
+    request = RouteRequest.query.filter_by(drive_id=drive_id, user_id=user_id).first_or_404()
+
+
+    if form.validate_on_submit():
+        if form.accept.data:
+            flash("The route request was successfully accepted. (not yet, I still have to finish this part of the page)")
+        elif form.reject.data:
+            flash("The route request was successfully rejected. (not yet, I still have to finish this part of the page)")
+        return redirect(url_for("index"))
+
+    return render_template('route_request.html', form=form, user=user, trip=trip, title='W.I.P.')
 
 
 @app.route('/drives/search')
