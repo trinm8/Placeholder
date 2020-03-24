@@ -171,6 +171,26 @@ def addRoute():
     return render_template('addRoute.html', title='New Route', form=form)
 
 
+@app.route('/requests', methods=['GET'])
+@login_required
+def getRequests():
+
+    request_query = RouteRequest.query.filter_by(user_id=current_user.get_id())
+    requests = []
+    for r in request_query:
+        route = Route.query.filter_by(id=r.route_id)
+        request = {
+            'status': r.status,
+            'user': 'John',
+            'from': 'Somewhere',
+            'to': 'Elsewhere',
+            'time': route.departure_time
+        }
+        requests.append(request)
+
+    return render_template('requests.html', title='Requests', requests=requests)
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
