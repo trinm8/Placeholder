@@ -7,6 +7,7 @@ from app.models import User, Route
 from werkzeug.urls import url_parse
 from random import uniform
 from datetime import *
+from geopy import Nominatim
 
 @app.route('/forgot_password', methods=['GET', 'POST'])
 def reset_password_request():
@@ -117,16 +118,17 @@ def createRoute(form):
         driverid = creator.id
     else:
         driverid = None
-    departure_location_lat = uniform(49.536612, 51.464020)
-    departure_location_long = uniform(2.634966, 6.115877)
-    arrival_location_lat = uniform(49.536612, 51.464020)
-    arrival_location_long = uniform(2.634966, 6.115877)
+    geolocator = Nominatim(user_agent="[PlaceHolder]")
+    departurelocation = geolocator.geocode(form.start.data)
+    arrivallocation = geolocator.geocode(form.destination.data)
+    #departure_location_lat = uniform(49.536612, 51.464020)
+    #departure_location_long = uniform(2.634966, 6.115877)
+    #arrival_location_lat = uniform(49.536612, 51.464020)
+    #arrival_location_long = uniform(2.634966, 6.115877)
     d = form.date.data
-    #d = d.split('/')
-    #d = date(d[2], d[1], d[2])
-    route = Route(creator=creatorname, departure_location_lat=departure_location_lat,
-                             departure_location_long=departure_location_long, arrival_location_lat=arrival_location_lat,
-                             arrival_location_long=arrival_location_long, driver_id=driverid, departure_time=d)
+    route = Route(creator=creatorname, departure_location_lat=departurelocation.latitude,
+                             departure_location_long=departurelocation.longitude, arrival_location_lat=arrivallocation.latitude,
+                             arrival_location_long=arrivallocation.longitude, driver_id=driverid, departure_time=d)
     db.session.add(route)
     db.session.commit()
 

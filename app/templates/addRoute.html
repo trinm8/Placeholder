@@ -47,7 +47,7 @@
                                 <label class="label">Start:</label>
                             </div>
                             <div class="field-body">
-                                {{ form.start(class='input', type='text') }}
+                                {{ form.start(class='input', type='text', onchange='addmarker("start")') }}
                             </div>
                         </div>
                         <div class="field is-horizontal">
@@ -55,7 +55,7 @@
                                 <label class="label">Destination:</label>
                             </div>
                             <div class="field-body">
-                                {{ form.destination(class='input', type='text') }}
+                                {{ form.destination(class='input', type='text', onchange='addmarker("destination")') }}
                             </div>
                         </div>
                         <br>
