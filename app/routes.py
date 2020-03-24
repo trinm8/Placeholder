@@ -258,21 +258,40 @@ def drivePassengers(drive_id):
 def passengerRequests(drive_id):
     return render_template('wip.html', title='W.I.P.')
 
+@app.route('/drives/<drive_id>/request')
+@login_required
+def request_drive(drive_id):
+    request = RouteRequest(route_id=drive_id, user_id=current_user.id)
+    db.session.add(request)
+    db.session.commit()
+    flash("Request has been made")
+    return redirect(url_for("index"))
+
 
 @app.route('/drives/<drive_id>/passenger-requests/<user_id>', methods=['GET', 'POST'])
 @login_required
-def user(drive_id, user_id):
+def passenger_request(drive_id, user_id):
     form = RequestForm()
     trip = Route.query.filter_by(id=drive_id).first_or_404()
     user = User.query.filter_by(id=user_id).first_or_404()
-    request = RouteRequest.query.filter_by(drive_id=drive_id, user_id=user_id).first_or_404()
+    request = RouteRequest.query.filter_by(route_id=drive_id, user_id=user_id).first_or_404()
 
+    if request.status == RequestStatus.accepted:
+        flash("This route request has already been accepted")
+        return redirect(url_for("index"))
+    if request.status == RequestStatus.rejected:
+        flash("This route request has already been rejected")
+        return redirect(url_for("index"))
 
     if form.validate_on_submit():
         if form.accept.data:
-            flash("The route request was successfully accepted. (not yet, I still have to finish this part of the page)")
+            request.status = RequestStatus.accepted
+            db.session.commit()
+            flash("The route request was successfully accepted.")
         elif form.reject.data:
-            flash("The route request was successfully rejected. (not yet, I still have to finish this part of the page)")
+            request.status = RequestStatus.rejected
+            db.session.commit()
+            flash("The route request was successfully rejected.")
         return redirect(url_for("index"))
 
     return render_template('route_request.html', form=form, user=user, trip=trip, title='W.I.P.')

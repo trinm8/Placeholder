@@ -27,18 +27,17 @@
                     <div class="columns">
                     <div class="column">
                     <h2 class="subtitle">Trip information</h2>
-                    <p> From: Here</p>
-                    <p> To: There </p>
-                    <p> Time: 8:00 </p>
-                    <p> 1 january 1970</p>
+                    <p> From: {{ trip.departure_location_lat }}, {{ trip.departure_location_long }}</p>
+                    <p> To: {{ trip.arrival_location_lat}}, {{ trip.arrival_location_long }} </p>
+                    <p> Time: {{ trip.departure_time }} </p>
                         </div>
                 <div class="column">
                     <h2 class="subtitle">User information</h2>
                     <figure class="image is-128x128">
                             <img class="is-rounded" src="{{ user.avatar(128) }}">
                         </figure><br>
-                        <p> Name: John Doe </p>
-                        <p> email: john.doe@gmail.com </p>
+                        <p> Name: {{ user.firstname }} {{ user.lastname }} </p>
+                        <p> email: {{ user.email }} </p>
                             </div>
                         </div><br><br>
                     <div class="buttons">

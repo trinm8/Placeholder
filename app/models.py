@@ -82,6 +82,9 @@ class RouteRequest(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     status = db.Column(db.Enum(RequestStatus))
 
+    def __init__(self):
+        self.status = RequestStatus.pending
+
 class MusicPref(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user = db.Column(db.Integer, db.ForeignKey('user.id'))
