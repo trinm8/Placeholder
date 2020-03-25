@@ -136,10 +136,33 @@
                         Login
                     </a>
                     {% else %}
+                    <a class="navbar-item" href="{{ url_for('getRequests') }}">
+                        <span>Notifications</span>
+                        <span class="icon">
+                            <i class="far fa-bell"></i>
+                        </span>
+                    </a>
+
+                   <!--div class="navbar-item has-dropdown is-hoverable">
+                       <a class="navbar-item" href="{{ url_for('getRequests') }}">
+                           <span>Notifications</span>
+                        <span class="icon">
+                            <i class="far fa-bell"></i>
+                        </span>
+                       </a>
+                       {% for notification in current_user.notifications %}
+                       <div class="navbar-dropdown is-boxed">
+                           <a class="navbar-item">
+                               {{ notification }}
+                           </a>
+                       </div>
+                       {% endfor %}
+                   </div-->
+
                     <a class="navbar-item" href="{{ url_for('account_settings') }}">
                         Settings
                     </a>
-                    <a class="navbar-item" href="{{ url_for('account') }}">
+                    <a class="navbar-item" href="{{ url_for('user_page', username=current_user.username) }}">
                         {{ current_user.firstname }} {{ current_user.lastname }}
                         <img hspace="10" src="{{ current_user.avatar(128) }}">
                     </a>

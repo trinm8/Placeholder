@@ -45,18 +45,22 @@
       <table class="table">
             <tbody>
             <tr>
-                <td>Do like these styles:</td>
+                <td>Liked genre(s):</td>
                 <td>
-                    {% for goodmusic in user.goodmusic %}
-                        {{ goodmusic }}
+                    {% for genre in current_user.musicpref %}
+                        {% if genre.likes %}
+                            {{ genre.genre }}
+                        {% endif %}
                     {% endfor %}
                 </td>
             </tr>
             <tr>
-                <td>Don't like these styles:</td>
+                <td>Disliked genre(s):</td>
                 <td>
-                    {% for badmusic in user.badmusic %}
-                        {{ badmusic }}
+                    {% for genre in current_user.musicpref %}
+                        {% if not genre.likes %}
+                            {{ genre.genre }}
+                        {% endif %}
                     {% endfor %}
                 </td>
             </tr>
@@ -67,26 +71,22 @@
   <div class="tile is-parent">
     <div class="tile is-child box">
       <p class="title">Car</p>
-      <figure class="image is-250x250">
+      <!--figure class="image is-250x250">
         <img src="https://mediapool.bmwgroup.com/cache/P9/201812/P90333086/P90333086-the-new-bmw-7-series-in-painting-bernina-grey-amber-effect-metallic-with-light-alloy-wheel-styling-7-2248px.jpg">
-      </figure>
+      </figure-->
       <table class="table">
             <tbody>
             <tr>
                 <td>Brand:</td>
-                <td><< current_car.brand >></td>
+                <td>{{ user.car_brand }}</td>
             </tr>
             <tr>
                 <td>Color:</td>
-                <td><< current_car.color >></td>
+                <td>{{ user.car_color }}</td>
             </tr>
             <tr>
                 <td>Licence Plate:</td>
-                <td><< current_car.licenceplate >></td>
-            </tr>
-            <tr>
-                <td>Total number of seats:</td>
-                <td><< current_car.seats >></td>
+                <td>{{ user.car_plate }}</td>
             </tr>
             </tbody>
       </table>

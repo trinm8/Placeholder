@@ -68,10 +68,10 @@ def about():
     return render_template('about.html', title='About')
 
 
-@app.route('/account')
-@login_required
-def account():
-    return render_template('account.html', title='Account')
+# @app.route('/account')
+# @login_required
+# def account():
+#     return render_template('account.html', title='Account')
 
 
 @app.route('/users/<username>')
