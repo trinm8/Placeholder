@@ -9,6 +9,16 @@ from random import uniform
 from datetime import *
 from geopy import Nominatim
 
+@app.route('/lol')
+def lol():
+    counter = Statistics.query.first()
+    if counter is None:
+        counter = Statistics(rickroll_counter=0)
+        db.session.add(counter)
+    counter.rickroll_counter += 1
+    db.session.commit()
+    return redirect("https://www.youtube.com/watch?v=cvh0nX08nRw")
+
 @app.route('/forgot_password', methods=['GET', 'POST'])
 def reset_password_request():
     if current_user.is_authenticated:
@@ -65,7 +75,12 @@ def index():
 
 @app.route('/about')
 def about():
-    return render_template('about.html', title='About')
+    counter = Statistics.query.first()
+    if counter is None:
+        counter = "over 9000"
+    else:
+        counter = counter.rickroll_counter
+    return render_template('about.html', title='About', counter=counter)
 
 
 # @app.route('/account')
