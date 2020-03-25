@@ -1,0 +1,125 @@
+\documentclass{article}
+
+
+\usepackage[urlcolor=blue, linkcolor=black, colorlinks=true]{hyperref}
+\usepackage[dutch]{babel}
+\usepackage{minutes}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\makeatletter
+\addto\extrasdutch{%
+\def\min@textTask{Taak}%
+}
+\makeatother%
+\makeatletter
+\def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+
+
+
+\newcounter{team}
+
+% TODO: Enter team number here:
+\setcounter{team}{6}
+
+
+\begin{document}
+%	\tableofcontents
+
+	\begin{Minutes}{Programming Project Databases \\ Wekelijks Verslag Team \arabic{team}}
+		\moderation{Arno Deceuninck}
+		\minutetaker{Arno Deceuninck}
+		\participant{Arno Deceuninck, Sam Peeters, Sien Nuyens, Tim Sanders}
+		\missingNoExcuse{/}
+		\missingExcused{/}
+%		\guest{\ldots}
+		\minutesdate{25 Maart 2020}
+		\starttime{11u00}
+		\endtime{11u30}
+
+		\maketitle
+
+		\topic{Coordinator Vergadering}
+    		Is doorgegaan via Hangouts. Tim was hier aanwezig.
+    		\begin{itemize}
+    		    \item Niet super veel gezegd
+    		    \item Corona maatregelen besproken -> weinig effect voor ons
+    		    \item Volgend evaluatiemoment een promovideo doen en achteraf een vragenronde met Joey en de prof, dit was echter een voorstel en moet nog officieel bevestigd worden.
+    		    \item Datarequests voor onze api werkten nog niet en is zelfs gecrasht.
+    		    \item Feedback was goed ontvangen
+    		    \item Hoe goed staan we ten opzichte van andere teams? -> niet veel over gezegd
+    		\end{itemize}
+
+		\topic{Status}
+
+			\subtopic{Overzicht Taken}
+				\task*[DONE]{Routes toevoegen}
+				\task*[TODO]{User info uit database}
+				\task*[STATUS]{Music settings uit database}
+			    \task*[WIP]{Request pagina}
+			    \task*[STATUS]{Request overview page}
+
+		\topic{Besproken Onderwerpen}
+				\subtopic{Wie wordt de coordinator vanaf nu?}
+				    De laatste co"ordinatorvergadering is geweest. Vanaf nu is er dus een vaste co"ordinator nodig. Iedereen is akkoord dat dit Arno zal zijn. Tim is wel altijd kandidaat om eens af te wisselen (of in te springen). Hij is dus vice-co"ordinator.
+				\subtopic{Routes toevoegen}
+				    Tim licht dit toe. Je kan al een adres ingeven om de juiste coordinaten te krijgen. Dit gebeurt via NominaTim. Echter krijg je nog een internal server error als dit adres niet bestaat. Tim regelt een vriendelijkere error. Zou een mogelijkheid om het op de map te kunnen aanklikken ook niet handig zijn? Waarschijnlijk wel, dit kan wel wat werk zijn, dus dit heeft allesbehalve een hoge prioriteit. Is het handiger om in de backend te werken met een locatie als string ipv coordinaten? Tim zal een functie voorzien die de coordinaten omzet in een adres. Tim raad iedereen aan om ook met NominaTim te blijven werken. Bovendien zie je nu ook maar 1 van de ingegeven locaties op de map en niet allebei. Blijkbaar werkt dit soms wel. Tim gaat hier nog een kijkje naar nemen, maar dit heeft geen hoge prioriteit. Geopy wordt gebruikt. Dit is een soort van search engine voor adressen en coordinaten. Als je je opgeeft als passenger en achteraf een driver dit toevoegt, dan wordt de driver id leeggelaten, en kan hij zich achteraf nog aanbieden.
+			    \subtopic{Music settings uit database}
+			        Sam licht dit toe. Momenteel kan je er toevoegen, maar bij het verwijderen loopt er nog iets mis. Dit moet hij nog uitzoeken. Eventueel doe je dit met een tussenlink.
+			    \subtopic{User info uit database}
+			        Dit zou in orde gebracht moeten zijn, maar is nog niet gepusht. Momenteel zie ik dus nog geen verandering ten opzichte van vorige week. Ze heeft het ondertussen gepusht. Ze had wel een probleem met het aanpassen van auto settings. Dit zou normaal gefixt moeten zijn. Als je in de navbar op de juiste naam klikt klom je ook op de juiste user page. Dit moet wel nog globaal gemaakt worden.
+			    \subtopic{Request pagina}
+					Momenteel is er een link om requests te maken. Momenteel nog zonder GUI. Moet dit een eigen pagina krijgen of zetten we ineens een knop voor een request in de overzichtspagina met alle routes? Volgens mij is het wel handiger om hiervoor echt een aparte pagina te hebben.
+					Om een request te aanvaarden/weigeren is er wel een eigen pagina. Deze update de status van de aangemaakte requests ook in de database.
+				\subtopic{Notificaties navbar}
+				    Hiervan is ook nog niets gepusht. Notifications gaan momenteel naar de request pagina. Een dropdown menu voor de meest recente notificaties zou wel handig zijn. Er moet nog een getal komen van hoeveel requests je hebt.
+				\subtopic{Request overview page}
+				    De pure basis hiervan is er al. Er is al een tabel en een manier om info erin kon steken. Om dit deftiger te testen moet hij makkelijker requests kunnen toevoegen.
+				\subtopic{Verborgen melding}
+				    Hoe gaan we deze week de naam van de assistent vermelden in het verslag zonder dat hij het doorheeft? Zoek het zelf maar uit Joey ;-)
+		\topic{Afspraken \& Planning}
+			\begin{itemize}
+			    \item Tim gaat de routes nog finetunen. (zie hierboven)
+			    \item Sam gaat de requests overview page grondiger testen.
+			    \item Tim en Arno gaan een kijkje nemen naar de API.
+			    \item Sien regelt nog een dropdown menu voor de notifications.
+			    \item De requests moeten nu ook aangepast kunnen worden samen met de route informatie. Arno doet dit.
+			    \item De main logged in page met een overzicht van al je routes moet nu ook de echte routes weergeven. Sien doet dit.
+			    \item Is het mogelijk om muziekcategorien al automatisch aan te vullen met de meest gekozen categorien ofzo? Sam gaat uitzoeken of dit niet te moeilijk is.
+			    \item Is het mogelijk om het adres automatisch te laten aanvullen? Tim heeft hier online documentatie voor gevonden. Dit moet lukken, maar is geen hoge prioriteit. En een lijntje te trekken tussen de twee punten op de kaart? Tim zal hier ook een kijkje naar nemen, maar dit heeft zeker geen hoge prioriteit.
+			    \item Arno neemt nog een kijkje naar hoe je de random -> wegkrijgt in \LaTeX
+			    \item Een counter voor de Don't Click Here knop. Arno doet dit. De counter komt ergens in het klein op de about page.
+			\end{itemize}
+
+
+		\topic{Varia}
+			\emph{Eventuele varia punten. Hierbij vragen we ook aan alle aanwezigen of zij nog iets te zeggen hebben.}
+				\subtopic{Sien}
+				    Jullie mis ik echt wel, ik hoop dat we snel weer in het echt vergaderingen kunnen         houden.
+				\subtopic{Sam}
+				    Overal zijn mensen binnen aant kassen. En ik zit hier vast in deze meeting. -> Op een ander moment dan best vergaderen? -> Misschien toch beter niet, want mensen spelen vooral savonds.
+				\subtopic{Tim}
+				    Eergisteren heb ik de website al aan meerdere mensen laten zien en ze hebben allemaal op de Don't Click Here gedrukt. We zouden hiervoor een counter moeten bijhouden in de database. Tim is satisfied.
+				\subtopic{Arno}
+				    Yes we can! Vergeet zeker niet de motivatie in deze moeilijke tijden.
+
+
+		\blfootnote{
+			\href{%
+				mailto:joey.depauw@uantwerpen.be%
+				?subject=PPDB 2019-2020: Wekelijks Verslag Team \arabic{team}%
+				&body=Liefste Joey\%0D\%0A%
+				\%0D\%0A%
+				Gelieve ons wekelijks verslag terug te vinden in de bijlage.\%0D\%0A%
+				\%0D\%0A%
+				Groetjes\%0D\%0A%
+				Team \arabic{team}\%0D\%0A%
+			}{Klik hier} om mij op te sturen.
+		}
+
+
+	\end{Minutes}
+\end{document}
