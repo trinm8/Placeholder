@@ -99,7 +99,7 @@ class Route(db.Model):
             self.passenger_places = data["passenger-places"]
         if "arrive-by" in data:
             # src: https://stackoverflow.com/questions/969285/how-do-i-translate-an-iso-8601-datetime-string-into-a-python-datetime-object
-            self.date = dateutil.parser.parse(data["arrive-by"])
+            self.departure_time = dateutil.parser.parse(data["arrive-by"])
 
 
 class RequestStatus(enum.Enum):
