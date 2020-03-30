@@ -271,14 +271,25 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
-@app.route(PREFIX + '/drives/<drive_id>/request')
+@app.route(PREFIX + '/drives/<drive_id>', methods=['GET', 'POST'])
 @login_required
-def request_drive(drive_id):
-    request = RouteRequest(route_id=drive_id, user_id=current_user.id)
-    db.session.add(request)
-    db.session.commit()
-    flash("Request has been made")
-    return redirect(url_for("index"))
+def drive(drive_id):
+    form = SendRequestForm()
+    trip = Route.query.get_or_404(drive_id)
+    user = User.query.get_or_404(trip.driver_id)
+
+    if form.validate_on_submit():
+        request = RouteRequest(route_id=drive_id, user_id=current_user.id)
+        db.session.add(request)
+        db.session.commit()
+        flash("Request has been made")
+        return redirect(url_for("index"))
+
+    if RouteRequest.query.filter_by(route_id=drive_id, user_id=current_user.id).first():
+        flash("You have already requested acces for this route")
+        return redirect(url_for("index"))
+
+    return render_template('request_route.html', form=form, user=user, trip=trip, title='Route Request')
 
 
 @app.route(PREFIX + '/drives/<drive_id>/passenger-requests/<user_id>', methods=['GET', 'POST'])
@@ -307,7 +318,7 @@ def passenger_request(drive_id, user_id):
             flash("The route request was successfully rejected.")
         return redirect(url_for("index"))
 
-    return render_template('route_request.html', form=form, user=user, trip=trip, title='W.I.P.')
+    return render_template('route_request.html', form=form, user=user, trip=trip, title='Route Request')
 
 
 @app.errorhandler(404)

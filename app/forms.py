@@ -70,3 +70,6 @@ class AddRouteForm(FlaskForm):
 class RequestForm(FlaskForm):
     accept = SubmitField('Accept')
     reject = SubmitField('Reject')
+
+class SendRequestForm(FlaskForm):
+    submit = SubmitField('Send Request')
