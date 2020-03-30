@@ -19,7 +19,7 @@
         <section class="section">
             <div class="columns">
                 <div class="column is-2">
-                    {{ card("Add a new trip", link='/addroute') }}
+                    {{ card("Add a new trip", link=url_for("addRoute")) }}
 
                     {% for trip in trips %}
                         {{ card(trip.description, trip.time) }}

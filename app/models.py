@@ -7,7 +7,13 @@ import jwt
 from time import time
 import enum
 import dateutil.parser
+from geopy.geocoders import Nominatim
 
+
+def addr(lat, long):
+    geolocator = Nominatim(user_agent="[PlaceHolder]")
+    location = geolocator.reverse(str(lat) + ", " + str(long))
+    return str(location.address)
 
 @login.user_loader
 def load_user(id):
@@ -100,7 +106,12 @@ class Route(db.Model):
         if "arrive-by" in data:
             # src: https://stackoverflow.com/questions/969285/how-do-i-translate-an-iso-8601-datetime-string-into-a-python-datetime-object
             self.departure_time = dateutil.parser.parse(data["arrive-by"])
-
+            
+    def text_from(self):
+        return addr(self.departure_location_lat, self.departure_location_long)
+    
+    def text_to(self):
+        return addr(self.arrival_location_lat, self.arrival_location_long)
 
 class RequestStatus(enum.Enum):
     pending = 1

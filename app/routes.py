@@ -21,6 +21,7 @@ def lol():
     db.session.commit()
     return redirect("https://www.youtube.com/watch?v=cvh0nX08nRw")
 
+
 @app.route(PREFIX + '/forgot_password', methods=['GET', 'POST'])
 def reset_password_request():
     if current_user.is_authenticated:
@@ -161,14 +162,14 @@ def createRoute(form):
     geolocator = Nominatim(user_agent="[PlaceHolder]")
     departurelocation = geolocator.geocode(form.start.data)
     arrivallocation = geolocator.geocode(form.destination.data)
-    #departure_location_lat = uniform(49.536612, 51.464020)
-    #departure_location_long = uniform(2.634966, 6.115877)
-    #arrival_location_lat = uniform(49.536612, 51.464020)
-    #arrival_location_long = uniform(2.634966, 6.115877)
+    # departure_location_lat = uniform(49.536612, 51.464020)
+    # departure_location_long = uniform(2.634966, 6.115877)
+    # arrival_location_lat = uniform(49.536612, 51.464020)
+    # arrival_location_long = uniform(2.634966, 6.115877)
     d = form.date.data
     route = Route(creator=creatorname, departure_location_lat=departurelocation.latitude,
-                             departure_location_long=departurelocation.longitude, arrival_location_lat=arrivallocation.latitude,
-                             arrival_location_long=arrivallocation.longitude, driver_id=driverid, departure_time=d)
+                  departure_location_long=departurelocation.longitude, arrival_location_lat=arrivallocation.latitude,
+                  arrival_location_long=arrivallocation.longitude, driver_id=driverid, departure_time=d)
     db.session.add(route)
     db.session.commit()
 
@@ -179,6 +180,14 @@ def addRoute():
     # flash("Warning: this page won't submit anything to the database yet. We're working on it.")
     form = AddRouteForm()
     if form.validate_on_submit():
+
+        if form.type.data == 'Passenger':
+            geolocator = Nominatim(user_agent="[PlaceHolder]")
+            departure_location = geolocator.geocode(form.start.data)
+            arrival_location = geolocator.geocode(form.destination.data)
+            return redirect(url_for("overview", lat_from=departure_location.latitude, long_from=departure_location.longitude,
+                             lat_to=arrival_location.latitude, long_to=arrival_location.longitude))
+
         if (form.date.data < date.today()):
             flash("Date is invalid")
             return render_template('addRoute.html', title='New Route', form=form)
@@ -191,7 +200,6 @@ def addRoute():
 @app.route(PREFIX + '/requests', methods=['GET'])
 @login_required
 def getRequests():
-
     request_query = RouteRequest.query.filter_by(user_id=current_user.get_id())
     requests = []
     for r in request_query:
@@ -271,6 +279,7 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
+
 @app.route(PREFIX + '/drives/<drive_id>', methods=['GET', 'POST'])
 @login_required
 def drive(drive_id):
@@ -291,7 +300,8 @@ def drive(drive_id):
             flash("Request has been made")
         return redirect(url_for("index"))
 
-    return render_template('request_route.html', form=form, user=user, trip=trip, requested=requested, title='Route Request')
+    return render_template('request_route.html', form=form, user=user, trip=trip, requested=requested,
+                           title='Route Request')
 
 
 @app.route(PREFIX + '/drives/<drive_id>/passenger-requests/<user_id>', methods=['GET', 'POST'])
@@ -321,6 +331,20 @@ def passenger_request(drive_id, user_id):
         return redirect(url_for("index"))
 
     return render_template('route_request.html', form=form, user=user, trip=trip, title='Route Request')
+
+
+@app.route(PREFIX + "/overview", methods=["GET"])
+def overview():
+    lat_from = request.args.get('lat_from')
+    long_from = request.args.get('long_from')
+    lat_to = request.args.get('lat_to')
+    long_to = request.args.get('long_to')
+    routes = Route.query\
+        .filter((lat_from - Route.departure_location_lat)*(lat_from - Route.departure_location_lat) > -10)\
+        .filter((long_from - Route.departure_location_long)*(long_from - Route.departure_location_long) > -10)\
+        .filter((lat_to - Route.arrival_location_lat)*(lat_to - Route.arrival_location_lat) > -10)\
+        .filter((long_to - Route.arrival_location_long)*(long_to - Route.arrival_location_long) > -10)
+    return render_template('route_overview.html', routes=routes, title="Search", src=addr(lat_from, long_from), dest=addr(lat_to, long_to))
 
 
 @app.errorhandler(404)

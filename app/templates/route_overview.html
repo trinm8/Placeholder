@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <!--<section class="section">-->
+    <div id="div">
+        <section class="section">
+            <h1 class="title">Search results</h1>
+            <h2 class="subtitle">Departure near {{ src }}</h2>
+            <h2 class="subtitle">Arrive near {{ dest }}</h2>
+            {% for route in routes %}
+                <div class="card">
+                    <a href="{{ url_for('drive', drive_id=route.id) }}">
+                        <div class="card-content">
+                            <strong>FROM:</strong> {{ route.text_from() }}<br>
+                            <strong>TO:</strong> {{ route.text_to() }}<br>
+                            <strong>TIME:</strong> {{ route.departure_time.isoformat() }}
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </section>
+    </div>
+{% endblock %}
