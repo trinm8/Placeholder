@@ -1,11 +1,13 @@
 from app import db, login, app
-from datetime import datetime
+from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from hashlib import md5
 import jwt
 from time import time
 import enum
+import base64
+import os
 import dateutil.parser
 from geopy.geocoders import Nominatim
 
@@ -41,6 +43,10 @@ class User(UserMixin, db.Model):
     car_brand = db.Column(db.String(64), index=True)
     car_plate = db.Column(db.String(32), index=True, unique=True)
 
+    # Authentication tokens
+    token = db.Column(db.String(32), index=True, unique=True)
+    token_expiration = db.Column(db.DateTime)
+
     def __repr__(self):
         return '<User {} {}>'.format(self.name, self.lastname)
 
@@ -69,6 +75,24 @@ class User(UserMixin, db.Model):
             return
         return User.query.get(id)
 
+    def get_token(self, expires=3600):
+        now = datetime.now()
+        if self.token is not None and self.token_expiration > now + timedelta(seconds=60):
+            return self.token
+        self.token = base64.b32encode(os.urandom(24)).decode('utf-8')
+        self.token_expiration = now + timedelta(seconds=expires)
+        db.session.add(self)
+        return self.token
+
+    def revoke_token(self):
+        self.token_expiration = datetime.now() - timedelta(seconds=1)
+
+    @staticmethod
+    def check_token(token):
+        user = User.query.filter_by(token=token).first()
+        if user is None or user.token_expiration < datetime.utcnow():
+            return None
+        return user
 
 class Route(db.Model):
     id = db.Column(db.Integer, primary_key=True)

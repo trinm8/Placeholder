@@ -241,7 +241,7 @@ def logout():
     return redirect(url_for('index'))
 
 
-def register_user(username: str, firstname: str, lastname: str, password: str) -> int:
+def register_user_func(username: str, firstname: str, lastname: str, password: str) -> int:
     # TODO: prevent duplicate code
     user = User.query.filter_by(username=username).first()
     if user is not None:
@@ -262,7 +262,7 @@ def register_api():
     lastname = request.json.get('lastname')
     password = request.json.get('password')
 
-    id = register_user(username, firstname, lastname, password)
+    id = register_user_func(username, firstname, lastname, password)
 
     return {'id': str(id)}
 
@@ -273,8 +273,8 @@ def register():
         return redirect(url_for('index'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        register_user(username=form.username.data, firstname=form.firstname.data, lastname=form.lastname.data,
-                      password=form.password.data)
+        register_user_func(username=form.username.data, firstname=form.firstname.data, lastname=form.lastname.data,
+                           password=form.password.data)
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
