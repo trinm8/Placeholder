@@ -277,19 +277,21 @@ def drive(drive_id):
     form = SendRequestForm()
     trip = Route.query.get_or_404(drive_id)
     user = User.query.get_or_404(trip.driver_id)
+    requested = bool(RouteRequest.query.filter_by(route_id=drive_id, user_id=current_user.id).first())
 
     if form.validate_on_submit():
-        request = RouteRequest(route_id=drive_id, user_id=current_user.id)
-        db.session.add(request)
-        db.session.commit()
-        flash("Request has been made")
+        if requested:
+            RouteRequest.query.filter_by(route_id=drive_id, user_id=current_user.id).delete()
+            db.session.commit()
+            flash("Request has been cancelled")
+        else:
+            request = RouteRequest(route_id=drive_id, user_id=current_user.id)
+            db.session.add(request)
+            db.session.commit()
+            flash("Request has been made")
         return redirect(url_for("index"))
 
-    if RouteRequest.query.filter_by(route_id=drive_id, user_id=current_user.id).first():
-        flash("You have already requested acces for this route")
-        return redirect(url_for("index"))
-
-    return render_template('request_route.html', form=form, user=user, trip=trip, title='Route Request')
+    return render_template('request_route.html', form=form, user=user, trip=trip, requested=requested, title='Route Request')
 
 
 @app.route(PREFIX + '/drives/<drive_id>/passenger-requests/<user_id>', methods=['GET', 'POST'])
