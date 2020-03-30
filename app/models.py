@@ -12,8 +12,10 @@ import enum
 def load_user(id):
     return User.query.get(int(id))
 
+
 class Statistics(db.Model):
     rickroll_counter = db.Column(db.Integer, primary_key=True)
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -70,14 +72,40 @@ class Route(db.Model):
     arrival_location_lat = db.Column(db.Float(precision=53))
     arrival_location_long = db.Column(db.Float(precision=53))
     driver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    passenger_places = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Route from {}, {} to {}, {}>'.format(self.departure_location_lat, self.departure_location_long,
                                                       self.arrival_location_lat, self.arrival_location_long)
+
+    def to_dict(self):
+        data = {
+            "id": self.id,
+            "driver-id": self.driver_id,
+            "passenger-ids": [],  # TODO
+            "from": [self.departure_location_lat, self.departure_location_long],
+            "to": [self.departure_location_lat, self.departure_location_long],
+            "arrive-by": self.departure_time.isoformat()
+            # TODO YYYY-MM-DDTHH:MM:SS.00 (not sure whether .isoformat does this)
+        }
+        return data
+
+    def from_dict(self, data):
+        if "from" in data:
+            self.departure_location_lat, self.departure_location_long = data["from"]
+        if "to" in data:
+            self.arrival_location_lat, self.arrival_location_long = data["to"]
+        if "passenger-places" in data:
+            self.passenger_places = data["passenger_places"]
+        if "arrive-by" in data:
+            pass  # TODO: convert YYYY-MM-DDTHH:MM:SS.XX to datetime
+
+
 class RequestStatus(enum.Enum):
     pending = 1
     accepted = 2
     rejected = 3
+
 
 class RouteRequest(db.Model):
     route_id = db.Column(db.Integer, db.ForeignKey('route.id'), primary_key=True)
@@ -86,6 +114,7 @@ class RouteRequest(db.Model):
 
     def __init__(self):
         self.status = RequestStatus.pending
+
 
 class MusicPref(db.Model):
     id = db.Column(db.Integer, primary_key=True)

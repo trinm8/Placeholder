@@ -18,6 +18,9 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
 
+from app.api import bp as api_bp
+app.register_blueprint(api_bp)
+
 mail = Mail(app)
 
 if not app.debug:

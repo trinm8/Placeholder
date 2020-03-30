@@ -21,6 +21,7 @@ pip3 install SQLAlchemy
 pip3 install flask-mail
 pip3 install pyjwt
 pip3 install geopy
+pip3 install httpie
 
 echo "FLASK_APP=placeholder.py" > .flaskenv
 

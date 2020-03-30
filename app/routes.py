@@ -9,7 +9,9 @@ from random import uniform
 from datetime import *
 from geopy import Nominatim
 
-@app.route('/lol')
+PREFIX = "/web"
+
+@app.route(PREFIX + '/lol')
 def lol():
     counter = Statistics.query.first()
     if counter is None:
@@ -19,7 +21,7 @@ def lol():
     db.session.commit()
     return redirect("https://www.youtube.com/watch?v=cvh0nX08nRw")
 
-@app.route('/forgot_password', methods=['GET', 'POST'])
+@app.route(PREFIX + '/forgot_password', methods=['GET', 'POST'])
 def reset_password_request():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -38,7 +40,7 @@ def reset_password_request():
                            title='Reset Password', form=form)
 
 
-@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+@app.route(PREFIX + '/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -54,7 +56,7 @@ def reset_password(token):
     return render_template('reset_password.html', form=form)
 
 
-@app.route('/index')
+@app.route(PREFIX + '/index')
 @app.route('/')
 def index():
     if current_user.is_authenticated:
@@ -73,7 +75,7 @@ def index():
     return render_template('home.html', title='Welcome')
 
 
-@app.route('/about')
+@app.route(PREFIX + '/about')
 def about():
     counter = Statistics.query.first()
     if counter is None:
@@ -89,14 +91,14 @@ def about():
 #     return render_template('account.html', title='Account')
 
 
-@app.route('/users/<username>')
+@app.route(PREFIX + '/users/<username>')
 @login_required
 def user_page(username):
     user = User.query.filter_by(username=username).first_or_404()
     return render_template('user.html', title='Account', user=user)
 
 
-@app.route('/account/settings', methods=['GET', 'POST'])
+@app.route(PREFIX + '/account/settings', methods=['GET', 'POST'])
 @login_required
 def account_settings():
     # flash("Warning: this page won't submit anything to the database yet. We're working on it.")
@@ -171,7 +173,7 @@ def createRoute(form):
     db.session.commit()
 
 
-@app.route('/addroute', methods=['GET', 'POST'])
+@app.route(PREFIX + '/addroute', methods=['GET', 'POST'])
 @login_required
 def addRoute():
     # flash("Warning: this page won't submit anything to the database yet. We're working on it.")
@@ -186,7 +188,7 @@ def addRoute():
     return render_template('addRoute.html', title='New Route', form=form)
 
 
-@app.route('/requests', methods=['GET'])
+@app.route(PREFIX + '/requests', methods=['GET'])
 @login_required
 def getRequests():
 
@@ -206,7 +208,7 @@ def getRequests():
     return render_template('requests.html', title='Requests', requests=requests)
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route(PREFIX + '/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -224,7 +226,7 @@ def login():
     return render_template('login.html', title='Login', form=form)
 
 
-@app.route('/logout')
+@app.route(PREFIX + '/logout')
 @login_required
 def logout():
     logout_user()
@@ -245,7 +247,7 @@ def register_user(username: str, firstname: str, lastname: str, password: str) -
     return user.id
 
 
-@app.route('/users/register', methods=['POST'])
+@app.route(PREFIX + '/users/register', methods=['POST'])
 def register_api():
     username = request.json.get('username')
     firstname = request.json.get('firstname')
@@ -257,7 +259,7 @@ def register_api():
     return {'id': str(id)}
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route(PREFIX + '/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -268,30 +270,6 @@ def register():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
-
-
-@app.route('/users/auth')
-def auth():
-    return render_template('wip.html', title='W.I.P.')
-
-
-@app.route('/drives')
-@login_required
-def drives():
-    return render_template('wip.html', title='W.I.P.')
-
-
-# Driver id and passenger id can be variable!
-@app.route('/drives/<drive_id>/passengers')
-@login_required
-def drivePassengers(drive_id):
-    return render_template('wip.html', title='W.I.P.')
-
-
-@app.route('/drives/<drive_id>/passenger-requests')
-@login_required
-def passengerRequests(drive_id):
-    return render_template('wip.html', title='W.I.P.')
 
 @app.route('/drives/<drive_id>/request')
 @login_required
@@ -330,12 +308,6 @@ def passenger_request(drive_id, user_id):
         return redirect(url_for("index"))
 
     return render_template('route_request.html', form=form, user=user, trip=trip, title='W.I.P.')
-
-
-@app.route('/drives/search')
-@login_required
-def search():
-    return render_template('wip.html', title='W.I.P.')
 
 
 @app.errorhandler(404)
