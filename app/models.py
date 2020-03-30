@@ -6,6 +6,7 @@ from hashlib import md5
 import jwt
 from time import time
 import enum
+import dateutil.parser
 
 
 @login.user_loader
@@ -86,7 +87,6 @@ class Route(db.Model):
             "from": [self.departure_location_lat, self.departure_location_long],
             "to": [self.departure_location_lat, self.departure_location_long],
             "arrive-by": self.departure_time.isoformat()
-            # TODO YYYY-MM-DDTHH:MM:SS.00 (not sure whether .isoformat does this)
         }
         return data
 
@@ -96,9 +96,10 @@ class Route(db.Model):
         if "to" in data:
             self.arrival_location_lat, self.arrival_location_long = data["to"]
         if "passenger-places" in data:
-            self.passenger_places = data["passenger_places"]
+            self.passenger_places = data["passenger-places"]
         if "arrive-by" in data:
-            pass  # TODO: convert YYYY-MM-DDTHH:MM:SS.XX to datetime
+            # src: https://stackoverflow.com/questions/969285/how-do-i-translate-an-iso-8601-datetime-string-into-a-python-datetime-object
+            self.date = dateutil.parser.parse(data["arrive-by"])
 
 
 class RequestStatus(enum.Enum):

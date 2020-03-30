@@ -271,7 +271,7 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
-@app.route('/drives/<drive_id>/request')
+@app.route(PREFIX + '/drives/<drive_id>/request')
 @login_required
 def request_drive(drive_id):
     request = RouteRequest(route_id=drive_id, user_id=current_user.id)
@@ -281,7 +281,7 @@ def request_drive(drive_id):
     return redirect(url_for("index"))
 
 
-@app.route('/drives/<drive_id>/passenger-requests/<user_id>', methods=['GET', 'POST'])
+@app.route(PREFIX + '/drives/<drive_id>/passenger-requests/<user_id>', methods=['GET', 'POST'])
 @login_required
 def passenger_request(drive_id, user_id):
     form = RequestForm()
@@ -322,7 +322,7 @@ def method_not_allowed(e):
 
 
 # Function for deliberatly creating an error (for testing the error mailing system)
-@app.route('/internal_server_error')
+@app.route(PREFIX + '/internal_server_error')
 def internal_server_error():
     user = User(username="johndoe", firstname="John", lastname="Doe")
     user.set_password("test")
