@@ -8,8 +8,10 @@ from werkzeug.urls import url_parse
 from random import uniform
 from datetime import *
 from geopy import Nominatim
+from sqlalchemy import func
 
 PREFIX = "/web"
+
 
 @app.route(PREFIX + '/lol')
 def lol():
@@ -148,7 +150,22 @@ def account_settings():
 
             flash("Car settings updated!")
 
-    return render_template('settings.html', title='Account Settings', form=form)
+    # Get the suggested genres
+    # suggested_genres = db.session.query(MusicPref.genre).group_by(
+    #   MusicPref.genre).order_by(func.count(MusicPref.genre)).limit(10)
+    suggested_genres = MusicPref.query.all()
+
+    return render_template('settings.html', title='Account Settings', form=form, suggested_genres=suggested_genres)
+
+
+@app.route(PREFIX + '/account/settings/remove_genre/<id>', methods=['GET', 'POST'])
+@login_required
+def remove_genre(id):
+    MusicPref.query.filter_by(id=id).delete()
+    db.session.commit()
+
+    flash("Genre removed!")
+    return redirect(url_for('account_settings'))
 
 
 def createRoute(form, departurelocation, arrivallocation):
@@ -187,8 +204,9 @@ def addRoute():
             flash("The destination address is invalid")
             return render_template('addRoute.html', title='New Route', form=form)
         if form.type.data == 'Passenger':
-            return redirect(url_for("overview", lat_from=departure_location.latitude, long_from=departure_location.longitude,
-                             lat_to=arrival_location.latitude, long_to=arrival_location.longitude))
+            return redirect(
+                url_for("overview", lat_from=departure_location.latitude, long_from=departure_location.longitude,
+                        lat_to=arrival_location.latitude, long_to=arrival_location.longitude))
 
         if form.date.data < date.today():
             flash("Date is invalid")
@@ -342,12 +360,13 @@ def overview():
     long_from = request.args.get('long_from')
     lat_to = request.args.get('lat_to')
     long_to = request.args.get('long_to')
-    routes = Route.query\
-        .filter((lat_from - Route.departure_location_lat)*(lat_from - Route.departure_location_lat) > -10)\
-        .filter((long_from - Route.departure_location_long)*(long_from - Route.departure_location_long) > -10)\
-        .filter((lat_to - Route.arrival_location_lat)*(lat_to - Route.arrival_location_lat) > -10)\
-        .filter((long_to - Route.arrival_location_long)*(long_to - Route.arrival_location_long) > -10)
-    return render_template('route_overview.html', routes=routes, title="Search", src=addr(lat_from, long_from), dest=addr(lat_to, long_to))
+    routes = Route.query \
+        .filter((lat_from - Route.departure_location_lat) * (lat_from - Route.departure_location_lat) > -10) \
+        .filter((long_from - Route.departure_location_long) * (long_from - Route.departure_location_long) > -10) \
+        .filter((lat_to - Route.arrival_location_lat) * (lat_to - Route.arrival_location_lat) > -10) \
+        .filter((long_to - Route.arrival_location_long) * (long_to - Route.arrival_location_long) > -10)
+    return render_template('route_overview.html', routes=routes, title="Search", src=addr(lat_from, long_from),
+                           dest=addr(lat_to, long_to))
 
 
 @app.errorhandler(404)
