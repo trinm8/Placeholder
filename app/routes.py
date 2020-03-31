@@ -151,7 +151,7 @@ def account_settings():
     return render_template('settings.html', title='Account Settings', form=form)
 
 
-def createRoute(form):
+def createRoute(form, departurelocation, arrivallocation):
     creator = User.query.filter_by(id=current_user.get_id()).first()
     creatorname = creator.username
     # Driver id is None wanneer de creator geen driver is zodat er later een driver zich kan aanbieden voor de route
@@ -159,9 +159,6 @@ def createRoute(form):
         driverid = creator.id
     else:
         driverid = None
-    geolocator = Nominatim(user_agent="[PlaceHolder]")
-    departurelocation = geolocator.geocode(form.start.data)
-    arrivallocation = geolocator.geocode(form.destination.data)
     # departure_location_lat = uniform(49.536612, 51.464020)
     # departure_location_long = uniform(2.634966, 6.115877)
     # arrival_location_lat = uniform(49.536612, 51.464020)
@@ -180,18 +177,24 @@ def addRoute():
     # flash("Warning: this page won't submit anything to the database yet. We're working on it.")
     form = AddRouteForm()
     if form.validate_on_submit():
-
+        geolocator = Nominatim(user_agent="[PlaceHolder]")
+        departure_location = geolocator.geocode(form.start.data)
+        if departure_location is None:
+            flash("The Start address is invalid")
+            return render_template('addRoute.html', title='New Route', form=form)
+        arrival_location = geolocator.geocode(form.destination.data)
+        if arrival_location is None:
+            flash("The destination address is invalid")
+            return render_template('addRoute.html', title='New Route', form=form)
         if form.type.data == 'Passenger':
-            geolocator = Nominatim(user_agent="[PlaceHolder]")
-            departure_location = geolocator.geocode(form.start.data)
-            arrival_location = geolocator.geocode(form.destination.data)
             return redirect(url_for("overview", lat_from=departure_location.latitude, long_from=departure_location.longitude,
                              lat_to=arrival_location.latitude, long_to=arrival_location.longitude))
 
-        if (form.date.data < date.today()):
+        if form.date.data < date.today():
             flash("Date is invalid")
             return render_template('addRoute.html', title='New Route', form=form)
-        createRoute(form)
+
+        createRoute(form, departure_location, arrival_location)
         flash('New route added')
         return redirect(url_for('index'))
     return render_template('addRoute.html', title='New Route', form=form)
