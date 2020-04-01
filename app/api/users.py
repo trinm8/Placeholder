@@ -1,4 +1,5 @@
 from flask import jsonify, request, url_for
+from app.models import User
 from app.api.errors import bad_request
 from app.routes import register_user_func
 from app.api import bp
@@ -30,10 +31,21 @@ def register_user():
     # }
 
 
-# @bp.route('/users/auth', methods=['POST'])
-# def auth():
-#     data = request.get_json() or {}
-#
+@bp.route('/users/auth', methods=['POST'])
+def auth():
+    data = request.get_json() or {}
+    if "username" not in data or "password" not in data:
+        return bad_request("Must include username and password")
+    user = User.query.filter_by(username=data["username"]).first()
+    if not user.check_password(data["password"]):
+        response = jsonify()
+        response.status_code = 401
+        return response
+    response = jsonify(token=user.get_token())
+    response.status_code = 200
+    return response
+
+
 #     # Body:
 #     # {
 #     #   "username": "MarkP",

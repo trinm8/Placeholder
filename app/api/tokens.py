@@ -3,7 +3,7 @@ from app import db
 from app.api import bp
 from app.api.auth import auth, token_auth
 
-@bp.route('/users/auth', methods=['POST'])
+@bp.route('/tokens', methods=['POST'])
 @auth.login_required
 def get_token():
     token = g.current_user.get_token()
