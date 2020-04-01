@@ -1,1 +1,1 @@
-"FLASK_APP=placeholder.py" 
+FLASK_APP=placeholder.py

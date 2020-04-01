@@ -136,19 +136,22 @@
                         Login
                     </a>
                     {% else %}
-                    <a class="navbar-item" href="{{ url_for('getRequests') }}">
+                    <!--a class="navbar-item" href="{{ url_for('getRequests') }}">
                         <span>Notifications</span>
                         <span class="icon">
                             <i class="far fa-bell"></i>
                         </span>
-                    </a>
+                    </a-->
 
-                   <!--div class="navbar-item has-dropdown is-hoverable">
+                   <div class="navbar-item has-dropdown is-hoverable">
                        <a class="navbar-item" href="{{ url_for('getRequests') }}">
                            <span>Notifications</span>
-                        <span class="icon">
-                            <i class="far fa-bell"></i>
-                        </span>
+                           <span class="icon">
+                               <i class="far fa-bell"></i>
+                           </span>
+                           <button type="button" class="btn btn-primary">
+                               <span class="badge badge-light">4</span>
+                           </button>
                        </a>
                        {% for notification in current_user.notifications %}
                        <div class="navbar-dropdown is-boxed">
@@ -157,7 +160,7 @@
                            </a>
                        </div>
                        {% endfor %}
-                   </div-->
+                   </div>
 
                     <a class="navbar-item" href="{{ url_for('account_settings') }}">
                         Settings

@@ -21,33 +21,71 @@
                 <div class="column is-2">
                     {{ card("Add a new trip", link=url_for("addRoute")) }}
 
-                    {% for trip in trips %}
-                        {{ card(trip.description, trip.time) }}
-                    {% endfor %}
+                    {% if routes is none %}
+                        <div class="card">
+                            No routes planned
+                        </div>
+                    {% else %}
+                        {% for trip in routes %}
+                            <div class="card">
+                                <strong>From: </strong> {{ trip.text_from() }}
+                                <strong>To: </strong> {{ trip.text_to() }}
+                                {{ trip.departure_time }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
                 </div>
 
                 <div class="column">
-                    <h1 class="title">{{ trip.description }}</h1>
-                    <h2 class="subtitle">{{ trip.time }}</h2>
+                    {% if routes.first() is none %}
+                        <h1 class="title">
+                            No routes planned
+                        </h1>
+                    {% else %}
+                        <h1 class="title">
+                            From: {{ routes.first().text_from() }}
+                            To: {{ routes.first().text_to() }}
+                        </h1>
+                        <h2 class="subtitle">
+                            {{ routes.first().departure_time }}
+                        </h2>
+                    {% endif %}
                     {{ map.map() }}
                 </div>
                 <div class="column is-2">
                     <div class="card">
                         <div class="card-content">
-                            <i class="fas fa-car"></i><a href="{{ url_for('user_page', username=trip.driver) }} "> {{ trip.driver }} </a><br>
-                            {% for passenger in trip.passengers %}
-                            <i class="fas fa-user"></i><a href="{{ url_for('user_page', username=passenger) }}"> {{ passenger }} </a><br>
-                            {% endfor %}
+                            {% if routes.first() is none %}
+                                <h1 class="title">
+                                    No routes planned
+                                </h1>
+                            {% else %}
+                                <i class="fas fa-car"></i><a href="{{ url_for('user_page', username=routes[0].driver) }} "> {{ routes.first().creator }} </a><br>
+                                {% if routes.first().passenger_places is none %}
+                                    No passengers
+                                {% else %}
+                                    {% for passenger in routes.first().passenger_places %}
+                                    <i class="fas fa-user"></i><a href="{{ url_for('user_page', username=passenger) }}"> {{ passenger }} </a><br>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endif %}
                         </div>
                     </div><br>
 
-                    {{ card("FROM:", trip.departure) }}
+                    {% if routes.first() is none %}
+                    No routes planned
 
-                    {% for stop in trip.stops %}
+                    {% else %}
+                    {{ card("FROM:", routes.first().text_from()) }}
+
+                    {% for stop in routes.first().stops %}
                         {{ card("STOP:", stop) }}
                     {% endfor %}
 
-                    {{ card("TO:", trip.destination) }}
+                    {{ card("TO:", routes.first().text_to()) }}
+
+                    {% endif %}
 
                 </div>
             </div>
