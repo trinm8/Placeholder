@@ -2,8 +2,10 @@ from flask import render_template, redirect
 from flask_login import current_user
 
 from app import db
-from app.models import Statistics, Route
+from app.models import Statistics, Route, RouteRequest
 from app.main import bp
+
+from sqlalchemy import union
 
 
 @bp.route('/lol')
@@ -23,8 +25,9 @@ def lol():
 @bp.route('/')
 def index():
     if current_user.is_authenticated:
-        routes = Route.query.filter_by(driver_id=current_user.id) #TODO: Check date is not past yet
-
+        routes_driver = Route.query.filter_by(driver_id=current_user.id) #TODO: Check date is not past yet
+        routes_passenger = Route.query.filter(RouteRequest.query.filter_by(user_id=current_user.id, route_id=Route.id).exists())
+        routes = routes_driver.union(routes_passenger)
         return render_template('main/main_logged_in.html', title='Dashboard', routes=routes)
     return render_template('main/home.html', title='Welcome')
 

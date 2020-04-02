@@ -172,6 +172,9 @@ class RouteRequest(db.Model):
     def user(self):
         return User.query.get(self.user_id)
 
+    def accepted(self):
+        return self.status == RequestStatus.accepted
+
 class MusicPref(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user = db.Column(db.Integer, db.ForeignKey('user.id'))
