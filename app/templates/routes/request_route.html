@@ -27,8 +27,8 @@ height: 100%;
                 <div class="columns">
                     <div class="column">
                         <h2 class="subtitle">Trip information</h2>
-                        <p> From: {{ trip.departure_location_lat }}, {{ trip.departure_location_long }}</p>
-                        <p> To: {{ trip.arrival_location_lat}}, {{ trip.arrival_location_long }} </p>
+                        <p> From: {{ trip.text_from() }}</p>
+                        <p> To: {{ trip.text_to() }} </p>
                         <p> Time: {{ trip.departure_time }} </p>
                     </div>
                     <div class="column">

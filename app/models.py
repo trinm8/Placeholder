@@ -19,9 +19,22 @@ from geopy.geocoders import Nominatim
 
 
 def addr(lat, long):
+    # https://stackoverflow.com/questions/11390392/return-individual-address-components-city-state-etc-from-geopy-geocoder
     geolocator = Nominatim(user_agent="[PlaceHolder]")
     location = geolocator.reverse(str(lat) + ", " + str(long))
-    return str(location.address)
+    addr_dict = location.raw["address"]
+    try:
+        location_str = addr_dict["road"] + " " + addr_dict["house_number"] + ", " + addr_dict["postcode"] + " "
+        if "city" in addr_dict:
+            location_str += addr_dict["city"]
+        elif "town" in addr_dict:
+            location_str += addr_dict["town"]
+    except:
+        try:
+            location_str = addr_dict["cycleway"] + ", " + addr_dict["postcode"] + " " + addr_dict["city"]
+        except:
+            location_str = str(location.address)
+    return location_str
 
 @login.user_loader
 def load_user(id):
