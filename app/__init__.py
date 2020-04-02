@@ -1,26 +1,64 @@
 from flask import Flask
-from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_mail import Mail
 
+from config import Config
+
 import logging
 from logging.handlers import SMTPHandler
 
-# app = Flask(__name__, static_url_path="/static")
-# app.config.from_object(Config)
+mail = Mail()
+db = SQLAlchemy()
+migrate = Migrate()
+login = LoginManager()
+login.login_view = 'auth.login'
 
-app = Flask(__name__)
-app.config.from_object(Config)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-login = LoginManager(app)
-login.login_view = 'login'
 
-mail = Mail(app)
+# factory design pattern :)
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
 
-if not app.debug:
+    init_modules(app)
+
+    register_blueprints(app)
+
+    if not app.debug:
+        setup_mail_debug(app)
+
+    return app
+
+
+def register_blueprints(application):
+    from app.api import bp as api_bp
+    application.register_blueprint(api_bp)
+
+    from app.auth import bp as auth_bp
+    application.register_blueprint(auth_bp)
+
+    from app.errors import bp as errors_bp
+    application.register_blueprint(errors_bp)
+
+    from app.main import bp as main_bp
+    application.register_blueprint(main_bp)
+
+    from app.routes_drive import bp as routes_bp
+    application.register_blueprint(routes_bp)
+
+    from app.users import bp as users_bp
+    application.register_blueprint(users_bp)
+
+
+def init_modules(app):
+    mail.init_app(app)
+    db.init_app(app)
+    migrate.init_app(app, db)
+    login.init_app(app)
+
+
+def setup_mail_debug(app):
     if app.config['MAIL_SERVER']:
         auth = None
         if app.config['MAIL_USERNAME'] or app.config['MAIL_PASSWORD']:
@@ -36,7 +74,6 @@ if not app.debug:
         mail_handler.setLevel(logging.ERROR)
         app.logger.addHandler(mail_handler)
 
-from app.api import bp as api_bp
-app.register_blueprint(api_bp)
 
-from app import routes, models
+from app import models
+from app.main import routes

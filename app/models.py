@@ -1,14 +1,20 @@
-from app import db, login, app
-from datetime import datetime, timedelta
-from werkzeug.security import generate_password_hash, check_password_hash
+from app import db, login
+
+from flask import current_app
 from flask_login import UserMixin
-from hashlib import md5
+
 import jwt
+from hashlib import md5
+from werkzeug.security import generate_password_hash, check_password_hash
+
 from time import time
+from datetime import datetime, timedelta
+import dateutil.parser
+
 import enum
 import base64
 import os
-import dateutil.parser
+
 from geopy.geocoders import Nominatim
 
 
@@ -64,12 +70,12 @@ class User(UserMixin, db.Model):
     def get_reset_password_token(self, expires_in=600):
         return jwt.encode(
             {'reset_password': self.id, 'exp': time() + expires_in},
-            app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+            current_app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
 
     @staticmethod
     def verify_reset_password_token(token):
         try:
-            id = jwt.decode(token, app.config['SECRET_KEY'],
+            id = jwt.decode(token, current_app.config['SECRET_KEY'],
                             algorithms=['HS256'])['reset_password']
         except:
             return
@@ -93,6 +99,9 @@ class User(UserMixin, db.Model):
         if user is None or user.token_expiration < datetime.utcnow():
             return None
         return user
+
+    def name(self):
+        return self.firstname + " " + self.lastname
 
 class Route(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -137,6 +146,10 @@ class Route(db.Model):
     def text_to(self):
         return addr(self.arrival_location_lat, self.arrival_location_long)
 
+    def driver(self):
+        return User.query.get(self.driver_id)
+
+
 class RequestStatus(enum.Enum):
     pending = 1
     accepted = 2
@@ -152,6 +165,12 @@ class RouteRequest(db.Model):
         self.status = RequestStatus.pending
         self.route_id = route_id
         self.user_id = user_id
+
+    def route(self):
+        return Route.query.get(self.route_id)
+
+    def user(self):
+        return User.query.get(self.user_id)
 
 class MusicPref(db.Model):
     id = db.Column(db.Integer, primary_key=True)

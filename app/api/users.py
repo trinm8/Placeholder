@@ -1,7 +1,7 @@
 from flask import jsonify, request, url_for
 from app.models import User
 from app.api.errors import bad_request
-from app.routes import register_user_func
+from app.auth.routes import register_user_func
 from app.api import bp
 
 

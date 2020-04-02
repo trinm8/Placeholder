@@ -80,12 +80,12 @@ margin-top: 10%;
 
                                     <div class="buttons">
                                         {{ form.login(class="button is-primary") }}
-                                        <a class="button" href="{{ url_for('register') }}">Sign up</a>
+                                        <a class="button" href="{{ url_for('auth.register') }}">Sign up</a>
                                     </div>
                                 </div>
                                 <div class="level-right">
                                     <div class="buttons">
-                                        <a class="button" href="{{ url_for('reset_password_request') }}">Forgot password</a>
+                                        <a class="button" href="{{ url_for('auth.reset_password_request') }}">Forgot password</a>
                                     </div>
                                 </div>
                             </div>
