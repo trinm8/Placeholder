@@ -8,7 +8,7 @@ from flask_login import current_user, login_required
 
 
 from geopy import Nominatim
-from datetime import date  # Todo: Datetime
+from datetime import datetime  # Todo: Datetime
 
 
 def createRoute(form, departurelocation, arrivallocation):
@@ -36,7 +36,9 @@ def createRoute(form, departurelocation, arrivallocation):
 def addRoute():
     # flash("Warning: this page won't submit anything to the database yet. We're working on it.")
     form = AddRouteForm()
+    print("test")
     if form.validate_on_submit():
+        print("test2")
         geolocator = Nominatim(user_agent="[PlaceHolder]")
         departure_location = geolocator.geocode(form.start.data)
         if departure_location is None:
@@ -52,10 +54,10 @@ def addRoute():
                         long_from=departure_location.longitude,
                         lat_to=arrival_location.latitude, long_to=arrival_location.longitude))
 
-        if form.date.data < date.today():  # TODO datetime
+        if form.date.data < datetime.now():  # TODO datetime
             flash("Date is invalid")
             return render_template('routes/addRoute.html', title='New Route', form=form)
-
+        print(form.date.data)
         createRoute(form, departure_location, arrival_location)
         flash('New route added')
         return redirect(url_for('main.index'))

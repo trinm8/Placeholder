@@ -1,12 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import RadioField, StringField, DateField, SubmitField
+from wtforms import RadioField, StringField, DateTimeField, SubmitField
 
 
 class AddRouteForm(FlaskForm):
     type = RadioField('type', choices=[('Driver', 'Driver'), ('Passenger', 'Passenger')])
     start = StringField('start')
     destination = StringField('destination')
-    date = DateField('date', format='%m/%d/%Y')
+    date = DateTimeField('date', format='%d/%m/%Y %H:%M')
     submit = SubmitField('Confirm')
 
 

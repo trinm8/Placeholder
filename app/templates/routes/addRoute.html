@@ -59,15 +59,19 @@
                             </div>
                         </div>
                         <br>
-                        <div class="field is-horizontal has-addons">
+                        <div class="field is-horizontal">
                             <div class="field-label">
                                 <label class="label">Date:</label>
                             </div>
                             <div class="field-body">
-                                {{ form.date(class="dtpick") }}
+                                <div class="field">
+                                    <p class="control is-expanded">
+                                    {{ form.date(class='input') }}
+                                    {{ dtpick.datetimepicker() }}
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                        <br>
                         {{ form.submit(class="button is-primary") }}
                 </div>
             </form>
