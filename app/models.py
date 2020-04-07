@@ -116,6 +116,7 @@ class User(UserMixin, db.Model):
     def name(self):
         return self.firstname + " " + self.lastname
 
+
 class Route(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     creator = db.Column(db.String(64))
@@ -187,6 +188,7 @@ class RouteRequest(db.Model):
 
     def accepted(self):
         return self.status == RequestStatus.accepted
+
 
 class MusicPref(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -22,24 +22,26 @@
             </div>
             <form class="column" action="" method="POST" novalidate>
                 <div class="tile is-vertical">
-                        {{ form.hidden_tag() }}
+                    {{ form.hidden_tag() }}
                     <h1 class="title">{{ user.firstname }} wants to ride with you!</h1>
                     <div class="columns">
-                    <div class="column">
-                    <h2 class="subtitle">Trip information</h2>
-                    <p> From: {{ trip.text_from() }}</p>
-                    <p> To: {{ trip.text_to() }} </p>
-                    <p> Time: {{ trip.departure_time }} </p>
+                        <div class="column">
+                            <h2 class="subtitle">Trip information</h2>
+                            <p> From: {{ trip.text_from() }}</p>
+                            <p> To: {{ trip.text_to() }} </p>
+                            <p> Time: {{ trip.departure_time }} </p>
                         </div>
-                <div class="column">
-                    <h2 class="subtitle">User information</h2>
-                    <figure class="image is-128x128">
-                            <img class="is-rounded" src="{{ user.avatar(128) }}">
-                        </figure><br>
-                        <p> Name: {{ user.firstname }} {{ user.lastname }} </p>
-                        <p> email: {{ user.email }} </p>
-                            </div>
-                        </div><br><br>
+                        <div class="column">
+                            <h2 class="subtitle">User information</h2>
+                            <figure class="image is-128x128">
+                                <img class="is-rounded" src="{{ user.avatar(128) }}">
+                            </figure>
+                            <br>
+                            <p> Name: {{ user.firstname }} {{ user.lastname }} </p>
+                            <p> email: {{ user.email }} </p>
+                        </div>
+                    </div>
+                    <br><br>
                     <div class="buttons">
                         {{ form.accept(class="button is-success") }}
                         {{ form.reject(class="button is-danger") }}
