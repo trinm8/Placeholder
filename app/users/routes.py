@@ -14,10 +14,19 @@ def user_page(username):
     return render_template('users/user.html', title='Account', user=user)
 
 
+def get_suggested_genres():
+    all_genres = [g.genre for g in MusicPref.query.all()]
+    frequency = {k: 0 for k in set(all_genres)}
+    for g in all_genres:
+        frequency[g] = frequency[g] + 1
+    # Source: https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
+    frequency = {k: v for k, v in sorted(frequency.items(), key=lambda item: item[1], reverse=True)}
+    return [list(frequency)[i] for i in range(0, 10)]
+
+
 @bp.route('/account/settings', methods=['GET', 'POST'])
 @login_required
 def account_settings():
-    # flash("Warning: this page won't submit anything to the database yet. We're working on it.")
 
     form = Settings()
 
@@ -63,12 +72,8 @@ def account_settings():
 
             flash("Car settings updated!")
 
-    # Get the suggested genres
-    # suggested_genres = db.session.query(MusicPref.genre).group_by(
-    #   MusicPref.genre).order_by(func.count(MusicPref.genre)).limit(10)
-    suggested_genres = MusicPref.query.all()
-
-    return render_template('users/settings.html', title='Account Settings', form=form, suggested_genres=suggested_genres)
+    return render_template('users/settings.html', title='Account Settings', form=form,
+                           suggested_genres=get_suggested_genres())
 
 
 @bp.route('/account/settings/remove_genre/<id>', methods=['GET', 'POST'])
