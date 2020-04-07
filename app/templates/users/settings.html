@@ -85,7 +85,7 @@
                     <div class="column is-5">
                         <datalist id="liked_genre_suggestions">
                             {% for g in suggested_genres %}
-                                <option value="{{ g.genre }}"></option>
+                                <option value="{{ g }}"></option>
                             {% endfor %}
                         </datalist>
                         {{ form.liked_genre(type="text", class="input", placeholder="Liked genre",
@@ -118,7 +118,7 @@
                     <div class="column is-5">
                         <datalist id="disliked_genre_suggestions">
                             {% for g in suggested_genres %}
-                                <option value="{{ g.genre }}"></option>
+                                <option value="{{ g }}"></option>
                             {% endfor %}
                         </datalist>
                         {{ form.disliked_genre(type="text", class="input", placeholder="Disliked genre",

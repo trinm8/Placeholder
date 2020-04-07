@@ -8,7 +8,7 @@ from flask_login import current_user, login_required
 
 
 from geopy import Nominatim
-from datetime import date  # Todo: Datetime
+from datetime import datetime  # Todo: Datetime
 
 
 def createRoute(form, departurelocation, arrivallocation):
@@ -52,10 +52,9 @@ def addRoute():
                         long_from=departure_location.longitude,
                         lat_to=arrival_location.latitude, long_to=arrival_location.longitude))
 
-        if form.date.data < date.today():  # TODO datetime
+        if form.date.data < datetime.now():  # TODO datetime
             flash("Date is invalid")
             return render_template('routes/addRoute.html', title='New Route', form=form)
-
         createRoute(form, departure_location, arrival_location)
         flash('New route added')
         return redirect(url_for('main.index'))
@@ -96,8 +95,15 @@ def drive(drive_id):
     form = SendRequestForm()
     trip = Route.query.get_or_404(drive_id)
     user = User.query.get(trip.driver_id)
+    requests = RouteRequest.query.filter_by(route_id=drive_id).all()
+    acceptedRequests = []
+    for requestparse in requests:
+        if requestparse.status == RequestStatus.accepted:
+            acceptedRequests.append(User.query.get(requestparse.user_id))
     requested = bool(RouteRequest.query.filter_by(route_id=drive_id, user_id=current_user.id).first())
-
+    isDriver = False
+    if user.id == trip.driver_id:
+        isDriver = True
     # From routes that where registered without a drive, should be removed in the future
     if user is None:
         user = current_user
@@ -115,7 +121,7 @@ def drive(drive_id):
         return redirect(url_for("main.index"))
 
     return render_template('routes/request_route.html', form=form, user=user, trip=trip, requested=requested,
-                           title='Route Request')
+                           title='Route Request', passengers=acceptedRequests, isdriver=isDriver)
 
 
 @bp.route('/drives/<drive_id>/passenger-requests/<user_id>', methods=['GET', 'POST'])
