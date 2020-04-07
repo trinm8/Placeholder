@@ -5,6 +5,7 @@
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
         integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
         crossorigin=""></script>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <style type="text/css">
 .map {   z-index: 0;
    /* Fix map not going over navbar */
@@ -30,26 +31,45 @@
     }).addTo(mymap);
 
     var startlayer = L.layerGroup().addTo(mymap);
-    var startmarker;
+    var startmarker = false;
     var stoplayer = L.layerGroup().addTo(mymap);
-    var stopmarker;
+    var stopmarker = false;
 
 
     function addmarker(field) {
         var layer = {};
-        if (field == "start"){
+        if (field === "start"){
             layer = startlayer;
             startlayer.clearLayers();
         }
-        if(field == "destination"){
+        if(field === "destination"){
             layer = stoplayer;
             stoplayer.clearLayers();
         }
         var address = document.getElementById(field).value;
         $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + address, function (data) {
-           var marker = L.marker([parseFloat(data[0].lat), parseFloat(data[0].lon)]).addTo(layer);
-           mymap.flyTo(marker.getLatLng());
+            var marker = L.marker([parseFloat(data[0].lat), parseFloat(data[0].lon)]).addTo(layer);
+            if(field === "start"){
+                startmarker = marker;
+            }else {
+                stopmarker = marker;
+            }
+            centerLeafletMapOnMarker(mymap, marker);
         });
+    }
+
+    function centerLeafletMapOnMarker(map, marker) {
+        var latLngs;
+        var markerBounds;
+        if(startmarker && stopmarker){
+            latLngs = [ L.latLng(startmarker.getLatLng().lat, startmarker.getLatLng().lng) ];
+            var latLngs2 = [ L.latLng(stopmarker.getLatLng().lat, stopmarker.getLatLng().lng) ];
+            markerBounds = L.latLngBounds(latLngs, latLngs2)
+        }else {
+            latLngs =[ L.latLng(marker.getLatLng().lat, marker.getLatLng().lng) ];
+            markerBounds = L.latLngBounds(latLngs);
+        }
+        map.flyToBounds(markerBounds);
     }
 
 </script>
