@@ -150,14 +150,16 @@ def passenger_request(drive_id, user_id):
 
 @bp.route("/overview", methods=["GET"])
 def overview():
+    form = AddRouteForm()
     lat_from = request.args.get('lat_from')
     long_from = request.args.get('long_from')
     lat_to = request.args.get('lat_to')
     long_to = request.args.get('long_to')
+    distance = 1/768
     routes = Route.query \
-        .filter((lat_from - Route.departure_location_lat) * (lat_from - Route.departure_location_lat) > -10) \
-        .filter((long_from - Route.departure_location_long) * (long_from - Route.departure_location_long) > -10) \
-        .filter((lat_to - Route.arrival_location_lat) * (lat_to - Route.arrival_location_lat) > -10) \
-        .filter((long_to - Route.arrival_location_long) * (long_to - Route.arrival_location_long) > -10)
-    return render_template('routes/route_overview.html', routes=routes, title="Search", src=addr(lat_from, long_from),
-                           dest=addr(lat_to, long_to))
+        .filter((lat_from - Route.departure_location_lat) * (lat_from - Route.departure_location_lat) < distance) \
+        .filter((long_from - Route.departure_location_long) * (long_from - Route.departure_location_long) < distance) \
+        .filter((lat_to - Route.arrival_location_lat) * (lat_to - Route.arrival_location_lat) < distance) \
+        .filter((long_to - Route.arrival_location_long) * (long_to - Route.arrival_location_long) < distance)
+    return render_template('routes/search_results.html', routes=routes, title="Search", src=addr(lat_from, long_from),
+                           dest=addr(lat_to, long_to), form=form)

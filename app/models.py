@@ -1,3 +1,5 @@
+from geopy.exc import GeocoderTimedOut
+
 from app import db, login
 
 from flask import current_app
@@ -21,7 +23,11 @@ from geopy.geocoders import Nominatim
 def addr(lat, long):
     # https://stackoverflow.com/questions/11390392/return-individual-address-components-city-state-etc-from-geopy-geocoder
     geolocator = Nominatim(user_agent="[PlaceHolder]")
-    location = geolocator.reverse(str(lat) + ", " + str(long))
+    try:
+        location = geolocator.reverse(str(lat) + ", " + str(long))
+    except GeocoderTimedOut:
+        return "Geocoder timed out :/"
+
     addr_dict = location.raw["address"]
     try:
         location_str = addr_dict["road"] + " " + addr_dict["house_number"] + ", " + addr_dict["postcode"] + " "

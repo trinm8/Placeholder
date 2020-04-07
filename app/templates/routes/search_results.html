@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block metadata %}
+{% endblock %}
+
+{% block scripts %}
+    <link rel="stylesheet" href="https://wikiki.github.io/css/documentation.css?v=201911011043">
+    <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/bulma-tagsinput@2.0.0/dist/js/bulma-tagsinput.min.js"></script>
+{% endblock %}
+
+{% block styles %}
+
+{% endblock %}
+
+{% block body %}
+    <div class='columns'>
+        <div class='container'>
+            <div class='section'>
+                <div class='columns is-mobile is-multiline'>
+                    <form class="column" action="" method="POST" novalidate>
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Start:</label>
+                            </div>
+                            <div class="field-body">
+                                {{ form.start(class='input', type='text', onchange='addmarker("start")', placeholder=src) }}
+                            </div>
+                        </div>
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Destination:</label>
+                            </div>
+                            <div class="field-body">
+                                {{ form.destination(class='input', type='text', onchange='addmarker("destination")', placeholder=dest) }}
+                            </div>
+                        </div>
+                        <div class="field is-horizontal">
+                            {{ form.submit(class="button is-primary") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class='columns is-mobile is-multiline'>
+
+                {% for route in routes %}
+                    <div class='column is-6-tablet is-12-mobile'>
+                        <div class='card'>
+                            <div class='card-content'>
+                                <div class='content'>
+                                    <div class="columns is-mobile">
+                                        <div class='column is-4'>
+                                            {#                                            <span class='header-icon user-profile-image'>#}
+                                            <figure class="image"
+                                                    style="margin: auto;width: 100%">
+                                                {% if route.driver() %}
+                                                    <img class="is-rounded" alt=''
+                                                         src='{{ route.driver().avatar(100) }}'>
+                                                {% endif %}
+                                            </figure>
+                                            {#                                            </span>#}
+                                        </div>
+                                        <div class='column name'>
+                                            <strong>FROM:</strong> {{ route.text_from() }}<br>
+                                            <strong>TO:</strong> {{ route.text_to() }}<br>
+                                            <strong>TIME:</strong> {{ route.departure_time.isoformat() }}
+                                            <br><br>
+                                            <a style="margin-top: auto;" class="button is-primary"
+                                               href="{{ url_for('routes_drive.drive', drive_id=route.id) }}">View</a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
