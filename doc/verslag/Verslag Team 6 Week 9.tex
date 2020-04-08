@@ -1,0 +1,135 @@
+\documentclass{article}
+
+
+\usepackage[urlcolor=blue, linkcolor=black, colorlinks=true]{hyperref}
+\usepackage[dutch]{babel}
+\usepackage{minutes}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\makeatletter
+\addto\extrasdutch{%
+\def\min@textTask{Taak}%
+}
+\makeatother%
+\makeatletter
+\def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+
+
+
+\newcounter{team}
+
+% TODO: Enter team number here:
+\setcounter{team}{6}
+
+
+\begin{document}
+%	\tableofcontents
+
+	\begin{Minutes}{Programming Project Databases \\ Wekelijks Verslag Team \arabic{team}}
+		\moderation{Arno Deceuninck}
+		\minutetaker{Arno Deceuninck}
+		\participant{Arno Deceuninck, Sam Peeters, Sien Nuyens, Tim Sanders}
+		\missingNoExcuse{/}
+		\missingExcused{/}
+%		\guest{\ldots}
+		\minutesdate{8 April 2020}
+		\starttime{11u00}
+		\endtime{11u30}
+
+		\maketitle
+
+
+		\topic{Coordinator Vergadering}
+    		Is niet doorgegaan omdat het paasvakantie is.
+
+		\topic{Status}
+
+			\subtopic{Overzicht Taken}
+				\task*[DONE]{Routes toevoegen finetunen}
+				\task*[DONE]{Music settings uit database finetunen}
+			    \task*[ALMOST DONE]{Request pagina}
+			    \task*[WIP]{Request overview page getest}
+			    \task*[WIP]{Notifications navbar}
+			    \task*[WIP]{API requests}
+			    \task*[WIP]{Echte data in main logged in}
+			    \task*[]{Project herstructureren}
+			    \task*[]{Route zoek pagina}
+			    \task*[]{Route history pagina}
+
+		\topic{Besproken Onderwerpen}
+		        \subtopic{Github}
+		            Probeer regelmatig te pushen en STOP MET app/\_\_pycache\_\_ TE PUSHEN. Dat staat al een hele tijd in onze gitignore en heb ik al meerdere keren van GitHub verwijderd. Voeg de bestanden die je wil toevoegen individueel toe: ofwel commit je via pycharm en dan selecteer je enkel de bestanden die je hebt aangepast, ofwel selecteer je de bestanden van je commit via terminal en dan doe je NOOIT git add .
+				\subtopic{Routes toevoegen finetunen}
+				    Momenteel krijg ik nog een internal server error bij het klikken van de "confirm knop". Je ziet de twee markers goed. Tim licht toe. Als er nog mensen zijn die die error krijgen, laat het dan weten aan Tim.
+			    \subtopic{Music settings uit database}
+			        Sam licht toe. De 10 meest gebruikte worden gesuggereerd. Sam past dit aan naar alle gebruikte.
+			    \subtopic{Request pagina}
+					De titel is aangepast en de adressen worden weergeven als een string. In sommige gevallen kan dit een string worden met veel te veel extra informatie, waaronder wijk, land in drie talen ... Dit is verbonden aan de addr() functie in models, dus die zou gewoon beter gemaakt moeten worden.
+				\subtopic{Request overview page}
+				    Misschien best de front end eens zien te updaten. Sam licht toe. De knop om een request aan te maken bestaat niet meer.
+				\subtopic{Notificaties navbar}
+				  Sien licht toe. Sien voegt een functie toe aan User om het aantal notifications voor die persoon op te vragen. Er was nog een probleem met alle future routes toe te voegen, maar ze weet nu hoe ze deze uit de query kan filteren. Voor de dropdown best een functie schrijven die een list van strings teruggeeft.
+				\subtopic{API requests}
+				    Sam licht requests toevoegen/verwijderen toe. Hij wist niet op welke pagina  de requests moesten. Voor de rest werkt dit.
+				    Sien licht routes zoeken toe.
+				\subtopic{Echte data in main logged in}
+				    Zou in orde moeten zijn. Sien licht toe. Is in orde.
+				\subtopic{Project herstructurering}
+				    Alle bestanden zijn nu gegroepeerd in verschillende blueprints. Probeer bij het toevoegen van bestanden hier rekening mee te houden. Je kan Arno altijd contacteren indien je hiermee problemen hebt.
+				\subtopic{Route zoek pagina}
+				    Heeft een betere layout gekregen en zoekresultaten zijn enkel in de buurt. De form op die pagina werkt wel nog niet, maar haalt momenteel zijn info uit de addRoute pagina als passenger. Nomatin heeft misschien een functie om routes te filteren op een bepaalde afstand, dat is misschien handiger dan de vage formule met 1/768 afstand. Tim vindt dit niet direct terug, eventueel wel iets om later naar te kijken.
+				\subtopic{Route History page}
+				    Sien licht toe. Normaal gezien werkt dit.
+				\subtopic{Drives pagina}
+				    Tim heeft hier nog wat op aangepast. Best eens allemaal naar kijken, zodat we tegen volgende vergadering kunnen laten weten of dit goed genoeg is om ook op de request pagina.
+		\topic{Afspraken \& Planning}
+
+			\begin{itemize}
+			    \item Sien pullt van GitHub, verwijdert de \_\_pycache\_\_ met git rm -r git/\_\_pychache\_\_ en commit en pusht dan weer.
+			    \item Suggesties bij muziek preferences: Sam zorgt ervoor dat alle gebruikte genres worden gesugereerd ipv enkel de top 10.
+			    \item Arno neemt nog een kijkje naar een adres als korte string weergeven.
+			    \item Tim voegt een except toe voor geocoder timed out
+			    \item Sien voegt een functie toe aan user om het aantal notifications te krijgen en fixt de notifications verder.
+			    \item Sam fixt front end request overview page
+			    \item Sam past de url voor api route requests aan.
+			    \item Sien maakt api voor routes zoeken.
+			    \item Sien zorgt nog voor de juiste query bij Route History page.
+			    \item Arno neemt een kijkje naar de spotify api om een playlist aan een route toe te voegen.
+			    \item Sam neemt een kijkje naar routes sorteren gebasseerd op de gemeenschappelijke muziekkeuzes met de driver.
+			    \item Unittests: Arno neemt een kijkje om tegen volgende week een test framework te hebben.
+
+			\end{itemize}
+
+
+		\topic{Varia}
+			\emph{Eventuele varia punten. Hierbij vragen we ook aan alle aanwezigen of zij nog iets te zeggen hebben.}
+				\subtopic{Sien}
+				    Nope. Sorry dat ik afgelopen week niet veel tijd heb gehad.
+				\subtopic{Sam}
+				    Club penguin is terug.
+				\subtopic{Tim}
+				    Niet direct iets te zeggen.
+				\subtopic{Arno}
+				    Vanavond is het WINAK online spelletjesavond, zeker afkomen dus!
+
+
+		\blfootnote{
+			\href{%
+				mailto:joey.depauw@uantwerpen.be%
+				?subject=PPDB 2019-2020: Wekelijks Verslag Team \arabic{team}%
+				&body=Liefste Joey\%0D\%0A%
+				\%0D\%0A%
+				Gelieve ons wekelijks verslag terug te vinden in de bijlage.\%0D\%0A%
+				\%0D\%0A%
+				Groetjes\%0D\%0A%
+				Team \arabic{team}\%0D\%0A%
+			}{Klik hier} om mij op te sturen.
+		}
+
+
+	\end{Minutes}
+\end{document}
