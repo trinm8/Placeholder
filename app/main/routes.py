@@ -31,10 +31,9 @@ def index():
         routes_driver = Route.query.filter_by(driver_id=current_user.id)
         routes_passenger = Route.query.filter(RouteRequest.query.filter_by(user_id=current_user.id, route_id=Route.id).exists())
         routes = routes_driver.union(routes_passenger)
+        future_routes = routes.filter(Route.departure_time >= current_time)
 
-        future_routes = Route.query.filter(Route.departure_time >= current_time) #TODO: intersection nemen
-
-        return render_template('main/main_logged_in.html', title='Dashboard', routes=routes, future_routes=future_routes)
+        return render_template('main/main_logged_in.html', title='Dashboard', routes=future_routes, future_routes=future_routes)
     return render_template('main/home.html', title='Welcome')
 
 

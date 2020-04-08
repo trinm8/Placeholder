@@ -149,25 +149,15 @@
                                <i class="far fa-bell"></i>
                            </span>
                            <button type="button" class="btn btn-primary">
-                               <span class="badge badge-light">{{ pending_requests|length }}</span>
+                               <span class="badge badge-light">{{ current_user.getNotifications()|length }}</span>
                            </button>
                        </a>
                        <div class="navbar-dropdown is-boxed">
-                           {% for request in pending_requests %}
+                           {% for notification in current_user.getNotifications() %}
                            <a class="navbar-item">
-                               {{ request }}
+                               {{ notification }}
                            </a>
                            {% endfor %}
-
-                           {% if future_routes.first() is none %}
-                           <a class="navbar-item">
-                                No future routes planned
-                           </a>
-                           {% else %}
-                           <a class="navbar-item">
-                                Next upcomming route: {{ future_routes.first() }}
-                           </a>
-                           {% endif %}
                        </div>
                    </div>
 
