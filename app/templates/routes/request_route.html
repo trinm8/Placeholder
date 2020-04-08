@@ -3,54 +3,82 @@
 {% import "datepicker.html" as dtpick %}
 
 {% block imports %}
-{{ map.imports() }}
-{{ dtpick.imports() }}
+    {{ map.imports() }}
+    {{ dtpick.imports() }}
 {% endblock %}
 
 
 {% block styles %}
-#mapid {
-height: 100%;
-}
+    #mapid {
+    height: 100%;
+    }
 {% endblock %}
 
 {% block body %}
-<section class="section">
-    <div class="columns">
-        <div class="column">
-            {{ map.map() }}
-        </div>
-        <form action="" class="column" method="POST" novalidate>
-            <div class="tile is-vertical">
-                {{ form.hidden_tag() }}
-                <h1 class="title">Ride with {{ user.firstname }}!</h1>
-                <div class="columns">
-                    <div class="column">
-                        <h2 class="subtitle">Trip information</h2>
-                        <p> From: {{ trip.text_from() }}</p>
-                        <p> To: {{ trip.text_to() }} </p>
-                        <p> Time: {{ trip.departure_time }} </p>
+    <section class="section">
+        <div class="columns">
+            <div class="column">
+                {{ map.map() }}
+            </div>
+            <form action="" class="column" method="POST" novalidate>
+                <div class="tile is-vertical">
+                    {{ form.hidden_tag() }}
+                    <h1 class="title">Ride with {{ user.firstname }}!</h1>
+                    <div class="columns">
+                        <div class="column">
+                            <h2 class="subtitle">Trip information</h2>
+                            <p> From: {{ trip.text_from() }}</p>
+                            <p> To: {{ trip.text_to() }} </p>
+                            <p> Time: {{ trip.departure_time }} </p>
+                        </div>
+                        <div class="column">
+                            <div class="columns">
+                                <div class="column">
+                                    <h2 class="subtitle">Driver information</h2>
+                                    <figure class="image is-128x128">
+                                        <img class="is-rounded" src="{{ user.avatar(128) }}">
+                                    </figure>
+                                    <br>
+                                    <p> Name: {{ user.firstname }} {{ user.lastname }} </p>
+                                    <p> email: {{ user.email }} </p>
+                                    <a class="button" href="{{ url_for('users.user_page',  username=user.username) }}">More
+                                        info</a>
+                                </div>
+                                <div class="column">
+                                    <h2 class="subtitle">Passengers information</h2>
+                                    {% if passengers %}
+                                        {% for passenger in passengers %}
+                                            <figure class="image is-128x128">
+                                                <img class="is-rounded" src="{{ passenger.avatar(128) }}">
+                                            </figure>
+                                            <br>
+                                            <p> Name: {{ passenger.firstname }} {{ passenger.lastname }} </p>
+                                            <p> email: {{ passenger.email }} </p>
+                                            <a class="button"
+                                               href="{{ url_for('users.user_page',  username=passenger.username) }}">More
+                                                info</a>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div>
+                                            <strong>No passengers</strong>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="column">
-                        <h2 class="subtitle">Driver information</h2>
-                        <figure class="image is-128x128">
-                            <img class="is-rounded" src="{{ user.avatar(128) }}">
-                        </figure>
-                        <br>
-                        <p> Name: {{ user.firstname }} {{ user.lastname }} </p>
-                        <p> email: {{ user.email }} </p>
-                    </div>
-                </div>
-                <br><br>
-                <div class="buttons">
-                    {% if requested %}
-                        <button class="button is-primary">Cancel request</button>
-                    {% else %}
-                    {{ form.submit(class="button is-primary") }}
+                    <br><br>
+                    {% if not isdriver %}
+                        <div class="buttons">
+                            {% if requested %}
+                                <button class="button is-primary">Cancel request</button>
+                            {% else %}
+                                {{ form.submit(class="button is-primary") }}
+                            {% endif %}
+                        </div>
                     {% endif %}
                 </div>
-            </div>
-        </form>
-    </div>
-</section>
+            </form>
+        </div>
+    </section>
 {% endblock %}

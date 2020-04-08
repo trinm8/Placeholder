@@ -95,8 +95,15 @@ def drive(drive_id):
     form = SendRequestForm()
     trip = Route.query.get_or_404(drive_id)
     user = User.query.get(trip.driver_id)
+    requests = RouteRequest.query.filter_by(route_id=drive_id).all()
+    acceptedRequests = []
+    for requestparse in requests:
+        if requestparse.status == RequestStatus.accepted:
+            acceptedRequests.append(User.query.get(requestparse.user_id))
     requested = bool(RouteRequest.query.filter_by(route_id=drive_id, user_id=current_user.id).first())
-
+    isDriver = False
+    if user.id == trip.driver_id:
+        isDriver = True
     # From routes that where registered without a drive, should be removed in the future
     if user is None:
         user = current_user
@@ -114,7 +121,7 @@ def drive(drive_id):
         return redirect(url_for("main.index"))
 
     return render_template('routes/request_route.html', form=form, user=user, trip=trip, requested=requested,
-                           title='Route Request')
+                           title='Route Request', passengers=acceptedRequests, isdriver=isDriver)
 
 
 @bp.route('/drives/<drive_id>/passenger-requests/<user_id>', methods=['GET', 'POST'])
@@ -149,17 +156,19 @@ def passenger_request(drive_id, user_id):
 
 @bp.route("/overview", methods=["GET"])
 def overview():
+    form = AddRouteForm()
     lat_from = request.args.get('lat_from')
     long_from = request.args.get('long_from')
     lat_to = request.args.get('lat_to')
     long_to = request.args.get('long_to')
+    distance = 1/768
     routes = Route.query \
-        .filter((lat_from - Route.departure_location_lat) * (lat_from - Route.departure_location_lat) > -10) \
-        .filter((long_from - Route.departure_location_long) * (long_from - Route.departure_location_long) > -10) \
-        .filter((lat_to - Route.arrival_location_lat) * (lat_to - Route.arrival_location_lat) > -10) \
-        .filter((long_to - Route.arrival_location_long) * (long_to - Route.arrival_location_long) > -10)
-    return render_template('routes/route_overview.html', routes=routes, title="Search", src=addr(lat_from, long_from),
-                           dest=addr(lat_to, long_to))
+        .filter((lat_from - Route.departure_location_lat) * (lat_from - Route.departure_location_lat) < distance) \
+        .filter((long_from - Route.departure_location_long) * (long_from - Route.departure_location_long) < distance) \
+        .filter((lat_to - Route.arrival_location_lat) * (lat_to - Route.arrival_location_lat) < distance) \
+        .filter((long_to - Route.arrival_location_long) * (long_to - Route.arrival_location_long) < distance)
+    return render_template('routes/search_results.html', routes=routes, title="Search", src=addr(lat_from, long_from),
+                           dest=addr(lat_to, long_to), form=form)
 
 
 @bp.route('/index', methods=['GET'])
