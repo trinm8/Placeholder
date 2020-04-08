@@ -20,26 +20,40 @@ import os
 from geopy.geocoders import Nominatim
 
 
+def get_from_dict(dictionary, *args):
+    for word in args:
+        if word in dictionary:
+            return dictionary[word]
+    return ""
+
+
 def addr(lat, long):
-    # https://stackoverflow.com/questions/11390392/return-individual-address-components-city-state-etc-from-geopy-geocoder
     geolocator = Nominatim(user_agent="[PlaceHolder]")
+
     try:
         location = geolocator.reverse(str(lat) + ", " + str(long))
     except GeocoderTimedOut:
         return "Geocoder timed out :/"
 
     addr_dict = location.raw["address"]
-    try:
-        location_str = addr_dict["road"] + " " + addr_dict["house_number"] + ", " + addr_dict["postcode"] + " "
-        if "city" in addr_dict:
-            location_str += addr_dict["city"]
-        elif "town" in addr_dict:
-            location_str += addr_dict["town"]
-    except:
-        try:
-            location_str = addr_dict["cycleway"] + ", " + addr_dict["postcode"] + " " + addr_dict["city"]
-        except:
-            location_str = str(location.address)
+
+    location_str = ""
+
+    # Address line
+    location_str += get_from_dict(addr_dict, "road", "avenue", "street", "cycleway", "pedestrian") + " "
+    # Number
+    location_str += get_from_dict(addr_dict, "house_number")
+    # Only add a ", " if you've already added something so far (that's not a space)
+    location_str += ", " if len(location) > 1 else ""
+    # Postcode
+    location_str += get_from_dict(addr_dict, "postcode") + " "
+    # City
+    location_str += get_from_dict(addr_dict, "city", "town")
+
+    # When nothing could be added
+    if len(location_str) <= 4:
+        location_str = str(location.address)
+
     return location_str
 
 
@@ -72,7 +86,6 @@ class User(UserMixin, db.Model):
     # Authentication tokens
     token = db.Column(db.String(32), index=True, unique=True)
     token_expiration = db.Column(db.DateTime)
-
 
     def __repr__(self):
         return '<User {} {}>'.format(self.name, self.lastname)
@@ -136,11 +149,11 @@ class User(UserMixin, db.Model):
         routes_driver = Route.query.filter_by(driver_id=self.id)
         routes_passenger = Route.query.filter(RouteRequest.query.filter_by(user_id=self.id, route_id=Route.id).exists())
         routes = routes_driver.union(routes_passenger)
-        #future_routes = routes.filter(Route.departure_time >= current_time).all()
+        # future_routes = routes.filter(Route.departure_time >= current_time).all()
         future_routes = routes.filter(Route.departure_time > current_time).all()
 
         notifications = []
-        if(len(future_routes) > 0):
+        if (len(future_routes) > 0):
             f = "Next route: " + future_routes[0].departure_time.isoformat() + "\n" + future_routes[0].text_to()
             notifications.append(f)
         else:
