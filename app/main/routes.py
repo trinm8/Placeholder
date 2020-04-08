@@ -7,6 +7,8 @@ from app.main import bp
 
 from sqlalchemy import union
 
+from datetime import datetime
+
 
 @bp.route('/lol')
 def lol():
@@ -25,10 +27,14 @@ def lol():
 @bp.route('/')
 def index():
     if current_user.is_authenticated:
-        routes_driver = Route.query.filter_by(driver_id=current_user.id) #TODO: Check date is not past yet
+        current_time = datetime.utcnow()
+        routes_driver = Route.query.filter_by(driver_id=current_user.id)
         routes_passenger = Route.query.filter(RouteRequest.query.filter_by(user_id=current_user.id, route_id=Route.id).exists())
         routes = routes_driver.union(routes_passenger)
-        return render_template('main/main_logged_in.html', title='Dashboard', routes=routes)
+
+        future_routes = Route.query.filter(Route.departure_time >= current_time) #TODO: intersection nemen
+
+        return render_template('main/main_logged_in.html', title='Dashboard', routes=routes, future_routes=future_routes)
     return render_template('main/home.html', title='Welcome')
 
 
