@@ -169,3 +169,31 @@ def overview():
         .filter((long_to - Route.arrival_location_long) * (long_to - Route.arrival_location_long) < distance)
     return render_template('routes/search_results.html', routes=routes, title="Search", src=addr(lat_from, long_from),
                            dest=addr(lat_to, long_to), form=form)
+
+
+@bp.route('/index', methods=['GET'])
+@login_required
+def notifications():
+    requests = RouteRequest.query \
+        .filter(Route.query
+                .filter_by(driver_id=current_user.id)
+                .filter_by(id=RouteRequest.route_id)
+                .filter_by(status=RequestStatus.pending)
+                .exists())
+
+    current_time = datetime.utcnow()
+    future_routes = Route.query.filter(Route.departure_time >= current_time, driver_id=current_user.id)
+
+    return render_template('base.html', title='Notifications', pending_requests=requests, future_routes=future_routes)
+
+
+@bp.route('/history', methods=['GET'])
+@login_required
+def history():
+    routes_driver = Route.query.filter_by(driver_id=current_user.id)
+    routes_passenger = Route.query.filter(
+        RouteRequest.query.filter_by(user_id=current_user.id, route_id=Route.id).exists())
+    routes = routes_driver.union(routes_passenger)
+
+
+    return render_template('main/history.html', title='Notifications', routes=routes)

@@ -149,16 +149,16 @@
                                <i class="far fa-bell"></i>
                            </span>
                            <button type="button" class="btn btn-primary">
-                               <span class="badge badge-light">4</span>
+                               <span class="badge badge-light">{{ current_user.getNotifications()|length }}</span>
                            </button>
                        </a>
-                       {% for notification in current_user.notifications %}
                        <div class="navbar-dropdown is-boxed">
+                           {% for notification in current_user.getNotifications() %}
                            <a class="navbar-item">
                                {{ notification }}
                            </a>
+                           {% endfor %}
                        </div>
-                       {% endfor %}
                    </div>
 
                     <a class="navbar-item" href="{{ url_for('users.account_settings') }}">

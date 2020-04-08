@@ -42,6 +42,7 @@ def addr(lat, long):
             location_str = str(location.address)
     return location_str
 
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
@@ -71,6 +72,7 @@ class User(UserMixin, db.Model):
     # Authentication tokens
     token = db.Column(db.String(32), index=True, unique=True)
     token_expiration = db.Column(db.DateTime)
+
 
     def __repr__(self):
         return '<User {} {}>'.format(self.name, self.lastname)
@@ -122,6 +124,33 @@ class User(UserMixin, db.Model):
     def name(self):
         return self.firstname + " " + self.lastname
 
+    def getNotifications(self):
+        requests = RouteRequest.query \
+            .filter(Route.query
+                    .filter_by(driver_id=self.id)
+                    .filter_by(id=RouteRequest.route_id)
+                    .exists()) \
+            .filter_by(status=RequestStatus.pending)
+
+        current_time = datetime.utcnow()
+        routes_driver = Route.query.filter_by(driver_id=self.id)
+        routes_passenger = Route.query.filter(RouteRequest.query.filter_by(user_id=self.id, route_id=Route.id).exists())
+        routes = routes_driver.union(routes_passenger)
+        #future_routes = routes.filter(Route.departure_time >= current_time).all()
+        future_routes = routes.filter(Route.departure_time > current_time).all()
+
+        notifications = []
+        if(len(future_routes) > 0):
+            f = "Next route: " + future_routes[0].departure_time.isoformat() + "\n" + future_routes[0].text_to()
+            notifications.append(f)
+        else:
+            notifications.append("No routes planned in the future")
+
+        for request in requests:
+            notifications.append(request)
+
+        return notifications
+
 
 class Route(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -159,10 +188,10 @@ class Route(db.Model):
         if "arrive-by" in data:
             # src: https://stackoverflow.com/questions/969285/how-do-i-translate-an-iso-8601-datetime-string-into-a-python-datetime-object
             self.departure_time = dateutil.parser.parse(data["arrive-by"])
-            
+
     def text_from(self):
         return addr(self.departure_location_lat, self.departure_location_long)
-    
+
     def text_to(self):
         return addr(self.arrival_location_lat, self.arrival_location_long)
 
@@ -194,6 +223,27 @@ class RouteRequest(db.Model):
 
     def accepted(self):
         return self.status == RequestStatus.accepted
+
+    def accept(self):
+        self.status = RequestStatus.accepted
+
+    def reject(self):
+        self.status = RequestStatus.rejected
+
+    def to_dict(self):
+        return {
+            'route_id': self.route_id,
+            'user_id': self.user_id,
+            'status': self.status.value
+        }
+
+    def from_dict(self, data):
+        if 'route_id' in data:
+            self.route_id = data['route_id']
+        if 'user_id' in data:
+            self.user_id = data['user_id']
+        if 'status' in data:
+            self.status = data['status']
 
 
 class MusicPref(db.Model):

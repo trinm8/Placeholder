@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+    <section class="section">
+        <h1 class="title">History</h1>
+        <h2 class="subtitle">All routes where you have participated in</h2>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Creator</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Time</th>
+            </tr>
+            </thead>
+
+            {% for route in routes %}
+                <tr>
+                    <td>{{ route.creator }}</td>
+                    <td>{{ route.text_from() }}</td>
+                    <td>{{ route.text_to() }}</td>
+                    <td>{{ route.departure_time }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    </section>
+
+{% endblock %}
