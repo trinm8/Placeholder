@@ -1,0 +1,139 @@
+\documentclass{article}
+
+
+\usepackage[urlcolor=blue, linkcolor=black, colorlinks=true]{hyperref}
+\usepackage[dutch]{babel}
+\usepackage{minutes}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\makeatletter
+\addto\extrasdutch{%
+\def\min@textTask{Taak}%
+}
+\makeatother%
+\makeatletter
+\def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+
+
+
+\newcounter{team}
+
+% TODO: Enter team number here:
+\setcounter{team}{6}
+
+
+\begin{document}
+%	\tableofcontents
+
+	\begin{Minutes}{Programming Project Databases \\ Wekelijks Verslag Team \arabic{team}}
+		\moderation{Arno Deceuninck}
+		\minutetaker{Arno Deceuninck}
+		\participant{Arno Deceuninck, Sam Peeters, Sien Nuyens, Tim Sanders}
+		\missingNoExcuse{/}
+		\missingExcused{/}
+%		\guest{\ldots}
+		\minutesdate{1 April 2020 (hehe)}
+		\starttime{11u00}
+		\endtime{11u30}
+
+		\maketitle
+
+		\topic{Discord call}
+		    Vandaag zat iedereen in de call om 11:00:08, het record blijft op 11:00:01.
+
+		\topic{Coordinator Vergadering}
+    		Is doorgegaan via Hangouts. Arno was hier aanwezig.
+    		\begin{itemize}
+    		    \item Laatste meeting voor de paasvakantie (3-4 weken tot deadline)
+    		    \item Wat concreet al af bij iedereen
+    		        \subitem Team 1: API werkt, tegen volgende week hopelijk alles af, momenteel alles een beetje
+    		        \subitem Team 2: Is er stillaan aan het geraken, vooral nog werk aan backend
+    		        \subitem Team 3: Focust vooral op ritten creeeren (en map in GUI (maps api geeft een billing probleem: Visa kaart nodig))
+    		        \subitem Team 4: Alles geraakt wel in orde, nog niet veel qua API
+    		        \subitem Team 5:  Technische isuues met Angular, nog niets op de server gezet
+    		        \subitem Team 6: Deze week aan API's gewerkt, backend werkt zo goed als, nog een beetje finetunen. Frontend kan nog wel wa gebruiksvriendelijker gemaakt worden en ontbreken ook nog pagina's (of links ernaar in de GUI). De deadline gaan we wel halen.
+    		    \item Joey verwacht dat er veel verschillende projecten gaan zijn omdat iedereen wel een andere interpretatie heeft van de basisvereisten.
+    		    \item Hou tijdens de paasvakantie zeker nog contact met je team. Dan zijn er geen meetings met Joey. De week daarna is het evaluatie en daarna weer meetings.
+    		    \item API beschreven op apiary: Je mag er dingen aan toevoegen, dit is de minimum api, maar is dus niet perse nodig
+    		    \item Geen filmpje, gewoon via Hangouts. Eventueel in juni, maar dat valt zeker nog te bekijken.
+    		    \item cat /var/log/nginx/acces.log voor de requests die naar de pagina zijn gemaakt. De api moeten in de blueprint root /api (stond bij base URL in documentatie)
+    		\end{itemize}
+
+		\topic{Status}
+
+			\subtopic{Overzicht Taken}
+				\task*[ALMOST DONE]{Routes toevoegen finetunen}
+				\task*[ALMOST DONE]{Music settings uit database finetunen}
+			    \task*[ALMOST DONE]{Request pagina}
+			    \task*[WIP]{Request overview page getest}
+			    \task*[WIP]{Notifications navbar}
+			    \task*[WIP]{API requests}
+			    \task*[WIP]{Echte data in main logged in}
+			    \task*[DONE]{Don't click here counter}
+		\topic{Besproken Onderwerpen}
+				\subtopic{Routes toevoegen finetunen}
+				    Er was een internal error indien het adres niet bestond, dit is ondertussen opgelost met een melding.
+				    Tim licht dit toe. Je kan al een adres ingeven om de juiste coordinaten te krijgen. Er is een functie toegevoegd om coordinaten om te zetten in een adres. De locaties zijn vaak nog maar net in beeld, zou het mogelijk een kleine padding van de rand te hebben? Als je je opgeeft als passenger wordt de route niet meer toegevoegd, maar dan zoek je naar routes in de buurt. Indien we tijd te veel hebben moeten we zeker eens kijken naar hoe we het adres automatisch kunnen laten aanvullen. Leaflet support enkel dat je rechte lijnen kan tekenen. Dit blijft geen hoge prioriteit. Via google api zou dit makkelijker gaan, maar dat gaan we niet doen wegens billing problem. Je kan een datum ingeven maar geen uur. Tim neemt hier nog een kijkje naar. Departure date omzetten naar Arrive date.
+			    \subtopic{Music settings uit database}
+			        Het verwijderen werkt ondertussen. Is er al iets dat automatisch aanvult, zodat er niet honderd keer hetzelfde staat, maar anders getypt? Hij heeft al hiernaar gekeken. Was momenteel verwarrend met de autocomplete van de browser en er kwamen nog duplicates in voor.
+			    \subtopic{Request pagina}
+					Er bestaat zowel een pagina om requests te maken als te bevestiggen. Titel van request maak pagina moet nog aangepast worden, net als de coordinaten en alles zou aan de GUI gelinkt moeten worden.
+				\subtopic{Request overview page}
+				    Dit gaf bij mij nog een internal error. Sam licht toe. ("'BaseQuery' object has no attribute 'departure\_time'", dit betekent meestal dat je niet geselecteerd hebt welk item van de query je wil. Vaak is .first() op je query hiervoor een oplossing. De echte locaties moeten hier ook nog aan toegevoegd worden en eventueel ook de frontend wat aanpassen als alles werkt.
+				\subtopic{Notificaties navbar}
+				   Dit gaf bij mij nog geen overzicht van de requests die ik gestuurd had naar de persoon. Sien licht dit toe. Het heeft een dropdown menu, maar dat is nog niet gepusht. Momenteel gaat dit naar de get\_request page. Geen idee waar de notifications zijn opgeslagen. Notifications zijn  requests waarbij de status nog op pending staat of routes die je vandaag gaat doen. Er is geen route voor base, best eens online opzoeken hoe andere mensen dat doen. Ze weet al hoe je een cijfer achter de notifications moet zetten, maar niet hoeveel het er zijn.
+				\subtopic{API requests}
+				    Tim en Arno hebben hier samen naar gekeken. Deze moeten in de base url /api. Dit zou voor zowel het aanmaken van routes als het registreren werken. Toen we samenkwamen hadden we wel nog niet goed een idee hoe de token moest werken. Tim licht dit toe.  Registreren zou moeten werken. Voor de tokens gaan we g.current\_user moeten gebruiken om het stateless te houden. Voor de rest kunne we de login required decorators gebruiken.
+				\subtopic{Echte data in main logged in}
+				    Ik krijg nog steeds de mockup data. Sien licht dit toe. Dit is al ongeveer af, maar nog niet gepusht.
+				\subtopic{Don't click here button}
+				    De counter hiervoor is toegevoegd en het aantal keer dat er al op geklikt is kan je subtiel terugvinden in de about page.
+				\subtopic{Verborgen melding}
+				    Vorige week stond Joey zijn naam als "acrostic" in de varia puntjes. Vanaf deze week gaan we geen namen meer verstoppen.
+		\topic{Afspraken \& Planning}
+
+			\begin{itemize}
+			    \item De route zoek pagina moet een beter layout krijgen en de range van de zoekresultaten moet kleiner. Arno doet dit.
+			    \item Het project moet geherstructureerd worden omdat het huidige routes bestand te lang en onoverzichtelijk wordt. Arno doet dit.
+			    \item Tim finetunet locatie toevoegen nog meer, zodat de locatie niet altijd helemaal aan de rand staat en je een tijdstip kan toevoegen.
+			    \item Sam vervolledigt nog de details voor het toevoegen van music settings.
+			    \item Tim fixt de layout van de /web/drives/1 pagina.
+			    \item Sien neemt nog een kijkje naar hoe je aan de notificaties kan geraken en verwijdert ook de text "Notificaties"
+			    \item Sam regelt de requests aanvaarden/weigeren voor de api. (en opvragen en toevoegen)
+			    \item Sien regelt de requests om de routes te zoeken.
+			    \item Sien ziet voor de main logged in een aparte history page. Ah de huidig geselecteerde route moet meegegeven kunnen worden.
+			\end{itemize}
+
+
+		\topic{Varia}
+			\emph{Eventuele varia punten. Hierbij vragen we ook aan alle aanwezigen of zij nog iets te zeggen hebben.}
+				\subtopic{Sien}
+				    Nope.
+				\subtopic{Sam}
+				    Prettige vakantie (ookal gaan we geen vakantie hebben)
+				\subtopic{Tim}
+				    Niet direct iets te zeggen.
+				\subtopic{Arno}
+				    Joey vond vorige week onze varia puntjes idd wel wat raar, maar hij dacht dat dat de taal van de jeugd tegenwoordig was.
+
+
+		\blfootnote{
+			\href{%
+				mailto:joey.depauw@uantwerpen.be%
+				?subject=PPDB 2019-2020: Wekelijks Verslag Team \arabic{team}%
+				&body=Liefste Joey\%0D\%0A%
+				\%0D\%0A%
+				Gelieve ons wekelijks verslag terug te vinden in de bijlage.\%0D\%0A%
+				\%0D\%0A%
+				Groetjes\%0D\%0A%
+				Team \arabic{team}\%0D\%0A%
+			}{Klik hier} om mij op te sturen.
+		}
+
+
+	\end{Minutes}
+\end{document}
