@@ -85,4 +85,5 @@ doc/verslag/*
 migrations/*
 
 app/__pycache__/*
+!**/__pychache__/
 *.pyc
