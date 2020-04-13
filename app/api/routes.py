@@ -59,3 +59,22 @@ def change_request_status():
     response.status_code = 201
     response.headers['Location'] = url_for('api.get_request', drive_id=route_req.route_id, user_id=route_req.user_id)
     return response
+
+
+@bp.route("/overview", methods=["GET"])
+def overview():
+    data = request.get_json() or {}
+    if "from" not in data or "to" not in data or "passenger-places" not in data or "arrive-by" not in data:
+        return bad_request("Must include from, to passenger-places and time")
+
+    lat_from = data["from"][0]
+    long_from = data["from"][1]
+    lat_to = data["to"][0]
+    long_to = data["to"][1]
+    distance = 1/768
+    routes = Route.query \
+        .filter((lat_from - Route.departure_location_lat) * (lat_from - Route.departure_location_lat) < distance) \
+        .filter((long_from - Route.departure_location_long) * (long_from - Route.departure_location_long) < distance) \
+        .filter((lat_to - Route.arrival_location_lat) * (lat_to - Route.arrival_location_lat) < distance) \
+        .filter((long_to - Route.arrival_location_long) * (long_to - Route.arrival_location_long) < distance)
+    return jsonify(routes.to_dict())

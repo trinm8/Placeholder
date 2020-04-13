@@ -1,4 +1,5 @@
 from geopy.exc import GeocoderTimedOut
+from geopy.exc import GeocoderQueryError
 
 from app import db, login
 
@@ -34,6 +35,9 @@ def addr(lat, long):
         location = geolocator.reverse(str(lat) + ", " + str(long))
     except GeocoderTimedOut:
         return "Geocoder timed out :/"
+    except GeocoderQueryError:
+        return "Geocoder errored on query"
+
 
     addr_dict = location.raw["address"]
 
