@@ -15,13 +15,13 @@ def user_page(username):
 
 
 def get_suggested_genres():
-    all_genres = [g.genre for g in MusicPref.query.all()]
-    frequency = {k: 0 for k in set(all_genres)}
-    for g in all_genres:
-        frequency[g] = frequency[g] + 1
-    # Source: https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
-    frequency = {k: v for k, v in sorted(frequency.items(), key=lambda item: item[1], reverse=True)}
-    return [list(frequency)[i] for i in range(0, 10)]
+    return set([g.genre for g in MusicPref.query.all()])
+    # frequency = {k: 0 for k in set(all_genres)}
+    # for g in all_genres:
+    #     frequency[g] = frequency[g] + 1
+    # # Source: https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
+    # frequency = {k: v for k, v in sorted(frequency.items(), key=lambda item: item[1], reverse=True)}
+    # return [list(frequency)[i] for i in range(0, 10)]
 
 
 @bp.route('/account/settings', methods=['GET', 'POST'])
