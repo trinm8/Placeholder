@@ -5,28 +5,27 @@
     <section class="section">
         <h1 class="title">Request overview</h1>
         <h2 class="subtitle">All requests for routes where you are the driver for</h2>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Status</th>
-                <th>User</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Time</th>
-            </tr>
-            </thead>
 
-            {% for request in requests %}
-                <tr>
-                    <td>{{ request.status }}</td>
-                    <td>{{ request.user().name() }}</td>
-                    <td>{{ request.route().text_from() }}</td>
-                    <td>{{ request.route().text_to() }}</td>
-                    <td>{{ request.route().departure_time }}</td>
-                    <td><a class="button" href="{{ url_for("routes_drive.passenger_request", drive_id=request.route().id, user_id=request.user_id) }}">View</a> </td>
-                </tr>
-            {% endfor %}
-        </table>
+        {% for request in requests %}
+            <div class="card">
+                <div class="card-content">
+                    {% if request.status.name == 'accepted' %}
+                        <span class="card is-success">Accepted</span>
+                    {% elif request.status.name == 'rejected' %}
+                        <span class="card is-danger">Rejected</span>
+                    {% else %}
+                        <span class="card is-primary">Pending</span>
+                    {% endif %}
+                    <p class="title">{{ request.user().name() }} wants to ride!</p>
+                    <strong>FROM:</strong> {{ request.route().text_from() }}<br>
+                    <strong>TO:</strong> {{ request.route().text_to() }}<br>
+                    <strong>TIME:</strong> {{ request.route().departure_time.isoformat() }}
+                    <a class="button" href="{{ url_for("routes_drive.passenger_request", drive_id=request.route().id, user_id=request.user_id) }}">
+                        View
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
 
     </section>
 

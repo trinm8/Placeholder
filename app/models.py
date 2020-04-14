@@ -249,18 +249,10 @@ class RouteRequest(db.Model):
 
     def to_dict(self):
         return {
-            'drive_id': self.route_id,
-            'user-id': self.user_id,
+            'id': self.route_id,
+            'username': self.user().username,
             'status': self.status.name
         }
-
-    def from_dict(self, data):
-        if 'route_id' in data:
-            self.route_id = data['drive_id']
-        if 'user_id' in data:
-            self.user_id = data['user_id']
-        if 'status' in data:
-            self.status = data['status']
 
 
 class MusicPref(db.Model):
