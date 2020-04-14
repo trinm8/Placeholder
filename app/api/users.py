@@ -8,10 +8,13 @@ from app.api import bp
 
 @bp.route('/users/register', methods=['POST'])
 def register_user():
+
     data = request.get_json() or {}
     if "username" not in data or "password" not in data or "firstname" not in data or "lastname" not in data:
         return bad_request("Must include username, password, firstname and lastname")
     user_id = register_user_func(data["username"], data["firstname"], data["lastname"], data["password"])
+    if not user_id:
+        return bad_request("User couldn't be created. The name is probably already taken.")
     response = jsonify(id=user_id)
     response.status_code = 201
     return response
