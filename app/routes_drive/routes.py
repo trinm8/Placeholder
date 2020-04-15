@@ -6,9 +6,10 @@ from app.routes_drive.forms import RequestForm, SendRequestForm, AddRouteForm
 from flask import flash, render_template, url_for, redirect, request
 from flask_login import current_user, login_required
 
+from sqlalchemy import Date, cast
 
 from geopy import Nominatim
-from datetime import datetime  # Todo: Datetime
+from datetime import datetime, date  # Todo: Datetime
 
 
 def createRoute(form, departurelocation, arrivallocation):
@@ -50,7 +51,7 @@ def addRoute():
             return redirect(
                 url_for("routes_drive.overview", lat_from=departure_location.latitude,
                         long_from=departure_location.longitude,
-                        lat_to=arrival_location.latitude, long_to=arrival_location.longitude))
+                        lat_to=arrival_location.latitude, long_to=arrival_location.longitude, time=form.date.data))
 
         if form.date.data < datetime.now():  # TODO datetime
             flash("Date is invalid")
@@ -105,7 +106,7 @@ def drive(drive_id):
     if current_user.id == driver.id:
         isDriver = True
     # From routes that where registered without a drive, should be removed in the future
-    #if current_user is None:
+    # if current_user is None:
     #    user = current_user
 
     if form.validate_on_submit():
@@ -132,7 +133,6 @@ def passenger_request(drive_id, user_id):
     user = User.query.filter_by(id=user_id).first_or_404()
     request = RouteRequest.query.filter_by(route_id=drive_id, user_id=user_id).first_or_404()
 
-
     if request.status == RequestStatus.accepted:
         flash("This route request has already been accepted")
         return redirect(url_for("main.index"))
@@ -157,16 +157,33 @@ def passenger_request(drive_id, user_id):
 @bp.route("/overview", methods=["GET"])
 def overview():
     form = AddRouteForm()
+
     lat_from = request.args.get('lat_from')
     long_from = request.args.get('long_from')
+    departure_location = (lat_from, long_from)
+
     lat_to = request.args.get('lat_to')
     long_to = request.args.get('long_to')
-    distance = 1/768
-    routes = Route.query \
-        .filter((lat_from - Route.departure_location_lat) * (lat_from - Route.departure_location_lat) < distance) \
-        .filter((long_from - Route.departure_location_long) * (long_from - Route.departure_location_long) < distance) \
-        .filter((lat_to - Route.arrival_location_lat) * (lat_to - Route.arrival_location_lat) < distance) \
-        .filter((long_to - Route.arrival_location_long) * (long_to - Route.arrival_location_long) < distance)
+    arrival_location = (lat_to, long_to)
+
+    time = request.args.get('time')  # Should only be the date
+    time = datetime.strptime(time, '%Y-%m-%d %H:%M:%S')
+
+    same_day_routes = Route.query.filter(
+        cast(Route.departure_time, Date) == time.date()).all()  # https://gist.github.com/Tukki/3953990
+
+    routes = []
+
+    from geopy import distance  # No idea why this include won't work when placed outside this function
+
+    allowed_distance = 2
+    for route in same_day_routes:
+        route_dep = (route.departure_location_lat, route.departure_location_long)
+        route_arr = (route.arrival_location_lat, route.arrival_location_long)
+        if distance.distance(route_dep, departure_location).km <= allowed_distance and \
+                distance.distance(route_arr, arrival_location).km <= allowed_distance:
+            routes.append(route)
+
     return render_template('routes/search_results.html', routes=routes, title="Search", src=addr(lat_from, long_from),
                            dest=addr(lat_to, long_to), form=form)
 
@@ -176,7 +193,8 @@ def overview():
 def history():
     current_time = datetime.utcnow()
     routes_driver = Route.query.filter_by(driver_id=current_user.id)
-    routes_passenger = Route.query.filter(RouteRequest.query.filter_by(user_id=current_user.id, route_id=Route.id).exists())
+    routes_passenger = Route.query.filter(
+        RouteRequest.query.filter_by(user_id=current_user.id, route_id=Route.id).exists())
     routes = routes_driver.union(routes_passenger)
 
     past_routes = routes.filter(Route.departure_time <= current_time)
