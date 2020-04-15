@@ -1,0 +1,202 @@
+\documentclass{article}
+
+
+\usepackage[urlcolor=blue, linkcolor=black, colorlinks=true]{hyperref}
+\usepackage[dutch]{babel}
+\usepackage{minutes}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\makeatletter
+\addto\extrasdutch{%
+\def\min@textTask{Taak}%
+}
+\makeatother%
+\makeatletter
+\def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+
+
+
+\newcounter{team}
+
+% TODO: Enter team number here:
+\setcounter{team}{6}
+
+
+\begin{document}
+%	\tableofcontents
+
+	\begin{Minutes}{Programming Project Databases \\ Wekelijks Verslag Team \arabic{team}}
+		\moderation{Arno Deceuninck}
+		\minutetaker{Arno Deceuninck}
+		\participant{Arno Deceuninck, Sam Peeters, Sien Nuyens, Tim Sanders}
+		\missingNoExcuse{/}
+		\missingExcused{/}
+%		\guest{\ldots}
+		\minutesdate{15 April 2020}
+		\starttime{11u00}
+		\endtime{12u30}
+
+		\maketitle
+
+
+		\topic{Coordinator Vergadering}
+    		Is niet doorgegaan omdat het nogsteeds paasvakantie is.
+
+		\topic{Status}
+
+			\subtopic{Overzicht Taken}
+			    \task*[ABORTED]{Adres automatisch aanvullen}
+			    \task*[DONE]{Request overview page getest}
+			    \task*[DONE]{Notifications navbar}
+			    \task*[WIP]{API requests}
+			    \task*[DONE]{Pycache van Github verwijderen}
+			    \task*[DONE]{Adres als kortere string weergeven}
+			    \task*[WIP]{Route zoek pagina}
+			    \task*[ALMOST DONE]{Drives pagina}
+			    \task*[DONE]{Adres als korte string weergeven}
+			    \task*[DONE]{Geocoder Except}
+			    \task*[DONE]{Route history page}
+			    \task*[WIP]{Spotify}
+			    \task*[TODO]{Routes sorteren op muziekvoorkeur}
+			    \task*[WIP]{Unittests}
+			    \task*[TODO]{Tussentijds Rapport}
+			    \task*[TODO]{Database Diagram}
+
+		\topic{Besproken Onderwerpen}
+		       \subtopic{Adres automatisch aanvullen}
+				    \begin{quote}
+				        Unacceptable Use
+                        The following uses are strictly forbidden and will get you banned:
+
+                        Auto-complete search This is not yet supported by Nominatim and you must not implement such a service on the client side using the API.
+				    \end{quote}
+				    We kunnen Nominatim dus niet gebruiken om de adressen automatisch te laten aanvullen. Er is een limiet van 1 request per seconde. Om dit probleem te omzeilen zullen we het adres als string in de database opslaan in dezelfde tabel als route.
+				\subtopic{Request overview page}
+				    De front end hiervan zou geupdated moeten zijn. Sam licht toe. Is hetzelfde als de search page, maar het is nog niet getest. Sam ziet nogsteeds de knop om een route toe te voegen niet.
+				\subtopic{Notificaties navbar}
+				  Ging jij nog een kijkje nemen naar de layout van dat getal? Ja wacht ze, Oh shit, nu wou ik pushen en moet ik mergen euheuh, sorry, ik had da toch gepusht, normaal gezien is da gefixt. Sien neemt hier nog een kijkje naar. Aangezien die redelijk lelijk is in mijn browser? Is het mogelijk om niet alle info van de notificatie op eenzelfde lijn te zetten, waardoor dat sowieso buiten beeld valt? Is het misschien ook mogelijk om als je op de notificatie klikt, je op de pagina voor die notificatie komt en niet op het overzicht van alle notificaties? Er staat bij mij ook dat ik 1 notificatie heb, maar als ik erop klik, heb ik niets staan in de overview page. Als de enige notificatie je eerstvolgende route is, misschien het getal op 0 laten staan? Sien licht toe. Tegen volgende week is dit gefixt.
+                \subtopic{Main logged in}
+                    De routes in de homepage moeten nog op datum gesorteerd worden.
+				\subtopic{API requests}
+				    Sam zou zijn url voor de api's moeten aangepast hebben. Dit is gebeurd, maar er zijn nog wel TODO's: een link voor aparte requests. Response bij /drives/drive\_id/passenger-requests bevat een link naar /drives/drive\_id/passenger-requests/user\_id, maar deze heeft geen GET gespecifieerd in apiary. Sam zal dit nog toevoegen.
+				    Sien licht routes zoeken toe. Ze heeft dit geschreven en gepusht, maar ze moet dit nog testen. Ze heeft geen idee of het werkt.
+				    Op de login api kom ik straks nog even terug bij mijn puntje over unittests.
+				\subtopic{Random}
+				    Sien krijgt een internal server error als ze op settings in de balk druk. Bij de rest werkt dit wel. Na de vergadering neem ik daar met Sien een kijkje naar.
+				    Als een request wordt toegevoegd komt dit nog niet op de main. Dit is omdat passengers via de requests teruggevonden kunnen worden.
+				\subtopic{Route zoek pagina}
+				    Misschien is het hier wel handig om een slider op deze pagina te hebben zodat je de range kan selecteren en de datum zou ook in rekening genomen moeten worden bij het zoeken van een route, eventueel ook met een range. Bovendien moet de zoekfunctie van die pagina nog gekoppeld worden aan de backend (is momenteel enkel mogelijk via route toevoegen als passenger)
+				\subtopic{Drives pagina}
+				    Als er meer dan 1 passenger is, waar wordt die dan toegevoegd? Normaal eronder. Ik zou driver en passenger information niet in dezelfde kolom doen, aangezien dit er een beetje te dicht bij elkaar uitziet. Dit is al gebeurd in meeste paginas, maar moet nog in de route accept/reject pagina geupdated worden. Tim doet dit. We kunnen altijd de map een minder grote oppervlakte in beslag laten nemen.
+				\subtopic{Adres als korte string weergeven}
+				    Dit zou moeten werken, maar is wel gebasseerd op wat uitzonderingen. Als je dus een adres tegenkomt waarvoor dit nog niet werkt, laat het dan zeker weten. \href{https://stackoverflow.com/questions/60994091/is-there-a-way-to-convert-a-geopy-location-to-a-short-address-string}{Stackoverflow} wist hier ook geen antwoord op.
+				\subtopic{Except voor geocoder timeout bij route toevoegen}
+				    Tim zou dit toegevoegd moeten hebben. Het probleem is bij Nomapy timeout, waar we aan de limiet van 1 request per seconde zaten. Bij het toevoegen blijven we dit opnieuw proberen en voegen we het adres zowel de coordinaten als de text toe aan de database, zodat we geen request meer naar hun servers moeten doen bij het opvragen.
+				\subtopic{Route history page}
+				    De juiste query zou nu gebruikt moeten worden. Sien licht toe. Dit is gebeurd. Enkel de routes die al in het verleden zijn worden er nu ingezet.
+				\subtopic{Spotify}
+				    Je kan gewoon een playlist embedden. Als er geen playlist is toegevoegd krijg je met 90\% kans de TD in de KP playlist {\tiny en met 10\% kans Rick Astley}. De playlist wordt dus wel al uit de database gehaald indien mogelijk, maar er is nog nergens op de site een optie om een playlist toe te voegen.
+				\subtopic{Sorteren op muziekkeuze}
+				    Sam licht toe. Ben ik dus totaal vergeten.
+				\subtopic{Unittests}
+				    Er is een voorbeeld tests.py voor het testen van de Authentication API. Deze heeft wel een probleem met een succesvolle login: Er wordt een token bijgehouden in de database, wat volgens mij niet mag (want het moet stateless zijn). Hier kunnen we met jwt werken om het stateless te maken (zie de tokens die gebruikt worden bij het versturen van een mail voor het wachtwoord te resetten). Bovendien is ook de token die wordt bijgehouden in de database meer dan 32 karakters, wat errors geeft met de database, aangezien die kolom was ingesteld op 32 karakters. Het token systeem wordt toch veranderd, dus dit is geen probleem. Iedereen schrijft een test voor het deel dat de API dat zij geimplementeerd hebben. De GUI zouden we ook kunnen testen m.b.v. Selenium, maar dit is in mijn ogen eerder een uitbereideing.
+				\subtopic{Footer}
+				    Deze is te groot en er is op de homepage een probleem met de kaart die erover komt. Dit probleem komt waarschijnlijk door een vaag gedefinieerde height: Moet een absolute waarde zijn. Probeer voor elk element uit een externe site (leaflet, spotify) een grootte voor het object te definieren. Map op 90\% zetten zorgt ervoor dat het niet overlapt.
+				\subtopic{Wat moeten we echt nog gefixt krijgen tegen de evaluatie?}
+				    Alle TODO's moeten gefixt worden, dan is alles klaar voor de evaluatie. De API moet echt afgeraken. CRUD moet nog overal toegepast worden.
+				\subtopic{Tweede tussentijds rapport}
+				    Tegen zondag (19 april, zelfde deadline als A&C en Compilers) moet er weer een tussentijds rapport worden geupload.
+				    Ik herneem even de vaakvoorkomende fouten van vorige keer:
+				    \begin{quote}
+				    \begin{itemize}
+				    \item Rapport te beknopt, vaag of niet informatief.
+				    \begin{itemize}
+				        \item Het rapport is de voornaamste bron van informatie voor ons. Als jullie dingen doen die punten kunnen opleveren, maar dit niet in het rapport vermelden, dan gaat deze moeite verloren. Let er dus zeker op dat alles goed en overzichtelijk gedocumenteerd wordt in het rapport, met eventuele verwijzingen naar webpagina's of screenshots van plannings tools bijvoorbeeld.
+                        \item Beperk het herhalen van informatie die al in de opgave staat of andere "informatie" te geven die niet relevant is. Bijvoorbeeld: "We gebruiken een database en deze is verbonden met de backend door classes en functies. De hoeveelheid data access
+                        functies zal waarschijnlijk groter worden naarmate we verder in het project zitten."
+                        \item Geen planning of vermelding van taakverdeling en uitbreidingen.Dit stond duidelijk in de opgave. Geen enkel team heeft echter een ruwe planning in hun rapport verwerkt.
+                    \end{itemize}
+                    \item Database diagram bevat fouten.
+                    \begin{itemize}
+                        \item Veel diagrammen gebruikten een inconsistente notatie (dikke lijn/dunne lijn, lijn waar een pijl moet staan etc.) of een onduidelijke syntax.
+                        \item Sommige constructies kunnen design fouten zijn, maar zonder toelichting kan hier moeilijk over geoordeeld worden.
+                    \end{itemize}
+                    \item Database design mist uitleg.
+                    \begin{itemize}
+                        \item Een diagram op zich is niet voldoende om jullie database uit te leggen. Voeg een uitleg bij om volgende vragen op te helderen: Zijn er constraints? Is een relatie one-to-one, one-to-many? Voorzien jullie een index op bepaalde attributen? Wat is de cascade policy?
+                        \item Daarnaast is het voor ons ook interessant om te weten waarom jullie de keuze maakten voor een bepaalde constructie. Wat is het voordeel van de credentials van een gebruiker los te koppelen van zijn/haar voorkeuren bijvoorbeeld.
+                        \end{itemize}
+\end{itemize}
+				    \end{quote}
+
+				    Welke dingen gaan we hieraan doen? We moeten echt wel alle dingen die mogelijks punten kunnen opleveren, vermelden in het verslag. Er moet een planning voor komende weken instaan (kon ik toch niet terugvinden in de opgave Deel 1) (en ook welke uitbereidingen we van plan zijn).
+				    Er moet veel meer aandacht gegeven worden aan het database diagram en er ook veel meer uitleg bij (constraints, relatie,  index, cascade policy)
+
+				    \subtopic{Welke features gaan we nog implementeren? En wanneer?}
+				        \begin{itemize}
+				            \item Week 11: Vertalen
+				            \item Week 12: Kalender integratie
+				            \item Week 13: Personen ratings geven
+				            \item Week 14: Bug fixing, cleanup, polishing
+				            \item Week 15: Examen
+				        \end{itemize}
+ 		\topic{Afspraken \& Planning}
+
+ 		    \subtopic{Dinsdag bellen}
+ 		        Aangezien er komende zondag zoveel deadline zijn, zullen we dinsdag om 13:15 nog eens bellen zodat we kunnen zien waar iedereen staat en op tijd kunnn ingrijpen als er iemand problemen heeft, want de features hieronder moeten allemaal echt wel af zijn tegen de presentatie.
+
+			\begin{itemize}
+			   \item Tim slaat de adressen als string op in de database.
+			   \item Sam test route request overview page.
+			   \item Sien zorgt dat de routes op homepage gesorteerd worden op de tijd dat ze plaatsvinden.
+			   \item Sien zorgt dat on hover notificaties niet allemaal op eenzelfde lijn is
+			   \item Sien zorgt voor doorklikken op notificatie dat je op de pagina van de route of request komt
+			   \item Sien laat de notificatie voor next route niet meetellen in de counter
+			   \item Sien zorgt dat je passengers in de main kan zien
+			   \item Arno zorgt voor de route zoek functie te verfijnen met ranges
+			   \item Tim update de layout van de request accept/reject pagina
+			   \item Arno voorziet een optie om een playlist toe te voegen aan een route
+			   \item Sam zorgt voor zoekresultaten sorteren op overeenkomende muziek tags
+			   \item Tim probeert de authentication stateless te krijgen m.b.v. jwt
+			   \item Iedereen schrijft tests voor het deel van de API dat zij geschreven hebben
+			   \item Arno zorgt voor CRUD voor de routes, users en requests. (ook in de API)
+			   \item Tim zorgt voor de markers op alle kaarten die het nog niet hebben.
+			   \item Sam probeert de database design zo deftig mogelijk uit te leggen (met diagram).
+			   \item Iedereen moet in het tussentijds rapport invullen wat hij/zij afgelopen weken gedaan heeft.
+			   \item Arno zorgt er dinsdagavond voor dat alles gedeployed geraakt op de server.
+			\end{itemize}
+
+
+		\topic{Varia}
+			\emph{Eventuele varia punten. Hierbij vragen we ook aan alle aanwezigen of zij nog iets te zeggen hebben.}
+				\subtopic{Sien}
+				    Niets, behalve straks even helpen met die bug te fixen.
+				\subtopic{Sam}
+				    Ik ben los gepakt voor compilers AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH. F F
+				\subtopic{Tim}
+				    Het gaat een nipte worden om alles af te krijgen, maar ik doe m'n best
+				\subtopic{Arno}
+				    Zijn er mensen die mee Terraria willen spelen? Momenteel niet, er zijn iets te veel deadlines deze week, misschien volgende week ofzo.
+				    Probeer allemaal alles op tijd klaar te krijgen, als je deze week 5 seconden niets te doen hebt, laat het dan direct weten, zodat je anderen kan helpen, want sommige mensen zijn echt hard aan het stressen voor andere vakken, dus kunnen nu wel iets minder voor dit project altijd apprecieren.
+
+
+		\blfootnote{
+			\href{%
+				mailto:joey.depauw@uantwerpen.be%
+				?subject=PPDB 2019-2020: Wekelijks Verslag Team \arabic{team}%
+				&body=Liefste Joey\%0D\%0A%
+				\%0D\%0A%
+				Gelieve ons wekelijks verslag terug te vinden in de bijlage.\%0D\%0A%
+				\%0D\%0A%
+				Groetjes\%0D\%0A%
+				Team \arabic{team}\%0D\%0A%
+			}{Klik hier} om mij op te sturen.
+		}
+
+
+	\end{Minutes}
+\end{document}
