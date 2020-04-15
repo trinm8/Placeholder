@@ -40,31 +40,31 @@
                 </div>
 
                 <div class="column">
-                    {% if routes.first() is none %}
+                    {% if future_routes.first() is none %}
                         <h1 class="title">
                             No routes planned
                         </h1>
                     {% else %}
                         <h1 class="title">
-                            From: {{ routes.first().text_from() }}<br>
-                            To: {{ routes.first().text_to() }}
+                            From: {{ future_routes.first().text_from() }}<br>
+                            To: {{ future_routes.first().text_to() }}
                         </h1>
                         <h2 class="subtitle">
-                            {{ routes.first().departure_time }}
+                            {{ future_routes.first().departure_time }}
                         </h2>
                     {% endif %}
                     {{ map.map() }}
                 </div>
                 <div class="column is-2">
-                    {% if routes.first() %}
+                    {% if future_routes.first() %}
                         <div class="card">
                             <div class="card-content">
                                 <i class="fas fa-car"></i><a
-                                    href="{{ url_for('users.user_page', username=routes.first().driver().username) }} "> {{ routes.first().driver().name() }} </a><br>
-                                {% if routes.first().passenger_places is none %}
+                                    href="{{ url_for('users.user_page', username=future_routes.first().driver().username) }} "> {{ future_routes.first().driver().name() }} </a><br>
+                                {% if future_routes.first().passenger_places is none %}
                                     No passengers
                                 {% else %}
-                                    {% for passenger in routes.first().passenger_places %}
+                                    {% for passenger in future_routes.first().passenger_places %}
                                         <i class="fas fa-user"></i>
                                         <a href="{{ url_for('users.user_page', username=passenger) }}"> {{ passenger }} </a>
                                         <br>
@@ -76,14 +76,14 @@
                     {% endif %}<br>
 
 
-                    {% if routes.first() %}
-                        {{ card("FROM:", routes.first().text_from()) }}
+                    {% if future_routes.first() %}
+                        {{ card("FROM:", future_routes.first().text_from()) }}
 
-                        {% for stop in routes.first().stops %}
+                        {% for stop in future_routes.first().stops %}
                             {{ card("STOP:", stop) }}
                         {% endfor %}
 
-                        {{ card("TO:", routes.first().text_to()) }}
+                        {{ card("TO:", future_routes.first().text_to()) }}
 
                     {% endif %}
 

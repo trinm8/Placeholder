@@ -33,7 +33,7 @@ def index():
         routes = routes_driver.union(routes_passenger)
         future_routes = routes.filter(Route.departure_time >= current_time)
 
-        return render_template('main/main_logged_in.html', title='Dashboard', routes=future_routes, future_routes=future_routes)
+        return render_template('main/main_logged_in.html', title='Dashboard', future_routes=future_routes)
     return render_template('main/home.html', title='Welcome')
 
 
