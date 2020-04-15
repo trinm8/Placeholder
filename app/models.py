@@ -88,7 +88,9 @@ class User(UserMixin, db.Model):
     car_plate = db.Column(db.String(32), index=True, unique=True)
 
     # Authentication tokens
-    token = db.Column(db.String(32), index=True, unique=True)
+    # TODO: I changed this from 32 to 64, but it didn't get updated with flask db migrate,
+    #  Drop and add table again to do this probably
+    token = db.Column(db.String(64), unique=True)
     token_expiration = db.Column(db.DateTime)
 
     def __repr__(self):
@@ -180,6 +182,8 @@ class Route(db.Model):
     driver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     passenger_places = db.Column(db.Integer)
 
+    playlist = db.Column(db.String(32))  # Should be the spotify playlist id
+
     def __repr__(self):
         return '<Route from {}, {} to {}, {}>'.format(self.departure_location_lat, self.departure_location_long,
                                                       self.arrival_location_lat, self.arrival_location_long)
@@ -249,18 +253,10 @@ class RouteRequest(db.Model):
 
     def to_dict(self):
         return {
-            'route_id': self.route_id,
-            'user_id': self.user_id,
-            'status': self.status.value
+            'id': self.route_id,
+            'username': self.user().username,
+            'status': self.status.name
         }
-
-    def from_dict(self, data):
-        if 'route_id' in data:
-            self.route_id = data['route_id']
-        if 'user_id' in data:
-            self.user_id = data['user_id']
-        if 'status' in data:
-            self.status = data['status']
 
 
 class MusicPref(db.Model):

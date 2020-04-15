@@ -29,7 +29,19 @@
                             <h2 class="subtitle">Trip information</h2>
                             <p> From: {{ trip.text_from() }}</p>
                             <p> To: {{ trip.text_to() }} </p>
-                            <p> Time: {{ trip.departure_time }} </p>
+                            <p> Time: {{ trip.departure_time }} </p><br><br>
+                            {% if trip.playlist %}
+                            <p>Here is the playlist that was added to the route.</p><br>
+                            <iframe src="https://open.spotify.com/embed/playlist/{{ trip.playlist }}" width="80%" height="80%" frameborder="10" allowtransparency="true" allow="encrypted-media"></iframe>
+                            {% elif range(0, 10) | random%}
+                                <p>No playlist added to this route. </p>
+                            <p>Here is some other music to cheer you up.</p><br>
+                                <iframe src="https://open.spotify.com/embed/playlist/2MClsgoo2g1jaWfshyduRL?" uri="theme=white" width="80%" height="80%" frameborder="10" allowtransparency="true" allow="encrypted-media"></iframe>
+                            {% else %}
+                                <p>No playlist added to this route. </p>
+                            <p>Here is some other music, hehep.</p><br>
+                                <iframe src="https://open.spotify.com/embed/album/6N9PS4QXF1D0OWPk0Sxtb4" width="80%" height="80%" frameborder="10" allowtransparency="true" allow="encrypted-media"></iframe>
+                            {% endif %}
                         </div>
                         <div class="column">
                             <h2 class="subtitle">User information</h2>
