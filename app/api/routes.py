@@ -4,6 +4,7 @@ from app.api import bp
 from app.api.errors import bad_request
 from app import db
 from app.api.auth import auth, token_auth
+from app.routes_drive.routes import edit_route
 
 
 @bp.route('/drives/<int:drive_id>', methods=['GET'])
@@ -20,6 +21,35 @@ def create_route():
     route.from_dict(data)
     db.session.add(route)
     db.session.commit()
+    response = jsonify(route.to_dict())
+    response.status_code = 201
+    response.headers['Location'] = url_for('api.get_route', drive_id=route.id)
+    return response
+
+@bp.route('/drives/<id>', methods=['DELETE'])
+def delete_route(id):
+    Route.query.get(id).delete()
+    db.session.commit()
+    return
+
+@bp.route('/drives/update', methods=['POST'])
+def update_route():
+    data = request.get_json() or {}
+    if "id" not in data:
+        return bad_request("Must include an id")
+    id = data["id"]
+    arrival_location = None
+    departure_location = None
+    time = None
+    if "from" in data:
+        departure_location = data["from"]
+    elif "to" in data:
+        arrival_location = data["to"]
+    elif "time" in data:
+        time = data["time"]
+    edit_route(id, departure_location, arrival_location,
+               time)  # TODO: check whether departure and arrival location are the right format
+    route = Route.query.get(id)
     response = jsonify(route.to_dict())
     response.status_code = 201
     response.headers['Location'] = url_for('api.get_route', drive_id=route.id)

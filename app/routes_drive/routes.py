@@ -1,7 +1,7 @@
 from app import db
 from app.models import User, Route, RouteRequest, RequestStatus, addr
 from app.routes_drive import bp
-from app.routes_drive.forms import RequestForm, SendRequestForm, AddRouteForm, RouteSearchForm
+from app.routes_drive.forms import RequestForm, SendRequestForm, AddRouteForm, RouteSearchForm, EditRouteForm
 
 from flask import flash, render_template, url_for, redirect, request
 from flask_login import current_user, login_required
@@ -29,6 +29,22 @@ def createRoute(form, departurelocation, arrivallocation):
                   departure_location_long=departurelocation.longitude, arrival_location_lat=arrivallocation.latitude,
                   arrival_location_long=arrivallocation.longitude, driver_id=driverid, departure_time=d)
     db.session.add(route)
+    db.session.commit()
+
+
+def edit_route(id, departurelocation, arrivallocation, time):
+    trip: Route = Route.query.get(id)
+
+    if departurelocation:
+        trip.departure_location_lat = departurelocation.latitude
+        trip.departure_location_long = departurelocation.longitude
+
+    if arrivallocation:
+        trip.arrival_location_lat = arrivallocation.latitude
+        trip.arrival_location_long = arrivallocation.longitude
+
+    if time:
+        trip.departure_time = time
     db.session.commit()
 
 
@@ -124,6 +140,13 @@ def drive(drive_id):
     return render_template('routes/request_route.html', form=form, user=driver, trip=trip, requested=requested,
                            title='Route Request', passengers=acceptedRequests, isdriver=isDriver)
 
+@bp.route('/drives/<drive_id>/request/cancel', methods=['GET', 'POST'])
+@login_required
+def cancel_request(drive_id):
+    RouteRequest.query.filter_by(route_id=drive_id, user_id=current_user.id).delete()
+    db.session.commit()
+    flash("The request has been cancelled")
+    return redirect(url_for('main.index'))
 
 @bp.route('/drives/<drive_id>/passenger-requests/<user_id>', methods=['GET', 'POST'])
 @login_required
@@ -234,3 +257,51 @@ def history():
     past_routes = routes.filter(Route.departure_time <= current_time)
 
     return render_template('main/history.html', title='Notifications', routes=past_routes)
+
+
+@bp.route('/drives/<id>/delete', methods=['GET'])
+@login_required
+def delete(id):
+    # TODO: check cascade
+    if Route.query.get(id).driver().id == current_user.id:
+        Route.query.filter_by(id=id).delete()
+        db.session.commit()
+        flash("The route has been deleted successfully")
+    else:
+        flash("You have to be the driver of the route in order to remove it")
+    return redirect(url_for("main.index"))
+
+
+@bp.route('/edit/<id>', methods=['GET', 'POST'])
+@login_required
+def editRoute(id):
+    # TODO: not yet tested (not enough time)
+    if Route.query.get(id).driver().id != current_user.id:
+        flash("You have to be the driver of the route in order to edit it")
+        return redirect(url_for("main.index"))
+    # flash("Warning: this page won't submit anything to the database yet. We're working on it.")
+    form = EditRouteForm()
+    if form.validate_on_submit():
+        departure_location = None
+        arrival_location = None
+        time = None
+        geolocator = Nominatim(user_agent="[PlaceHolder]")
+        if form.start.data and form.start.data != "":
+            departure_location = geolocator.geocode(form.start.data)
+            if departure_location is None:
+                flash("The Start address is invalid")
+                return render_template('routes/editRoute.html', title='Edit Route', form=form)
+        if form.destination.data and form.destination.data != "":
+            arrival_location = geolocator.geocode(form.destination.data)
+            if arrival_location is None:
+                flash("The destination address is invalid")
+                return render_template('routes/addRoute.html', title='New Route', form=form)
+        if form.date.data:
+            if form.date.data < datetime.now():  # TODO datetime
+                flash("Date is invalid")
+                return render_template('routes/addRoute.html', title='New Route', form=form)
+            time = form.date.data
+        editRoute(id, departure_location, arrival_location, time)
+        flash('Your changes have been updated')
+        return redirect(url_for('routes_drive.drive', drive_id=id))
+    return render_template('routes/editRoute.html', title='Edit Route', form=form)

@@ -188,4 +188,6 @@
             </div>
         </section>
     </form>
+    <br>
+    <a class="button is-danger" href="{{ url_for('user.delete', id=current_user.id) }}">Delete account</a>
 {% endblock %}

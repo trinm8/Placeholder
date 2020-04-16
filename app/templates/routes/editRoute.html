@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% import "map.html" as map %}
+{% import "datepicker.html" as dtpick %}
+
+{% block imports %}
+    {{ map.imports() }}
+    {{ dtpick.imports() }}
+{% endblock %}
+
+
+{% block styles %}
+    #mapid {
+    height: 600px;
+    }
+{% endblock %}
+
+{% block body %}
+    <section class="section">
+        <div class="columns">
+            <div class="column is-three-fifths">
+                {{ map.map() }}
+            </div>
+            <form class="column" action="" method="POST" novalidate>
+                <div class="tile is-vertical">
+                        {{ form.hidden_tag() }}
+                        <p class="title">Edit Route</p>
+                        <br>
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Start:</label>
+                            </div>
+                            <div class="field-body">
+                                {{ form.start(class='input', type='text', onchange='addmarker("start")', placeholder="Don't edit") }}
+                            </div>
+                        </div>
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Destination:</label>
+                            </div>
+                            <div class="field-body">
+                                {{ form.destination(class='input', type='text', onchange='addmarker("destination")', placeholder="Don't edit") }}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Date:</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <p class="control is-expanded">
+                                    {{ form.date(class='input') }}
+                                    {{ dtpick.datetimepicker() }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        {{ form.submit(class="button is-primary") }}
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock %}

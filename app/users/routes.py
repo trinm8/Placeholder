@@ -4,7 +4,7 @@ from app.models import User, MusicPref
 from app.users.forms import Settings
 
 from flask import render_template, flash, redirect, url_for
-from flask_login import login_required, current_user
+from flask_login import login_required, current_user, logout_user
 
 
 @bp.route('/users/<username>')
@@ -27,7 +27,6 @@ def get_suggested_genres():
 @bp.route('/account/settings', methods=['GET', 'POST'])
 @login_required
 def account_settings():
-
     form = Settings()
 
     if form.validate_on_submit():
@@ -84,3 +83,18 @@ def remove_genre(id):
 
     flash("Genre removed!")
     return redirect(url_for('users.account_settings'))
+
+
+@bp.route('/accounts/<id>/delete', methods=['GET'])
+@login_required
+def delete(id):
+    # TODO: check cascade, not yet tested
+    if current_user.id == id:
+        logout_user()
+        User.query.filter_by(id=id).delete()
+        db.session.commit()
+        flash("Your account has been deleted successfully")
+    else:
+        flash("You can only delete your own account")
+    return redirect(url_for("main.index"))
+

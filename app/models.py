@@ -173,13 +173,13 @@ class User(UserMixin, db.Model):
 
 class Route(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    creator = db.Column(db.String(64))
+    # creator = db.Column(db.String(64))
     departure_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     departure_location_lat = db.Column(db.Float(precision=53))
     departure_location_long = db.Column(db.Float(precision=53))
     arrival_location_lat = db.Column(db.Float(precision=53))
     arrival_location_long = db.Column(db.Float(precision=53))
-    driver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    driver_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
     passenger_places = db.Column(db.Integer)
 
     playlist = db.Column(db.String(32))  # Should be the spotify playlist id
@@ -227,8 +227,8 @@ class RequestStatus(enum.Enum):
 
 
 class RouteRequest(db.Model):
-    route_id = db.Column(db.Integer, db.ForeignKey('route.id'), primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    route_id = db.Column(db.Integer, db.ForeignKey('route.id', ondelete='CASCADE'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True)
     status = db.Column(db.Enum(RequestStatus))
 
     def __init__(self, route_id, user_id):
@@ -261,7 +261,7 @@ class RouteRequest(db.Model):
 
 class MusicPref(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
     genre = db.Column(db.String(64))
     likes = db.Column(db.Boolean)
 

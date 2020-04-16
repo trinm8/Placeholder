@@ -10,6 +10,12 @@ class AddRouteForm(FlaskForm):
     date = DateTimeField('date', format='%d/%m/%Y %H:%M')
     submit = SubmitField('Confirm')
 
+class EditRouteForm(FlaskForm):
+    start = StringField('start')
+    destination = StringField('destination')
+    date = DateTimeField('date', format='%d/%m/%Y %H:%M')
+    submit = SubmitField('Save Changes')
+
 class RouteSearchForm(FlaskForm):
     start = StringField('start')
     destination = StringField('destination')
