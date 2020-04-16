@@ -1,7 +1,7 @@
 from app import db
 from app.models import User, Route, RouteRequest, RequestStatus, addr
 from app.routes_drive import bp
-from app.routes_drive.forms import RequestForm, SendRequestForm, AddRouteForm
+from app.routes_drive.forms import RequestForm, SendRequestForm, AddRouteForm, RouteSearchForm
 
 from flask import flash, render_template, url_for, redirect, request
 from flask_login import current_user, login_required
@@ -154,20 +154,54 @@ def passenger_request(drive_id, user_id):
     return render_template('routes/route_request.html', form=form, user=user, trip=trip, title='Route Request')
 
 
-@bp.route("/overview", methods=["GET"])
+@bp.route("/overview", methods=["GET", "POST"])
 def overview():
-    form = AddRouteForm()
+    form = RouteSearchForm(request.form)
 
-    lat_from = request.args.get('lat_from')
-    long_from = request.args.get('long_from')
+    if form.submit.data:
+        geolocator = Nominatim(user_agent="[PlaceHolder]")
+        departure_location = geolocator.geocode(form.start.data)
+        if departure_location is None:
+            flash("The Start address is invalid")
+            return render_template('routes/search_results.html', title='New Route', form=form)
+        arrival_location = geolocator.geocode(form.destination.data)
+        if arrival_location is None:
+            flash("The destination address is invalid")
+            return render_template('routes/search_results.html', title='New Route', form=form)
+
+        lat_from = departure_location.latitude
+        long_from = departure_location.longitude
+        lat_to = arrival_location.latitude
+        long_to = arrival_location.longitude
+
+        time = form.date.data
+        if not time:
+            time = datetime.now()
+        # time = datetime.strptime(time, '%Y-%m-%d %H:%M:%S')
+
+        allowed_distance = float(form.distance.data)
+
+        # return redirect(
+        #     url_for("routes_drive.overview", lat_from=departure_location.latitude,
+        #             long_from=departure_location.longitude,
+        #             lat_to=arrival_location.latitude, long_to=arrival_location.longitude, time=form.date.data, distance=form.distance.data))
+
+    else:
+        lat_from = request.args.get('lat_from')
+        long_from = request.args.get('long_from')
+
+        lat_to = request.args.get('lat_to')
+        long_to = request.args.get('long_to')
+
+        time = request.args.get('time')  # Should only be the date
+        time = datetime.strptime(time, '%Y-%m-%d %H:%M:%S')
+
+        allowed_distance = request.args.get('distance')
+        if not allowed_distance:
+            allowed_distance = 2
+
     departure_location = (lat_from, long_from)
-
-    lat_to = request.args.get('lat_to')
-    long_to = request.args.get('long_to')
     arrival_location = (lat_to, long_to)
-
-    time = request.args.get('time')  # Should only be the date
-    time = datetime.strptime(time, '%Y-%m-%d %H:%M:%S')
 
     same_day_routes = Route.query.filter(
         cast(Route.departure_time, Date) == time.date()).all()  # https://gist.github.com/Tukki/3953990
@@ -176,7 +210,7 @@ def overview():
 
     from geopy import distance  # No idea why this include won't work when placed outside this function
 
-    allowed_distance = 2
+    # allowed_distance = 2
     for route in same_day_routes:
         route_dep = (route.departure_location_lat, route.departure_location_long)
         route_arr = (route.arrival_location_lat, route.arrival_location_long)

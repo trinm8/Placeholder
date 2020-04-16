@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 
+{% import "datepicker.html" as dtpick %}
+
+{% block imports %}
+    {{ dtpick.imports() }}
+{% endblock %}
+
+
 {% block metadata %}
 {% endblock %}
 
@@ -24,7 +31,7 @@
                                 <label class="label">Start:</label>
                             </div>
                             <div class="field-body">
-                                {{ form.start(class='input', type='text', onchange='addmarker("start")', placeholder=src) }}
+                                {{ form.start(class='input', type='text', onchange='addmarker("start")', value=src) }}
                             </div>
                         </div>
                         <div class="field is-horizontal">
@@ -32,7 +39,38 @@
                                 <label class="label">Destination:</label>
                             </div>
                             <div class="field-body">
-                                {{ form.destination(class='input', type='text', onchange='addmarker("destination")', placeholder=dest) }}
+                                {{ form.destination(class='input', type='text', onchange='addmarker("destination")', value=dest) }}
+                            </div>
+                        </div>
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Date:</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <p class="control is-expanded">
+                                        {{ form.date(class='input') }}
+                                        {{ dtpick.datetimepicker() }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">Distance (km):</label>
+                            </div>
+                            <script>
+                                function outputUpdate(distance) {
+                                    document.querySelector('#selected-distance').value = distance;
+                                }
+                            </script>
+                            <div class="field-body">
+                                <div class="field">
+                                    <p class="control is-expanded">
+                                        {{ form.distance(min=0, max=50, step=0.1, oninput="outputUpdate(value)", class="slider is-fullwidth") }}
+                                        <output for="distance" id="selected-distance">{{ form.distance.data }}</output>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                         <div class="field is-horizontal">
