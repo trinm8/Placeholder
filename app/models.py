@@ -195,9 +195,10 @@ class Route(db.Model):
             "id": self.id,
             "driver-id": self.driver_id,
             "passenger-ids": [],  # TODO
+            "passenger-places": self.passenger_places,
             "from": [self.departure_location_lat, self.departure_location_long],
-            "to": [self.departure_location_lat, self.departure_location_long],
-            "arrive-by": self.departure_time.isoformat()
+            "to": [self.arrival_location_lat, self.arrival_location_long],
+            "arrive-by": self.departure_time.isoformat() + ".00"  # include milliseconds
         }
         return data
 

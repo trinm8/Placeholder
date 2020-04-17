@@ -15,7 +15,8 @@ def get_route(drive_id):
 @bp.route('/drives', methods=['POST'])
 def create_route():
     data = request.get_json() or {}
-    if "from" not in data or "to" not in data or "passenger-places" not in data or "arrive-by" not in data:
+    if data.get("from") is None or data.get("to") is None or data.get("passenger-places") is None \
+            or data.get("arrive-by") is None:
         return bad_request("Must include from, to passenger-places and time")
     route = Route()
     route.from_dict(data)

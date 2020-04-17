@@ -30,13 +30,10 @@ class BaseCase(TestCase):
         pass
 
     def tearDown(self):
-        # Delete all new made users
+        # Delete all new made users, the others should be deleted with the cascade policy
         User.query.filter(User.id >= self.max_user_id).delete()
         db.session.commit()
         pass
-
-
-class AuthenticationTest(BaseCase):
 
     def help_register(self, username, firstname, lastname, password):
         payload = json.dumps({
@@ -55,6 +52,19 @@ class AuthenticationTest(BaseCase):
         })
 
         return self.client.post('/api/users/auth', headers={"Content-Type": "application/json"}, data=payload)
+
+    def help_add_route(self, from_coords, to_coords, passenger_places, arrive_by):
+        payload = json.dumps({
+            "from": from_coords,
+            "to": to_coords,
+            "passenger-places": passenger_places,
+            "arrive-by": arrive_by
+        })
+
+        return self.client.post('/api/drives', headers={"Content-Type": "application/json"}, data=payload)
+
+
+class AuthenticationTest(BaseCase):
 
     def test_succesful_register(self):
         response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
@@ -90,3 +100,28 @@ class AuthenticationTest(BaseCase):
         response = self.help_login("TEST_MarkD", "MarkIsCool420")
         user = User.check_token(response.json.get("token"))
         self.assertNotEqual(user.username, "TEST_MarkP")
+
+class RouteTest(BaseCase):
+    def test_add_route(self):
+        response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
+        id = response.json.get("id")
+        response = self.help_login("TEST_MarkP", "MarkIsCool420")
+        # TODO: tokens meegeven aan request? Driver id checken?
+        self.assertEqual(id, response.json.get("driver-id"))
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00")
+        self.assertEqual([51.130215, 4.571509], response.json.get("from"))
+        self.assertEqual([51.18417, 4.41931], response.json.get("to"))
+        self.assertEqual(3, response.json.get("passenger-places"))
+        self.assertEqual("2020-02-12T10:00:00.00", response.json.get("arrive-by"))
+
+    def test_add_route_missing_info(self):
+        response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
+        id = response.json.get("id")
+        response = self.help_login("TEST_MarkP", "MarkIsCool420")
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], None, "2020-02-12T10:00:00.00")
+        self.assertEqual(401, response.status_code)
+
+    def test_add_route_no_login(self):
+        # TODO: fix failing test with tokens
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00")
+        self.assertEqual(401, response.status_code)
