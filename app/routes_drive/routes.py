@@ -66,7 +66,7 @@ def edit_route(id, departurelocation, arrivallocation, time, passenger_places=No
 def addRoute():
     # flash("Warning: this page won't submit anything to the database yet. We're working on it.")
     form = AddRouteForm()
-    if form.validate_on_submit():
+    if form.submit.data:
         geolocator = Nominatim(user_agent="Test")
         try:
             departure_location = geolocator.geocode(form.start.data)
@@ -152,6 +152,9 @@ def drive(drive_id):
             db.session.commit()
             flash("Request has been cancelled")
         else:
+            if not trip.places_left():
+                flash("There aren't any places left in the car")
+                return redirect(url_for("main.index"))
             request = RouteRequest(route_id=drive_id, user_id=current_user.id)
             db.session.add(request)
             db.session.commit()
@@ -188,6 +191,9 @@ def passenger_request(drive_id, user_id):
 
     if form.validate_on_submit():
         if form.accept.data:
+            if not trip.places_left():
+                flash("You don't have any places left in your car")
+                return redirect(url_for("main.index"))
             request.status = RequestStatus.accepted
             db.session.commit()
             flash("The route request was successfully accepted.")
@@ -326,11 +332,11 @@ def editRoute(id):
             db.session.commit()
             if arrival_location is None:
                 flash("The destination address is invalid")
-                return render_template('routes/addRoute.html', title='New Route', form=form)
+                return render_template('routes/editRoute.html', title='New Route', form=form)
         if form.date.data:
             if form.date.data < datetime.now():  # TODO datetime
                 flash("Date is invalid")
-                return render_template('routes/addRoute.html', title='New Route', form=form)
+                return render_template('routes/editRoute.html', title='New Route', form=form)
             time = form.date.data
         edit_route(id, departure_location, arrival_location, time, form.places.data, form.playlist.data)
         flash('Your changes have been updated')

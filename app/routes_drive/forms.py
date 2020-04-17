@@ -6,7 +6,7 @@ from wtforms.fields.html5 import DecimalRangeField
 class AddRouteForm(FlaskForm):
     type = RadioField('type', choices=[('Driver', 'Driver'), ('Passenger', 'Passenger')])
     start = StringField('start')
-    places = IntegerField('Passenger places')
+    places = IntegerField('Passenger places', validators=[])
     playlist = StringField('Spotify playlist ID')
     destination = StringField('destination')
     date = DateTimeField('date', format='%d/%m/%Y %H:%M')
