@@ -9,6 +9,8 @@ from flask_login import current_user, login_required
 from sqlalchemy import Date, cast
 
 from geopy import Nominatim
+from datetime import datetime  # Todo: Datetime
+from time import sleep
 from datetime import datetime, date  # Todo: Datetime
 
 
@@ -25,7 +27,8 @@ def createRoute(form, departurelocation, arrivallocation):
     # arrival_location_lat = uniform(49.536612, 51.464020)
     # arrival_location_long = uniform(2.634966, 6.115877)
     d = form.date.data
-    route = Route(creator=creatorname, departure_location_lat=departurelocation.latitude,
+    route = Route(#creator=creatorname,
+                  departure_location_lat=departurelocation.latitude,
                   departure_location_long=departurelocation.longitude, arrival_location_lat=arrivallocation.latitude,
                   arrival_location_long=arrivallocation.longitude, driver_id=driverid, departure_time=d)
     db.session.add(route)
@@ -56,10 +59,12 @@ def addRoute():
     if form.validate_on_submit():
         geolocator = Nominatim(user_agent="[PlaceHolder]")
         departure_location = geolocator.geocode(form.start.data)
+        sleep(1) # sleep for 1 sec (required by Nominatim usage policy)
         if departure_location is None:
             flash("The Start address is invalid")
             return render_template('routes/addRoute.html', title='New Route', form=form)
         arrival_location = geolocator.geocode(form.destination.data)
+        sleep(1) # sleep for 1 sec (required by Nominatim usage policy)
         if arrival_location is None:
             flash("The destination address is invalid")
             return render_template('routes/addRoute.html', title='New Route', form=form)
@@ -155,6 +160,7 @@ def passenger_request(drive_id, user_id):
     trip = Route.query.filter_by(id=drive_id).first_or_404()
     user = User.query.filter_by(id=user_id).first_or_404()
     request = RouteRequest.query.filter_by(route_id=drive_id, user_id=user_id).first_or_404()
+
 
     if request.status == RequestStatus.accepted:
         flash("This route request has already been accepted")

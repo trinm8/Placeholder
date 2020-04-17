@@ -10,7 +10,7 @@ import jwt
 from hashlib import md5
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from time import time
+from time import time, sleep
 from datetime import datetime, timedelta
 import dateutil.parser
 
@@ -30,14 +30,17 @@ def get_from_dict(dictionary, *args):
 
 def addr(lat, long):
     geolocator = Nominatim(user_agent="[PlaceHolder]")
-
+    print("query")
     try:
+        sleep(1.1)
         location = geolocator.reverse(str(lat) + ", " + str(long))
+          # sleep for 1 sec (required by Nominatim usage policy)
     except GeocoderTimedOut:
-        return "Geocoder timed out :/"
+        print("Geocoder timed out")
+        return "Geocoder timed out"
     except GeocoderQueryError:
         return "Geocoder errored on query"
-
+    print("succesfull")
 
     addr_dict = location.raw["address"]
 
