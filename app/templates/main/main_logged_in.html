@@ -47,7 +47,7 @@
                 </div>
 
                 <div class="column is-8 full-height">
-                    <div style="height: 15%">
+                    <div style="height: 20%">
                     {% if future_routes.first() is none %}
                         <h1 class="title">
                             No routes planned
@@ -62,7 +62,7 @@
                         </h2>
                     {% endif %}
                     </div>
-                    <div style="height: 85%">
+                    <div style="height: 80%">
                         {{ map.map() }}
                         <script>loadMarkersRoute({{ future_routes.first().departure_location_lat }}, {{ future_routes.first().departure_location_long }}, {{ future_routes.first().arrival_location_lat }}, {{ future_routes.first().arrival_location_long }})</script>
                     </div>

@@ -1,4 +1,4 @@
-# Based on https://dev.to/paurakhsharma/flask-rest-api-part-6-testing-rest-apis-4lla
+ # Based on https://dev.to/paurakhsharma/flask-rest-api-part-6-testing-rest-apis-4lla
 
 import unittest
 import json
@@ -77,3 +77,8 @@ class AuthenticationTest(BaseCase):
         response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
         response = self.help_login("TEST_MarkP", "MarkIsNietCool69")
         self.assertEqual(401, response.status_code)
+
+    def test_correct_token(self):
+        response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
+        response = self.help_login("TEST_MarkP", "MarkIsCool420")
+        #print(User.check_token(response.json.get("token")))

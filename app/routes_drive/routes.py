@@ -9,6 +9,7 @@ from flask_login import current_user, login_required
 from sqlalchemy import Date, cast
 
 from geopy import Nominatim
+from geopy.exc import GeocoderTimedOut
 from datetime import datetime  # Todo: Datetime
 from time import sleep
 from datetime import datetime, date  # Todo: Datetime
@@ -30,7 +31,8 @@ def createRoute(form, departurelocation, arrivallocation):
     route = Route(#creator=creatorname,
                   departure_location_lat=departurelocation.latitude,
                   departure_location_long=departurelocation.longitude, arrival_location_lat=arrivallocation.latitude,
-                  arrival_location_long=arrivallocation.longitude, driver_id=driverid, departure_time=d)
+                  arrival_location_long=arrivallocation.longitude, driver_id=driverid, departure_time=d,
+                  departure_location_string=form.start.data, arrival_location_string=form.destination.data)
     db.session.add(route)
     db.session.commit()
 
@@ -57,14 +59,20 @@ def addRoute():
     # flash("Warning: this page won't submit anything to the database yet. We're working on it.")
     form = AddRouteForm()
     if form.validate_on_submit():
-        geolocator = Nominatim(user_agent="[PlaceHolder]")
-        departure_location = geolocator.geocode(form.start.data)
-        sleep(1) # sleep for 1 sec (required by Nominatim usage policy)
+        geolocator = Nominatim(user_agent="Test")
+        try:
+            departure_location = geolocator.geocode(form.start.data)
+            sleep(1.1)
+            arrival_location = geolocator.geocode(form.destination.data)
+            sleep(1.1)  # sleep for 1 sec (required by Nominatim usage policy)
+        except GeocoderTimedOut:
+            flash("The geolocator is timing out! please try again")
+            return render_template('routes/addRoute.html', title='New Route', form=form)
+
         if departure_location is None:
             flash("The Start address is invalid")
             return render_template('routes/addRoute.html', title='New Route', form=form)
-        arrival_location = geolocator.geocode(form.destination.data)
-        sleep(1) # sleep for 1 sec (required by Nominatim usage policy)
+
         if arrival_location is None:
             flash("The destination address is invalid")
             return render_template('routes/addRoute.html', title='New Route', form=form)
@@ -190,10 +198,12 @@ def overview():
     if form.submit.data:
         geolocator = Nominatim(user_agent="[PlaceHolder]")
         departure_location = geolocator.geocode(form.start.data)
+        sleep(1.1)
         if departure_location is None:
             flash("The Start address is invalid")
             return render_template('routes/search_results.html', title='New Route', form=form)
         arrival_location = geolocator.geocode(form.destination.data)
+        sleep(1.1)
         if arrival_location is None:
             flash("The destination address is invalid")
             return render_template('routes/search_results.html', title='New Route', form=form)

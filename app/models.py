@@ -125,23 +125,22 @@ class User(UserMixin, db.Model):
         return User.query.get(id)
 
     def get_token(self, expires=3600):
-        now = datetime.now()
-        if self.token is not None and self.token_expiration > now + timedelta(seconds=60):
-            return self.token
-        self.token = base64.b32encode(os.urandom(24)).decode('utf-8')
-        self.token_expiration = now + timedelta(seconds=expires)
-        db.session.add(self)
-        return self.token
+        return jwt.encode({'user_id': self.id, 'exp': expires},
+                          current_app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
 
     def revoke_token(self):
         self.token_expiration = datetime.now() - timedelta(seconds=1)
 
     @staticmethod
     def check_token(token):
-        user = User.query.filter_by(token=token).first()
-        if user is None or user.token_expiration < datetime.utcnow():
-            return None
-        return user
+        try:
+            print(token)
+            id = jwt.decode(token, current_app.config['SECRET_KEY'],
+                            algorithms=['HS256'])
+        except (jwt.DecodeError, jwt.ExpiredSignatureError):
+            print("failed")
+            return
+        return User.query.get(id)
 
     def name(self):
         return self.firstname + " " + self.lastname
@@ -180,8 +179,10 @@ class Route(db.Model):
     departure_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     departure_location_lat = db.Column(db.Float(precision=53))
     departure_location_long = db.Column(db.Float(precision=53))
+    departure_location_string = db.Column(db.String(256))
     arrival_location_lat = db.Column(db.Float(precision=53))
     arrival_location_long = db.Column(db.Float(precision=53))
+    arrival_location_string = db.Column(db.String(256))
     driver_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
     passenger_places = db.Column(db.Integer)
 
@@ -214,10 +215,18 @@ class Route(db.Model):
             self.departure_time = dateutil.parser.parse(data["arrive-by"])
 
     def text_from(self):
-        return addr(self.departure_location_lat, self.departure_location_long)
+        if self.departure_location_string:
+            return self.departure_location_string
+        else:
+            return ""
+        #return addr(self.departure_location_lat, self.departure_location_long)
 
     def text_to(self):
-        return addr(self.arrival_location_lat, self.arrival_location_long)
+        if self.arrival_location_string:
+            return self.arrival_location_string
+        else:
+            return ""
+        #return addr(self.arrival_location_lat, self.arrival_location_long)
 
     def driver(self):
         return User.query.get(self.driver_id)
