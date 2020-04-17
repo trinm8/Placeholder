@@ -1,11 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import RadioField, StringField, DateTimeField, SubmitField, ValidationError
+from wtforms import RadioField, StringField, DateTimeField, SubmitField, ValidationError, IntegerField
 from wtforms.fields.html5 import DecimalRangeField
 
 
 class AddRouteForm(FlaskForm):
     type = RadioField('type', choices=[('Driver', 'Driver'), ('Passenger', 'Passenger')])
     start = StringField('start')
+    places = IntegerField('Passenger places')
     playlist = StringField('Spotify playlist ID')
     destination = StringField('destination')
     date = DateTimeField('date', format='%d/%m/%Y %H:%M')
@@ -21,6 +22,7 @@ class EditRouteForm(FlaskForm):
     start = StringField('start')
     destination = StringField('destination')
     playlist = StringField('Spotify playlist ID')
+    places = IntegerField('Passenger places')
     date = DateTimeField('date', format='%d/%m/%Y %H:%M')
     submit = SubmitField('Save Changes')
 

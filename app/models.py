@@ -194,7 +194,7 @@ class Route(db.Model):
         data = {
             "id": self.id,
             "driver-id": self.driver_id,
-            "passenger-ids": [],  # TODO
+            "passenger-ids": self.passengers(),  # TODO: test whether this works
             "passenger-places": self.passenger_places,
             "from": [self.departure_location_lat, self.departure_location_long],
             "to": [self.arrival_location_lat, self.arrival_location_long],
@@ -230,6 +230,21 @@ class Route(db.Model):
     def driver(self):
         return User.query.get(self.driver_id)
 
+    def places_left(self):
+        try:
+            current_passengers = self.passengers()
+            return self.passenger_places-len(current_passengers)
+        except:
+            return 0
+
+    # Returns a list of the passenger id's
+    def passengers(self):
+        # return RouteRequest.query(RouteRequest.user_id).filter_by(route_id=self.id, status=RequestStatus.accepted).all()
+        passengers = RouteRequest.query.filter_by(route_id=self.id, status=RequestStatus.accepted).all()
+        passenger_ids = []
+        for passenger in passengers:
+            passenger_ids += passenger.user_id
+        return passenger_ids
 
 class RequestStatus(enum.Enum):
     pending = 1

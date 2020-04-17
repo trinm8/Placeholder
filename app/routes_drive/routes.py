@@ -33,7 +33,7 @@ def createRoute(form, departurelocation, arrivallocation):
         departure_location_long=departurelocation.longitude, arrival_location_lat=arrivallocation.latitude,
         arrival_location_long=arrivallocation.longitude, driver_id=driverid, departure_time=d,
         departure_location_string=form.start.data, arrival_location_string=form.destination.data,
-        playlist=form.playlist.data)
+        playlist=form.playlist.data, passenger_places=form.places.data)
     db.session.add(route)
     db.session.commit()
 
@@ -332,7 +332,7 @@ def editRoute(id):
                 flash("Date is invalid")
                 return render_template('routes/addRoute.html', title='New Route', form=form)
             time = form.date.data
-        edit_route(id, departure_location, arrival_location, time, form.playlist.data)
+        edit_route(id, departure_location, arrival_location, time, form.places.data, form.playlist.data)
         flash('Your changes have been updated')
         return redirect(url_for('routes_drive.drive', drive_id=id))
     return render_template('routes/editRoute.html', title='Edit Route', form=form)

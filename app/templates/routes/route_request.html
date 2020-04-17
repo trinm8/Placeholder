@@ -35,7 +35,9 @@
                             <h2 class="subtitle">Trip information</h2>
                             <p> From: {{ trip.text_from() }}</p>
                             <p> To: {{ trip.text_to() }} </p>
-                            <p> Time: {{ trip.departure_time }} </p><br><br>
+                            <p> Time: {{ trip.departure_time }} </p>
+                            <p> Places left: {{ trip.places_left() }}</p><br><br>
+
                             {% if trip.playlist %}
                             <p>Here is the playlist that was added to the route.</p><br>
                             <iframe src="https://open.spotify.com/embed/playlist/{{ trip.playlist }}" width="80%" height="80%" frameborder="10" allowtransparency="true" allow="encrypted-media"></iframe>
