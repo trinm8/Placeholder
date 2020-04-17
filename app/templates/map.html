@@ -36,7 +36,8 @@
     var stopmarker = false;
 
 
-    function addmarker(field) {
+    async function addmarker(field) {
+        console.log("start addmarker");
         var layer = {};
         if (field === "start"){
             layer = startlayer;
@@ -46,8 +47,9 @@
             layer = stoplayer;
             stoplayer.clearLayers();
         }
+        await new Promise(r => setTimeout(r, 1000));
         var address = document.getElementById(field).value;
-        $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + address, function (data) {
+         $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + address, function (data) {
             var marker = L.marker([parseFloat(data[0].lat), parseFloat(data[0].lon)]).addTo(layer);
             if(field === "start"){
                 startmarker = marker;
@@ -57,6 +59,21 @@
             centerLeafletMapOnMarker(mymap, marker);
         });
     }
+
+    function loadMarkersRoute(startLat, startLong, destinationLat, destinationLong) {
+        console.log("test");
+        var LatLongs1 = L.latLng(startLat, startLong);
+        console.log("test1");
+        var LatLongs2 = L.latLng(destinationLat, destinationLong);
+        console.log("test2");
+        L.marker(LatLongs1).addTo(mymap);
+        console.log("test3");
+        L.marker(LatLongs2).addTo(mymap);
+
+        mymap.flyToBounds(L.latLngBounds(LatLongs1, LatLongs2));
+
+    }
+
 
     function centerLeafletMapOnMarker(map, marker) {
         var latLngs;
@@ -71,6 +88,11 @@
         }
         map.flyToBounds(markerBounds);
     }
+
+{#    $(window).on("resize", function() {
+        $("#mapid").height($("#mapParent").height());
+        mymap.invalidateSize();
+    }).trigger("resize");#}
 
 </script>
 

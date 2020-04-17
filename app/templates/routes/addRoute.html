@@ -10,14 +10,23 @@
 
 {% block styles %}
     #mapid {
-    height: 600px;
+    height: 100%;
     }
+
+    html, body {
+    height: 100%;
+    }
+
+    .full-height {
+    height: 100%;
+    }
+
 {% endblock %}
 
 {% block body %}
-    <section class="section">
-        <div class="columns">
-            <div class="column is-three-fifths">
+    <section class="section full-height">
+        <div class="columns full-height">
+            <div class="column is-three-fifths full-height">
                 {{ map.map() }}
             </div>
             <form class="column" action="" method="POST" novalidate>

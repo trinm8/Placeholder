@@ -9,16 +9,22 @@
 
 
 {% block styles %}
-    #mapid {
+
+    .full-height {
     height: 100%;
+    }
+
+    #mapid {
+        height: 100%;
     }
 {% endblock %}
 
 {% block body %}
-    <section class="section">
-        <div class="columns">
-            <div class="column">
+    <section class="section full-height">
+        <div class="columns full-height">
+            <div class="column is-half full-height" id="mapParent" >
                 {{ map.map() }}
+                <script>loadMarkersRoute({{ trip.departure_location_lat }}, {{ trip.departure_location_long }}, {{ trip.arrival_location_lat }}, {{ trip.arrival_location_long }})</script>
             </div>
             <form class="column" action="" method="POST" novalidate>
                 <div class="tile is-vertical">
