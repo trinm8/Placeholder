@@ -125,7 +125,7 @@ class User(UserMixin, db.Model):
         return User.query.get(id)
 
     def get_token(self, expires=3600):
-        return jwt.encode({'user_id': self.id, 'exp': expires},
+        return jwt.encode({'user_id': self.id, 'exp': time() + expires},
                           current_app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
 
     def revoke_token(self):
@@ -134,11 +134,9 @@ class User(UserMixin, db.Model):
     @staticmethod
     def check_token(token):
         try:
-            print(token)
             id = jwt.decode(token, current_app.config['SECRET_KEY'],
-                            algorithms=['HS256'])
+                            algorithms=['HS256'])['user_id']
         except (jwt.DecodeError, jwt.ExpiredSignatureError):
-            print("failed")
             return
         return User.query.get(id)
 
