@@ -31,57 +31,65 @@
             </div>
             <form class="column" action="" method="POST" novalidate>
                 <div class="tile is-vertical">
-                        {{ form.hidden_tag() }}
-                        <p class="title">Add Route</p>
-                        <div class="field is-horizontal">
-                            <div class="field-label">
-                                <label class="label">Role:</label>
-                            </div>
+                    {{ form.hidden_tag() }}
+                    <p class="title">Add Route</p>
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Role:</label>
+                        </div>
 
-                            <div class="field-body">
-                                <div class="control">
-                                    {% for subfield in form.type %}
+                        <div class="field-body">
+                            <div class="control">
+                                {% for subfield in form.type %}
                                     <label class="radio">
                                         <!--input type="radio" name="answer"-->
                                         {{ subfield }}
                                         {{ subfield.label }}
                                     </label>
-                                    {% endfor %}
-                                </div>
+                                {% endfor %}
                             </div>
                         </div>
-                        <br>
-                        <div class="field is-horizontal">
-                            <div class="field-label">
-                                <label class="label">Start:</label>
-                            </div>
-                            <div class="field-body">
-                                {{ form.start(class='input', type='text', onchange='addmarker("start")') }}
-                            </div>
+                    </div>
+                    <br>
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Start:</label>
                         </div>
-                        <div class="field is-horizontal">
-                            <div class="field-label">
-                                <label class="label">Destination:</label>
-                            </div>
-                            <div class="field-body">
-                                {{ form.destination(class='input', type='text', onchange='addmarker("destination")') }}
-                            </div>
+                        <div class="field-body">
+                            {{ form.start(class='input', type='text', onchange='addmarker("start")') }}
                         </div>
-                        <br>
-                        <div class="field is-horizontal">
-                            <div class="field-label">
-                                <label class="label">Date:</label>
-                            </div>
-                            <div class="field-body">
-                                <div class="field">
-                                    <p class="control is-expanded">
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Destination:</label>
+                        </div>
+                        <div class="field-body">
+                            {{ form.destination(class='input', type='text', onchange='addmarker("destination")') }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Date:</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <p class="control is-expanded">
                                     {{ form.date(class='input') }}
                                     {{ dtpick.datetimepicker() }}
-                                    </p>
-                                </div>
+                                </p>
                             </div>
                         </div>
-                        {{ form.submit(class="button is-primary") }}
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Spotify playlist ID:</label>
+                        </div>
+                        <div class="field-body">
+                            {{ form.playlist(class='input', type='text') }}
+                        </div>
+                    </div>
+                    {{ form.submit(class="button is-primary") }}
                 </div>
             </form>
         </div>

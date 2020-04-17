@@ -28,17 +28,18 @@ def createRoute(form, departurelocation, arrivallocation):
     # arrival_location_lat = uniform(49.536612, 51.464020)
     # arrival_location_long = uniform(2.634966, 6.115877)
     d = form.date.data
-    route = Route(#creator=creatorname,
-                  departure_location_lat=departurelocation.latitude,
-                  departure_location_long=departurelocation.longitude, arrival_location_lat=arrivallocation.latitude,
-                  arrival_location_long=arrivallocation.longitude, driver_id=driverid, departure_time=d,
-                  departure_location_string=form.start.data, arrival_location_string=form.destination.data)
+    route = Route(  # creator=creatorname,
+        departure_location_lat=departurelocation.latitude,
+        departure_location_long=departurelocation.longitude, arrival_location_lat=arrivallocation.latitude,
+        arrival_location_long=arrivallocation.longitude, driver_id=driverid, departure_time=d,
+        departure_location_string=form.start.data, arrival_location_string=form.destination.data,
+        playlist=form.playlist.data)
     db.session.add(route)
     db.session.commit()
 
 
-def edit_route(id, departurelocation, arrivallocation, time, passenger_places=None):
-    trip: Route = Route.query.get(id)
+def edit_route(id, departurelocation, arrivallocation, time, passenger_places=None, playlist=None):
+    trip: Route = Route.query.get_or_404(id)
 
     if departurelocation:
         trip.departure_location_lat = departurelocation.latitude
@@ -53,6 +54,9 @@ def edit_route(id, departurelocation, arrivallocation, time, passenger_places=No
 
     if passenger_places:
         trip.passenger_places = passenger_places
+
+    if playlist and playlist != "":
+        trip.playlist = playlist
 
     db.session.commit()
 
@@ -157,6 +161,7 @@ def drive(drive_id):
     return render_template('routes/request_route.html', form=form, user=driver, trip=trip, requested=requested,
                            title='Route Request', passengers=acceptedRequests, isdriver=isDriver)
 
+
 @bp.route('/drives/<drive_id>/request/cancel', methods=['GET', 'POST'])
 @login_required
 def cancel_request(drive_id):
@@ -165,6 +170,7 @@ def cancel_request(drive_id):
     flash("The request has been cancelled")
     return redirect(url_for('main.index'))
 
+
 @bp.route('/drives/<drive_id>/passenger-requests/<user_id>', methods=['GET', 'POST'])
 @login_required
 def passenger_request(drive_id, user_id):
@@ -172,7 +178,6 @@ def passenger_request(drive_id, user_id):
     trip = Route.query.filter_by(id=drive_id).first_or_404()
     user = User.query.filter_by(id=user_id).first_or_404()
     request = RouteRequest.query.filter_by(route_id=drive_id, user_id=user_id).first_or_404()
-
 
     if request.status == RequestStatus.accepted:
         flash("This route request has already been accepted")
@@ -300,8 +305,8 @@ def editRoute(id):
         flash("You have to be the driver of the route in order to edit it")
         return redirect(url_for("main.index"))
     # flash("Warning: this page won't submit anything to the database yet. We're working on it.")
-    form = EditRouteForm()
-    if form.validate_on_submit():
+    form = EditRouteForm(request.form)
+    if form.submit.data:
         departure_location = None
         arrival_location = None
         time = None
@@ -311,8 +316,14 @@ def editRoute(id):
             if departure_location is None:
                 flash("The Start address is invalid")
                 return render_template('routes/editRoute.html', title='Edit Route', form=form)
+            trip: Route = Route.query.get_or_404(id)
+            trip.arrival_location_string = form.start.data
+            db.session.commit()
         if form.destination.data and form.destination.data != "":
             arrival_location = geolocator.geocode(form.destination.data)
+            trip: Route = Route.query.get_or_404(id)
+            trip.arrival_location_string = form.destination.data
+            db.session.commit()
             if arrival_location is None:
                 flash("The destination address is invalid")
                 return render_template('routes/addRoute.html', title='New Route', form=form)
@@ -321,7 +332,7 @@ def editRoute(id):
                 flash("Date is invalid")
                 return render_template('routes/addRoute.html', title='New Route', form=form)
             time = form.date.data
-        editRoute(id, departure_location, arrival_location, time)
+        edit_route(id, departure_location, arrival_location, time, form.playlist.data)
         flash('Your changes have been updated')
         return redirect(url_for('routes_drive.drive', drive_id=id))
     return render_template('routes/editRoute.html', title='Edit Route', form=form)
