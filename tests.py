@@ -125,3 +125,39 @@ class RouteTest(BaseCase):
         # TODO: fix failing test with tokens
         response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00")
         self.assertEqual(401, response.status_code)
+
+    def test_delete_route(self):
+        response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
+        response = self.help_login("TEST_MarkP", "MarkIsCool420")
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00")
+        id = response.json.get("id")
+
+        self.assertNotEqual(None, Route.query.get(id))
+        response = self.client.delete('/api/drives/' + str(id), headers={"Content-Type": "application/json"})
+        self.assertEqual(None, Route.query.get(id))
+
+    def test_update_route(self):
+        response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
+        response = self.help_login("TEST_MarkP", "MarkIsCool420")
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00")
+        id = response.json.get("id")
+
+        payload = json.dumps({
+            "passenger-places": 4
+        })
+
+        self.assertEqual(3, response.json.get("passenger-places"))
+        response = self.client.put('/api/drives/{id}'.format(id=id), headers={"Content-Type": "application/json"}, data=payload)
+        self.assertEqual(4, response.json.get("passenger-places"))
+        self.assertEqual(201, response.status_code)
+
+    def test_read_route(self):
+        response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
+        response = self.help_login("TEST_MarkP", "MarkIsCool420")
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00")
+        id = response.json.get("id")
+        response = self.client.get('/api/drives/{id}'.format(id=id), headers={"Content-Type": "application/json"})
+        self.assertEqual([51.130215, 4.571509], response.json.get("from"))
+        self.assertEqual([51.18417, 4.41931], response.json.get("to"))
+        self.assertEqual(3, response.json.get("passenger-places"))
+        self.assertEqual("2020-02-12T10:00:00.00", response.json.get("arrive-by"))

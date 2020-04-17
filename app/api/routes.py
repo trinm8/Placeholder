@@ -27,29 +27,38 @@ def create_route():
     response.headers['Location'] = url_for('api.get_route', drive_id=route.id)
     return response
 
-@bp.route('/drives/<id>', methods=['DELETE'])
-def delete_route(id):
-    Route.query.get(id).delete()
-    db.session.commit()
-    return
 
-@bp.route('/drives/update', methods=['POST'])
-def update_route():
+@bp.route('/drives/<int:id>', methods=['DELETE'])
+def delete_route(id):
+    if not id:
+        return bad_request("Must include id")
+    Route.query.filter_by(id=id).delete()
+    db.session.commit()
+
+    response = jsonify({})
+    response.status_code = 201
+
+    return response
+
+@bp.route('/drives/<int:id>', methods=['PUT'])
+def update_route(id):
     data = request.get_json() or {}
-    if "id" not in data:
-        return bad_request("Must include an id")
-    id = data["id"]
+    route = Route.query.get_or_404(id)
+
     arrival_location = None
     departure_location = None
     time = None
+    passenger_places = None
     if "from" in data:
         departure_location = data["from"]
     elif "to" in data:
         arrival_location = data["to"]
     elif "time" in data:
         time = data["time"]
+    elif "passenger-places" in data:
+        passenger_places = data["passenger-places"]
     edit_route(id, departure_location, arrival_location,
-               time)  # TODO: check whether departure and arrival location are the right format
+               time, passenger_places)  # TODO: check whether departure and arrival location are the right format
     route = Route.query.get(id)
     response = jsonify(route.to_dict())
     response.status_code = 201

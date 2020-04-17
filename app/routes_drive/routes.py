@@ -37,7 +37,7 @@ def createRoute(form, departurelocation, arrivallocation):
     db.session.commit()
 
 
-def edit_route(id, departurelocation, arrivallocation, time):
+def edit_route(id, departurelocation, arrivallocation, time, passenger_places=None):
     trip: Route = Route.query.get(id)
 
     if departurelocation:
@@ -50,6 +50,10 @@ def edit_route(id, departurelocation, arrivallocation, time):
 
     if time:
         trip.departure_time = time
+
+    if passenger_places:
+        trip.passenger_places = passenger_places
+
     db.session.commit()
 
 
