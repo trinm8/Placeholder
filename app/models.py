@@ -96,6 +96,35 @@ class User(UserMixin, db.Model):
     token = db.Column(db.String(64), unique=True)
     token_expiration = db.Column(db.DateTime)
 
+    def to_dict(self):
+        data = {
+            "id": self.id,
+            "firstname": self.firstname,
+            "lastname": self.lastname,
+            "username": self.username,
+            "email": self.email,
+            "car_color": self.car_color,
+            "car_plate": self.car_plate,
+            "car_brand": self.car_brand
+        }
+        return data
+
+    def from_dict(self, data):
+        if "username" in data:
+            self.firstname = data["username"]
+        if "firstname" in data:
+            self.firstname = data["firstname"]
+        if "lastname" in data:
+            self.lastname = data["lastname"]
+        if "email" in data:
+            self.email = data["email"]
+        if "car_color" in data:
+            self.car_color = data["car_color"]
+        if "car_plate" in data:
+            self.car_plate = data["car_plate"]
+        if "car_brand" in data:
+            self.car_plate = data["car_brand"]
+
     def __repr__(self):
         return '<User {} {}>'.format(self.name, self.lastname)
 

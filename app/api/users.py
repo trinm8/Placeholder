@@ -63,21 +63,6 @@ def auth():
 #     pass
 
 
-@bp.route('/users/<int:id>/followers', methods=['GET'])
-def get_followers(id):
-    pass
-
-
-@bp.route('/users/<int:id>/followed', methods=['GET'])
-def get_followed(id):
-    pass
-
-
-@bp.route('/users', methods=['POST'])
-def create_user():
-    pass
-
-
-@bp.route('/users/<int:id>', methods=['PUT'])
+@bp.route('/users/<int:id>', methods=['GET'])
 def update_user(id):
-    pass
+    return jsonify(User.query.get_or_404(id).to_dict())
