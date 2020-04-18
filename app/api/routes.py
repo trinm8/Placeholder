@@ -5,7 +5,7 @@ from app.api.errors import bad_request
 from app import db
 from app.api.auth import auth, token_auth
 from app.routes_drive.routes import edit_route
-
+from app.api.tokens import login_required
 
 @bp.route('/drives/<int:drive_id>', methods=['GET'])
 def get_route(drive_id):
@@ -13,6 +13,7 @@ def get_route(drive_id):
 
 
 @bp.route('/drives', methods=['POST'])
+@login_required
 def create_route():
     data = request.get_json() or {}
     if data.get("from") is None or data.get("to") is None or data.get("passenger-places") is None \
@@ -20,6 +21,7 @@ def create_route():
         return bad_request("Must include from, to passenger-places and time")
     route = Route()
     route.from_dict(data)
+    route.driver_id = g.current_user.id
     db.session.add(route)
     db.session.commit()
     response = jsonify(route.to_dict())
@@ -29,6 +31,7 @@ def create_route():
 
 
 @bp.route('/drives/<int:id>', methods=['DELETE'])
+@login_required
 def delete_route(id):
     if not id:
         return bad_request("Must include id")
@@ -41,6 +44,7 @@ def delete_route(id):
     return response
 
 @bp.route('/drives/<int:id>', methods=['PUT'])
+@login_required
 def update_route(id):
     data = request.get_json() or {}
     route = Route.query.get_or_404(id)
@@ -67,7 +71,8 @@ def update_route(id):
 
 
 @bp.route('/drives/<int:drive_id>/passenger-requests', methods=['GET'])
-@token_auth.login_required
+# @token_auth.login_required
+@login_required
 def get_passenger_requests(drive_id):
     # Is user the driver?
     drive = Route.query.get_or_404(drive_id)
@@ -84,7 +89,7 @@ def get_passenger_requests(drive_id):
 
 
 @bp.route('/drives/<int:drive_id>/passenger-requests', methods=['POST'])
-@token_auth.login_required
+@login_required
 def create_passenger_request(drive_id):
     route_req = RouteRequest(drive_id, g.current_user.id)
     db.session.add(route_req)
@@ -97,7 +102,7 @@ def create_passenger_request(drive_id):
     return response
 
 @bp.route('/drives/<int:drive_id>/passenger-requests/<int:user_id>', methods=['DELETE'])
-@token_auth.login_required
+@login_required
 def delete_request(drive_id, user_id):
     RouteRequest.query.filter_by(route_id=drive_id, user_id=user_id).delete()
     db.session.commit()
@@ -108,7 +113,7 @@ def delete_request(drive_id, user_id):
     return response
 
 @bp.route('/drives/<int:drive_id>/passenger-requests/<int:user_id>', methods=['POST'])
-@token_auth.login_required
+@login_required
 def change_request_status(drive_id, user_id):
     # Is user driver?
     drive = Route.query.get_or_404(drive_id)

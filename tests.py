@@ -53,7 +53,7 @@ class BaseCase(TestCase):
 
         return self.client.post('/api/users/auth', headers={"Content-Type": "application/json"}, data=payload)
 
-    def help_add_route(self, from_coords, to_coords, passenger_places, arrive_by):
+    def help_add_route(self, from_coords, to_coords, passenger_places, arrive_by, authorization):
         payload = json.dumps({
             "from": from_coords,
             "to": to_coords,
@@ -61,7 +61,7 @@ class BaseCase(TestCase):
             "arrive-by": arrive_by
         })
 
-        return self.client.post('/api/drives', headers={"Content-Type": "application/json"}, data=payload)
+        return self.client.post('/api/drives', headers={"Content-Type": "application/json", "Authorization": authorization}, data=payload)
 
 
 class AuthenticationTest(BaseCase):
@@ -106,9 +106,10 @@ class RouteTest(BaseCase):
         response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
         id = response.json.get("id")
         response = self.help_login("TEST_MarkP", "MarkIsCool420")
-        # TODO: tokens meegeven aan request? Driver id checken?
+        token = response.json.get("token")
+        authorization = "Bearer {token}".format(token=token)
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00", authorization)
         self.assertEqual(id, response.json.get("driver-id"))
-        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00")
         self.assertEqual([51.130215, 4.571509], response.json.get("from"))
         self.assertEqual([51.18417, 4.41931], response.json.get("to"))
         self.assertEqual(3, response.json.get("passenger-places"))
@@ -118,28 +119,33 @@ class RouteTest(BaseCase):
         response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
         id = response.json.get("id")
         response = self.help_login("TEST_MarkP", "MarkIsCool420")
-        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], None, "2020-02-12T10:00:00.00")
+        token = response.json.get("token")
+        authorization = "Bearer {token}".format(token=token)
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], None, "2020-02-12T10:00:00.00", authorization)
         self.assertEqual(401, response.status_code)
 
     def test_add_route_no_login(self):
         # TODO: fix failing test with tokens
-        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00")
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00", None)
         self.assertEqual(401, response.status_code)
 
     def test_delete_route(self):
         response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
         response = self.help_login("TEST_MarkP", "MarkIsCool420")
-        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00")
+        token = response.json.get("token")
+        authorization = "Bearer {token}".format(token=token)
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00", authorization)
         id = response.json.get("id")
 
         self.assertNotEqual(None, Route.query.get(id))
-        response = self.client.delete('/api/drives/' + str(id), headers={"Content-Type": "application/json"})
+        response = self.client.delete('/api/drives/' + str(id), headers={"Content-Type": "application/json", "Authorization": authorization})
         self.assertEqual(None, Route.query.get(id))
 
     def test_update_route(self):
         response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
         response = self.help_login("TEST_MarkP", "MarkIsCool420")
-        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00")
+        authorization = "Bearer {token}".format(token=response.json.get("token"))
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00", authorization)
         id = response.json.get("id")
 
         payload = json.dumps({
@@ -147,16 +153,17 @@ class RouteTest(BaseCase):
         })
 
         self.assertEqual(3, response.json.get("passenger-places"))
-        response = self.client.put('/api/drives/{id}'.format(id=id), headers={"Content-Type": "application/json"}, data=payload)
+        response = self.client.put('/api/drives/{id}'.format(id=id), headers={"Content-Type": "application/json", "Authorization": authorization}, data=payload)
         self.assertEqual(4, response.json.get("passenger-places"))
         self.assertEqual(201, response.status_code)
 
     def test_read_route(self):
         response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
         response = self.help_login("TEST_MarkP", "MarkIsCool420")
-        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00")
+        authorization = "Bearer {token}".format(token=response.json.get("token"))
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00", authorization)
         id = response.json.get("id")
-        response = self.client.get('/api/drives/{id}'.format(id=id), headers={"Content-Type": "application/json"})
+        response = self.client.get('/api/drives/{id}'.format(id=id), headers={"Content-Type": "application/json", "Authorization":authorization})
         self.assertEqual([51.130215, 4.571509], response.json.get("from"))
         self.assertEqual([51.18417, 4.41931], response.json.get("to"))
         self.assertEqual(3, response.json.get("passenger-places"))
