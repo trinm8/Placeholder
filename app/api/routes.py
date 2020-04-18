@@ -96,6 +96,16 @@ def create_passenger_request(drive_id):
     # Make another GET function for single passenger-requests?
     return response
 
+@bp.route('/drives/<int:drive_id>/passenger-requests/<int:user_id>', methods=['DELETE'])
+@token_auth.login_required
+def delete_request(drive_id, user_id):
+    RouteRequest.query.filter_by(route_id=drive_id, user_id=user_id).delete()
+    db.session.commit()
+
+    response = jsonify({})
+    response.status_code = 201
+
+    return response
 
 @bp.route('/drives/<int:drive_id>/passenger-requests/<int:user_id>', methods=['POST'])
 @token_auth.login_required
