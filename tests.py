@@ -149,12 +149,14 @@ class RouteTest(BaseCase):
         id = response.json.get("id")
 
         payload = json.dumps({
-            "passenger-places": 4
+            "from": [51.130326, 4.571610]
         })
 
-        self.assertEqual(3, response.json.get("passenger-places"))
-        response = self.client.put('/api/drives/{id}'.format(id=id), headers={"Content-Type": "application/json", "Authorization": authorization}, data=payload)
-        self.assertEqual(4, response.json.get("passenger-places"))
+        self.assertEqual([51.130215, 4.571509], response.json.get("from"))
+        response = self.client.put('/api/drives/{id}'.format(id=id),
+                                   headers={"Content-Type": "application/json", "Authorization": authorization},
+                                   data=payload)
+        self.assertEqual([51.130326, 4.571610], response.json.get("from"))
         self.assertEqual(201, response.status_code)
 
     def test_read_route(self):

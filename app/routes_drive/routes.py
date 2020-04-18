@@ -42,13 +42,19 @@ def edit_route(id, departurelocation, arrivallocation, time, passenger_places=No
     trip = Route.query.get_or_404(id)
 
     if departurelocation:
-        trip.departure_location_lat = departurelocation.latitude
-        trip.departure_location_long = departurelocation.longitude
-
+        try:
+            trip.departure_location_lat = departurelocation[0]
+            trip.departure_location_long = departurelocation[1]
+        except:
+            trip.departure_location_lat = departurelocation.latitude
+            trip.departure_location_long = departurelocation.longitude
     if arrivallocation:
-        trip.arrival_location_lat = arrivallocation.latitude
-        trip.arrival_location_long = arrivallocation.longitude
-
+        try:
+            trip.arrival_location_lat = arrivallocation[0]
+            trip.arrival_location_long = arrivallocation[1]
+        except:
+            trip.arrival_location_lat = arrivallocation.latitude
+            trip.arrival_location_long = arrivallocation.longitude
     if time:
         trip.departure_time = time
 
