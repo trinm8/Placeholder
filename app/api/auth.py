@@ -1,5 +1,6 @@
+import jwt
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
-from flask import g
+from flask import g, current_app
 from app.models import User
 from app.api.errors import error_response
 
