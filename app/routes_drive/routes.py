@@ -39,7 +39,7 @@ def createRoute(form, departurelocation, arrivallocation):
 
 
 def edit_route(id, departurelocation, arrivallocation, time, passenger_places=None, playlist=None):
-    trip: Route = Route.query.get_or_404(id)
+    trip = Route.query.get_or_404(id)
 
     if departurelocation:
         trip.departure_location_lat = departurelocation.latitude
@@ -322,12 +322,12 @@ def editRoute(id):
             if departure_location is None:
                 flash("The Start address is invalid")
                 return render_template('routes/editRoute.html', title='Edit Route', form=form)
-            trip: Route = Route.query.get_or_404(id)
+            trip = Route.query.get_or_404(id)
             trip.arrival_location_string = form.start.data
             db.session.commit()
         if form.destination.data and form.destination.data != "":
             arrival_location = geolocator.geocode(form.destination.data)
-            trip: Route = Route.query.get_or_404(id)
+            trip = Route.query.get_or_404(id)
             trip.arrival_location_string = form.destination.data
             db.session.commit()
             if arrival_location is None:
