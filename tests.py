@@ -9,10 +9,11 @@ import json
 
 from app import create_app, db
 from sqlalchemy import func
+from flask import Response
 from app.models import *
 from flask_testing import TestCase
 from app.auth.routes import register_user_func
-
+from app.api.tokens import login_required
 
 class BaseCase(TestCase):
 
@@ -63,6 +64,9 @@ class BaseCase(TestCase):
 
         return self.client.post('/api/drives', headers={"Content-Type": "application/json", "Authorization": authorization}, data=payload)
 
+    # @login_required
+    # def help_dummy_func_expired(self):
+    #     pass
 
 class AuthenticationTest(BaseCase):
 
@@ -100,6 +104,18 @@ class AuthenticationTest(BaseCase):
         response = self.help_login("TEST_MarkD", "MarkIsCool420")
         user = User.check_token(response.json.get("token"))
         self.assertNotEqual(user.username, "TEST_MarkP")
+
+    # def test_expired_tokens(self):
+    #     response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
+    #     response = self.help_login("TEST_MarkP", "MarkIsCool420")
+    #     user = User.check_token(response.json.get("token"))
+    #     fastToken = Response('localhost:5000', headers={'Authorization': user.get_token(1)})
+    #     mock = self.help_dummy_func_expired()
+    #     decorated = login_required(mock)
+    #     response = decorated(fastToken)
+    #     assert not mock.called
+
+
 
 class RouteTest(BaseCase):
     def test_add_route(self):

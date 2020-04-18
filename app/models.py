@@ -90,11 +90,11 @@ class User(UserMixin, db.Model):
     car_brand = db.Column(db.String(64), index=True)
     car_plate = db.Column(db.String(32), index=True, unique=True)
 
-    # Authentication tokens
-    # TODO: I changed this from 32 to 64, but it didn't get updated with flask db migrate,
-    #  Drop and add table again to do this probably
-    token = db.Column(db.String(64), unique=True)
-    token_expiration = db.Column(db.DateTime)
+    # # Authentication tokens
+    # # TODO: I changed this from 32 to 64, but it didn't get updated with flask db migrate,
+    # #  Drop and add table again to do this probably
+    # token = db.Column(db.String(64), unique=True)
+    # token_expiration = db.Column(db.DateTime)
 
     def to_dict(self):
         data = {
@@ -156,9 +156,6 @@ class User(UserMixin, db.Model):
     def get_token(self, expires=3600):
         return jwt.encode({'user_id': self.id, 'exp': time() + expires},
                           current_app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
-
-    def revoke_token(self):
-        self.token_expiration = datetime.now() - timedelta(seconds=1)
 
     @staticmethod
     def check_token(token):
