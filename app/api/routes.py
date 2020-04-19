@@ -4,7 +4,7 @@ from app.api import bp
 from app.api.errors import bad_request
 from app import db
 from app.api.auth import auth, token_auth
-from app.routes_drive.routes import edit_route
+from app.routes_drive.routes import edit_route, filter_routes
 from app.api.tokens import login_required
 
 @bp.route('/drives/<int:drive_id>', methods=['GET'])
@@ -152,12 +152,10 @@ def overview():
     long_from = data["from"][1]
     lat_to = data["to"][0]
     long_to = data["to"][1]
-    distance = 1 / 768
-    routes = Route.query \
-        .filter((lat_from - Route.departure_location_lat) * (lat_from - Route.departure_location_lat) < distance) \
-        .filter((long_from - Route.departure_location_long) * (long_from - Route.departure_location_long) < distance) \
-        .filter((lat_to - Route.arrival_location_lat) * (lat_to - Route.arrival_location_lat) < distance) \
-        .filter((long_to - Route.arrival_location_long) * (long_to - Route.arrival_location_long) < distance)
+    datetime = data["time"]  # Should only be the date
+    time = datetime.strptime(datetime, '%Y-%m-%d %H:%M:%S')
+
+    routes = filter_routes(5, (lat_to, long_to), (lat_from, long_from), time)
     return jsonify(routes.to_dict())
 
 @bp.route('/user/<int:id>', methods=['GET'])

@@ -263,13 +263,17 @@ def overview():
     departure_location = (lat_from, long_from)
     arrival_location = (lat_to, long_to)
 
+    routes = filter_routes(allowed_distance, arrival_location, departure_location, time)
+
+    return render_template('routes/search_results.html', routes=routes, title="Search", src=addr(lat_from, long_from),
+                           dest=addr(lat_to, long_to), form=form)
+
+
+def filter_routes(allowed_distance, arrival_location, departure_location, time):
     same_day_routes = Route.query.filter(
         cast(Route.departure_time, Date) == time.date()).all()  # https://gist.github.com/Tukki/3953990
-
     routes = []
-
     from geopy import distance  # No idea why this include won't work when placed outside this function
-
     # allowed_distance = 2
     for route in same_day_routes:
         route_dep = (route.departure_location_lat, route.departure_location_long)
@@ -277,9 +281,7 @@ def overview():
         if distance.distance(route_dep, departure_location).km <= allowed_distance and \
                 distance.distance(route_arr, arrival_location).km <= allowed_distance:
             routes.append(route)
-
-    return render_template('routes/search_results.html', routes=routes, title="Search", src=addr(lat_from, long_from),
-                           dest=addr(lat_to, long_to), form=form)
+    return routes
 
 
 @bp.route('/history', methods=['GET'])
