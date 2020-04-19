@@ -156,7 +156,9 @@ def overview():
     time = datetime.strptime(datetime, '%Y-%m-%d %H:%M:%S')
 
     routes = filter_routes(5, (lat_to, long_to), (lat_from, long_from), time)
-    return jsonify(routes.to_dict())
+    response = jsonify([route.to_dict() for route in routes])
+    response.status_code = 200
+    return
 
 @bp.route('/user/<int:id>', methods=['GET'])
 @login_required
