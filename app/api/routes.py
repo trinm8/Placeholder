@@ -1,5 +1,5 @@
 from flask import jsonify, request, url_for, g
-from app.models import Route, RouteRequest
+from app.models import Route, RouteRequest, User
 from app.api import bp
 from app.api.errors import bad_request
 from app import db
@@ -159,3 +159,26 @@ def overview():
         .filter((lat_to - Route.arrival_location_lat) * (lat_to - Route.arrival_location_lat) < distance) \
         .filter((long_to - Route.arrival_location_long) * (long_to - Route.arrival_location_long) < distance)
     return jsonify(routes.to_dict())
+
+@bp.route('/user/<int:id>', methods=['GET'])
+@login_required
+def get_user(id):
+    # Is user the driver?
+    user = User.query.get_or_404(id)
+    # Return response
+    response = jsonify(user.to_dict())
+    response.status_code = 200
+    return response
+
+
+@bp.route('/user', methods=['DELETE'])
+@login_required
+def delete_user():
+    User.query.get_or_404(g.current_user.id).delete()
+    db.session.commit()
+
+    response = jsonify({})
+    response.status_code = 201
+    return response
+
+# TODO: edit user
