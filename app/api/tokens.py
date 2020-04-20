@@ -44,6 +44,6 @@ def login_required(func):
             return func(*args, **kwargs)
         except jwt.ExpiredSignatureError:
             return bad_request("This token has expired")
-        except:
+        except (KeyError, ValueError):
             return bad_request("Please be sure your login is correct")
     return check_token

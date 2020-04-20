@@ -139,7 +139,7 @@ def change_request_status(drive_id, user_id):
     if data['action'] not in ['accept', 'reject']:
         return bad_request('Action must be accept or reject!')
 
-    route_req = RouteRequest.query.filter_by(drive_id=drive_id, user_id=user_id).first()
+    route_req = RouteRequest.query.filter_by(route_id=drive_id, user_id=user_id).first()
     if data['action'] == 'accept':
         route_req.accept()
     else:

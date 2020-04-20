@@ -122,6 +122,7 @@ class AuthenticationTest(BaseCase):
         user = User.check_token(response.json.get("token"))
         self.assertNotEqual(user.username, "TEST_MarkP")
 
+
     # def test_expired_tokens(self):
     #     response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
     #     response = self.help_login("TEST_MarkP", "MarkIsCool420")
@@ -262,9 +263,9 @@ class RequestTest(BaseCase):
         self.help_add_request(drive_id, authorization)
 
         # Log in with driver
-        response = self.help_login("TEST_MarkD", "MarkIsCool420")
-        token_d = response.json.get("token")
-        authorization_d = "Bearer {token}".format(token=token_d)
+        # response = self.help_login("TEST_MarkD", "MarkIsCool420")
+        # token_d = response.json.get("token")
+        # authorization_d = "Bearer {token}".format(token=token_d)
 
         # -------------- ACTUAL TEST ----------------
         response = self.help_status_request(drive_id, user_id, "accept", authorization_d)
