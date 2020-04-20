@@ -6,26 +6,38 @@
         <h1 class="title">Request overview</h1>
         <h2 class="subtitle">All requests for routes where you are the driver for</h2>
 
-        {% for request in requests %}
-            <div class="card">
-                <div class="card-content">
-                    {% if request.status.name == 'accepted' %}
-                        <span class="card is-success">Accepted</span>
-                    {% elif request.status.name == 'rejected' %}
-                        <span class="card is-danger">Rejected</span>
-                    {% else %}
-                        <span class="card is-primary">Pending</span>
-                    {% endif %}
-                    <p class="title">{{ request.user().name() }} wants to ride!</p>
-                    <strong>FROM:</strong> {{ request.route().text_from() }}<br>
-                    <strong>TO:</strong> {{ request.route().text_to() }}<br>
-                    <strong>TIME:</strong> {{ request.route().departure_time.isoformat() }}
-                    <a class="button" href="{{ url_for("routes_drive.passenger_request", drive_id=request.route().id, user_id=request.user_id) }}">
-                        View
-                    </a>
+        <div class="columns is-multiline">
+            {% for request in requests %}
+                <div class="column is-4">
+                    <div class="message
+                {% if request.status.name == 'accepted' %}
+                    is-success
+                {% elif request.status.name == 'rejected' %}
+                    is-danger
+                {% else %}
+                    is-primary
+                {% endif %}">
+                        <div class="message-body">
+                            {% if request.status.name == 'accepted' %}
+                                <p class="tag is-success">Accepted</p>
+                            {% elif request.status.name == 'rejected' %}
+                                <p class="tag is-danger">Rejected</p>
+                            {% else %}
+                                <p class="tag is-primary">Pending</p>
+                            {% endif %}
+                            <p class="title">{{ request.user().name() }} wants to ride!</p>
+                            <strong>FROM: </strong> {{ request.route().text_from() }}<br>
+                            <strong>TO: </strong> {{ request.route().text_to() }}<br>
+                            <strong>TIME: </strong> {{ request.route().departure_time.isoformat() }}<br>
+                            <a class="button"
+                               href="{{ url_for("routes_drive.passenger_request", drive_id=request.route().id, user_id=request.user_id) }}">
+                                View
+                            </a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
 
     </section>
 
