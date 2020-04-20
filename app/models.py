@@ -111,7 +111,7 @@ class User(UserMixin, db.Model):
 
     def from_dict(self, data):
         if "username" in data:
-            self.firstname = data["username"]
+            self.username = data["username"]
         if "firstname" in data:
             self.firstname = data["firstname"]
         if "lastname" in data:
@@ -282,11 +282,14 @@ class RouteRequest(db.Model):
     route_id = db.Column(db.Integer, db.ForeignKey('route.id', ondelete='CASCADE'), primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True)
     status = db.Column(db.Enum(RequestStatus))
+    time_created = db.Column(db.DateTime)
+    time_updated = db.Column(db.DateTime)
 
     def __init__(self, route_id, user_id):
         self.status = RequestStatus.pending
         self.route_id = route_id
         self.user_id = user_id
+        self.time_created = datetime.utcnow()
 
     def route(self):
         return Route.query.get(self.route_id)
@@ -298,17 +301,23 @@ class RouteRequest(db.Model):
         return self.status == RequestStatus.accepted
 
     def accept(self):
+        self.time_updated = datetime.utcnow()
         self.status = RequestStatus.accepted
 
     def reject(self):
+        self.time_updated = datetime.utcnow()
         self.status = RequestStatus.rejected
 
     def to_dict(self):
-        return {
-            'id': self.route_id,
+        data = {
+            'id': self.user_id,
             'username': self.user().username,
-            'status': self.status.name
+            'status': self.status.name,
+            'time-created': self.time_created.isoformat() + '.00'
         }
+        if self.time_updated is not None:
+            data['time-updated'] = self.time_updated.isoformat() + '.00'
+        return data
 
 
 class MusicPref(db.Model):

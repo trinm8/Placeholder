@@ -7,6 +7,7 @@ from app.api.auth import auth, token_auth
 from app.routes_drive.routes import edit_route, filter_routes
 from app.api.tokens import login_required
 
+
 @bp.route('/drives/<int:drive_id>', methods=['GET'])
 def get_route(drive_id):
     return jsonify(Route.query.get_or_404(drive_id).to_dict())
@@ -42,6 +43,7 @@ def delete_route(id):
     response.status_code = 201
 
     return response
+
 
 @bp.route('/drives/<int:id>', methods=['PUT'])
 @login_required
@@ -88,18 +90,26 @@ def get_passenger_requests(drive_id):
     return response
 
 
+@bp.route('/drives/<int:drive_id>/passenger-requests/<int:user_id>', methods=['GET'])
+@login_required
+def get_passenger_request(drive_id, user_id):
+    route_request = RouteRequest.query.filter_by(drive_id=drive_id, user_id=user_id).first()
+    response = jsonify(route_request.to_dict())
+    return response
+
+
 @bp.route('/drives/<int:drive_id>/passenger-requests', methods=['POST'])
 @login_required
 def create_passenger_request(drive_id):
-    route_req = RouteRequest(drive_id, g.current_user.id)
+    user_id = g.current_user.id
+    route_req = RouteRequest(drive_id, user_id)
     db.session.add(route_req)
     db.session.commit()
     response = jsonify(route_req.to_dict())
     response.status_code = 201
-    # response.headers['Location'] = url_for('api.get_request', drive_id=route_req.route_id, user_id=route_req.user_id)
-    # TODO: location to /drives/int/passenger-requests/int
-    # Make another GET function for single passenger-requests?
+    response.headers['Location'] = url_for('api.get_passenger_request', drive_id=drive_id, user_id=user_id)
     return response
+
 
 @bp.route('/drives/<int:drive_id>/passenger-requests/<int:user_id>', methods=['DELETE'])
 @login_required
@@ -112,13 +122,14 @@ def delete_request(drive_id, user_id):
 
     return response
 
+
 @bp.route('/drives/<int:drive_id>/passenger-requests/<int:user_id>', methods=['POST'])
 @login_required
 def change_request_status(drive_id, user_id):
     # Is user driver?
-    drive = Route.query.get_or_404(drive_id)
-    if g.current_user.id != drive.user_id:
-        return bad_request('Only the driver can view requests for this drive.')
+    # drive = Route.query.filter_by(id=drive_id).first()
+    # if g.current_user.id != drive.driver_id:
+    #     return bad_request('Only the driver can view requests for this drive.')
 
     data = request.get_json() or {}
 
@@ -128,7 +139,7 @@ def change_request_status(drive_id, user_id):
     if data['action'] not in ['accept', 'reject']:
         return bad_request('Action must be accept or reject!')
 
-    route_req = RouteRequest.query.get_or_404((drive_id, user_id))
+    route_req = RouteRequest.query.filter_by(drive_id=drive_id, user_id=user_id).first()
     if data['action'] == 'accept':
         route_req.accept()
     else:
@@ -137,8 +148,7 @@ def change_request_status(drive_id, user_id):
     db.session.commit()
     response = jsonify(route_req.to_dict())
     response.status_code = 200
-    # response.headers['Location'] = url_for('api.get_request', drive_id=route_req.route_id, user_id=route_req.user_id)
-    # TODO: Idem as function above
+    response.headers['Location'] = url_for('api.get_passenger_request', drive_id=drive_id, user_id=user_id)
     return response
 
 
@@ -159,6 +169,7 @@ def overview():
     response = jsonify([route.to_dict() for route in routes])
     response.status_code = 200
     return
+
 
 @bp.route('/user/<int:id>', methods=['GET'])
 @login_required

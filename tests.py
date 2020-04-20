@@ -1,4 +1,4 @@
- # Based on https://dev.to/paurakhsharma/flask-rest-api-part-6-testing-rest-apis-4lla
+# Based on https://dev.to/paurakhsharma/flask-rest-api-part-6-testing-rest-apis-4lla
 
 import unittest
 import json
@@ -15,13 +15,13 @@ from flask_testing import TestCase
 from app.auth.routes import register_user_func
 from app.api.tokens import login_required
 
+
 class BaseCase(TestCase):
 
     def create_app(self):
         return create_app()
 
     def setUp(self):
-
         User.query.filter(User.id >= 45).delete()
         db.session.commit()
 
@@ -62,11 +62,28 @@ class BaseCase(TestCase):
             "arrive-by": arrive_by
         })
 
-        return self.client.post('/api/drives', headers={"Content-Type": "application/json", "Authorization": authorization}, data=payload)
+        return self.client.post('/api/drives',
+                                headers={"Content-Type": "application/json", "Authorization": authorization},
+                                data=payload)
+
+    def help_add_request(self, drive_id, authorization):
+        payload = json.dumps({})
+        return self.client.post('/api/drives/{}/passenger-requests'.format(str(drive_id)),
+                                headers={"Content-Type": "application/json", "Authorization": authorization},
+                                data=payload)
+
+    def help_status_request(self, drive_id, user_id, action, authorization):
+        payload = json.dumps({
+            "action": action
+        })
+        return self.client.post('api/drives/{}/passenger-requests/{}'.format(str(drive_id), str(user_id)),
+                                headers={"Content-Type": "application/json", "Authorization": authorization},
+                                data=payload)
 
     # @login_required
     # def help_dummy_func_expired(self):
     #     pass
+
 
 class AuthenticationTest(BaseCase):
 
@@ -116,7 +133,6 @@ class AuthenticationTest(BaseCase):
     #     assert not mock.called
 
 
-
 class RouteTest(BaseCase):
     def test_add_route(self):
         response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
@@ -124,7 +140,8 @@ class RouteTest(BaseCase):
         response = self.help_login("TEST_MarkP", "MarkIsCool420")
         token = response.json.get("token")
         authorization = "Bearer {token}".format(token=token)
-        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00", authorization)
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00",
+                                       authorization)
         self.assertEqual(id, response.json.get("driver-id"))
         self.assertEqual([51.130215, 4.571509], response.json.get("from"))
         self.assertEqual([51.18417, 4.41931], response.json.get("to"))
@@ -137,7 +154,8 @@ class RouteTest(BaseCase):
         response = self.help_login("TEST_MarkP", "MarkIsCool420")
         token = response.json.get("token")
         authorization = "Bearer {token}".format(token=token)
-        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], None, "2020-02-12T10:00:00.00", authorization)
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], None, "2020-02-12T10:00:00.00",
+                                       authorization)
         self.assertEqual(401, response.status_code)
 
     def test_add_route_no_login(self):
@@ -150,18 +168,21 @@ class RouteTest(BaseCase):
         response = self.help_login("TEST_MarkP", "MarkIsCool420")
         token = response.json.get("token")
         authorization = "Bearer {token}".format(token=token)
-        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00", authorization)
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00",
+                                       authorization)
         id = response.json.get("id")
 
         self.assertNotEqual(None, Route.query.get(id))
-        response = self.client.delete('/api/drives/' + str(id), headers={"Content-Type": "application/json", "Authorization": authorization})
+        response = self.client.delete('/api/drives/' + str(id),
+                                      headers={"Content-Type": "application/json", "Authorization": authorization})
         self.assertEqual(None, Route.query.get(id))
 
     def test_update_route(self):
         response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
         response = self.help_login("TEST_MarkP", "MarkIsCool420")
         authorization = "Bearer {token}".format(token=response.json.get("token"))
-        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00", authorization)
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00",
+                                       authorization)
         id = response.json.get("id")
 
         payload = json.dumps({
@@ -179,10 +200,77 @@ class RouteTest(BaseCase):
         response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
         response = self.help_login("TEST_MarkP", "MarkIsCool420")
         authorization = "Bearer {token}".format(token=response.json.get("token"))
-        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00", authorization)
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00",
+                                       authorization)
         id = response.json.get("id")
-        response = self.client.get('/api/drives/{id}'.format(id=id), headers={"Content-Type": "application/json", "Authorization":authorization})
+        response = self.client.get('/api/drives/{id}'.format(id=id),
+                                   headers={"Content-Type": "application/json", "Authorization": authorization})
         self.assertEqual([51.130215, 4.571509], response.json.get("from"))
         self.assertEqual([51.18417, 4.41931], response.json.get("to"))
         self.assertEqual(3, response.json.get("passenger-places"))
         self.assertEqual("2020-02-12T10:00:00.00", response.json.get("arrive-by"))
+
+
+class RequestTest(BaseCase):
+
+    def test_add_request(self):
+        # Create driver
+        self.help_register("TEST_MarkD", "Mark", "Peeters", "MarkIsCool420")
+        response = self.help_login("TEST_MarkD", "MarkIsCool420")
+        token = response.json.get("token")
+        authorization = "Bearer {token}".format(token=token)
+
+        # Create route
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00",
+                                       authorization)
+        drive_id = response.json.get("id")
+
+        # Create passenger
+        response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
+        user_id = response.json.get("id")
+        response = self.help_login("TEST_MarkP", "MarkIsCool420")
+        token = response.json.get("token")
+        authorization = "Bearer {token}".format(token=token)
+
+        # -------------- ACTUAL TEST ----------------
+        response = self.help_add_request(drive_id, authorization)
+        self.assertEqual(response.json.get("id"), user_id)
+        self.assertEqual(response.json.get("username"), "TEST_MarkP")
+        self.assertEqual(response.json.get("status"), "pending")
+        self.assertIsNotNone(response.json.get("time-created"))
+
+    def test_status_request(self):
+        # Create driver
+        self.help_register("TEST_MarkD", "Mark", "Peeters", "MarkIsCool420")
+        response = self.help_login("TEST_MarkD", "MarkIsCool420")
+        token_d = response.json.get("token")
+        authorization_d = "Bearer {token}".format(token=token_d)
+
+        # Create route
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00",
+                                       authorization_d)
+        drive_id = response.json.get("id")
+
+        # Create passenger
+        response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
+        user_id = response.json.get("id")
+        response = self.help_login("TEST_MarkP", "MarkIsCool420")
+        token = response.json.get("token")
+        authorization = "Bearer {token}".format(token=token)
+
+        # Create request
+        self.help_add_request(drive_id, authorization)
+
+        # Log in with driver
+        response = self.help_login("TEST_MarkD", "MarkIsCool420")
+        token_d = response.json.get("token")
+        authorization_d = "Bearer {token}".format(token=token_d)
+
+        # -------------- ACTUAL TEST ----------------
+        response = self.help_status_request(drive_id, user_id, "accept", authorization_d)
+        print(str(response.json))
+        self.assertEqual(response.json.get("id"), user_id)
+        self.assertEqual(response.json.get("username"), "TEST_MarkP")
+        self.assertEqual(response.json.get("status"), "accepted")
+        self.assertIsNotNone(response.json.get("time-created"))
+        self.assertIsNotNone(response.json.get("time-updated"))
