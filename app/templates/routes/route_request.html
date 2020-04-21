@@ -26,12 +26,12 @@
                 {{ map.map() }}
                 <script>loadMarkersRoute({{ trip.departure_location_lat }}, {{ trip.departure_location_long }}, {{ trip.arrival_location_lat }}, {{ trip.arrival_location_long }})</script>
             </div>
-            <form class="column" action="" method="POST" novalidate>
+            <form class="column full-height" action="" method="POST" novalidate>
                 <div class="tile is-vertical">
                     {{ form.hidden_tag() }}
-                    <h1 class="title">{{ user.firstname }} wants to ride with you!</h1>
-                    <div class="columns">
-                        <div class="column">
+                    <h1 class="title ">{{ user.firstname }} wants to ride with you!</h1>
+                    <div class="columns full-height">
+                        <div class="column full-height">
                             <h2 class="subtitle">Trip information</h2>
                             <p> From: {{ trip.text_from() }}</p>
                             <p> To: {{ trip.text_to() }} </p>
@@ -40,15 +40,15 @@
 
                             {% if trip.playlist %}
                             <p>Here is the playlist that was added to the route.</p><br>
-                            <iframe src="https://open.spotify.com/embed/playlist/{{ trip.playlist }}" width="80%" height="80%" frameborder="10" allowtransparency="true" allow="encrypted-media"></iframe>
+                            <iframe src="https://open.spotify.com/embed/playlist/{{ trip.playlist }}" width="80%" height="100%" frameborder="10" allowtransparency="true" allow="encrypted-media"></iframe>
                             {% elif range(0, 10) | random%}
                                 <p>No playlist added to this route. </p>
                             <p>Here is some other music to cheer you up.</p><br>
-                                <iframe src="https://open.spotify.com/embed/playlist/2MClsgoo2g1jaWfshyduRL?" uri="theme=white" width="80%" height="80%" frameborder="10" allowtransparency="true" allow="encrypted-media"></iframe>
+                                <iframe src="https://open.spotify.com/embed/playlist/2MClsgoo2g1jaWfshyduRL?" uri="theme=white" width="100%" height="80%" frameborder="10" allowtransparency="true" allow="encrypted-media"></iframe>
                             {% else %}
                                 <p>No playlist added to this route. </p>
                             <p>Here is some other music, hehep.</p><br>
-                                <iframe src="https://open.spotify.com/embed/album/6N9PS4QXF1D0OWPk0Sxtb4" width="80%" height="80%" frameborder="10" allowtransparency="true" allow="encrypted-media"></iframe>
+                                <iframe src="https://open.spotify.com/embed/album/6N9PS4QXF1D0OWPk0Sxtb4" width="80%" height="100%" frameborder="10" allowtransparency="true" allow="encrypted-media"></iframe>
                             {% endif %}
                         </div>
                         <div class="column">

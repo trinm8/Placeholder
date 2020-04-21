@@ -18,13 +18,29 @@
     .full-height {
     height: 100%;
     }
+
+    .mapElementWhole {
+        height: 100%;
+        display:flex;
+        flex-direction:column;
+    }
+
+    .mapElementElement {
+        width: 100%;
+        background-color: green;
+        flex:1;
+        display:flex;
+        flex-direction:column;
+    }
+
+
 {% endblock %}
 
 {% block body %}
     <!--<section class="section">-->
-    <div id="div" class="full-height" style="height: 100%">
-        <section class="section full-height" style="height: 100%">
-            <div class="columns full-height" style="height: 100%">
+    <div id="div" class="full-height">
+        <section class="section full-height">
+            <div class="columns full-height">
                 <div class="column is-2">
                     {{ card("Add a new trip", link=url_for("routes_drive.addRoute")) }}
 
@@ -46,8 +62,8 @@
 
                 </div>
 
-                <div class="column is-8 full-height">
-                    <div style="height: 20%">
+                <div class="column is-8 mapElementWhole">
+                    <div>
                     {% if future_routes.first() is none %}
                         <h1 class="title">
                             No routes planned
@@ -62,7 +78,7 @@
                         </h2>
                     {% endif %}
                     </div>
-                    <div style="height: 80%">
+                    <div class="mapElementElement">
                         {{ map.map() }}
                         <script>loadMarkersRoute({{ future_routes.first().departure_location_lat }}, {{ future_routes.first().departure_location_long }}, {{ future_routes.first().arrival_location_lat }}, {{ future_routes.first().arrival_location_long }})</script>
                     </div>
