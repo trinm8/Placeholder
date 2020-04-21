@@ -80,6 +80,10 @@ class BaseCase(TestCase):
                                 headers={"Content-Type": "application/json", "Authorization": authorization},
                                 data=payload)
 
+    def help_read_request(self, drive_id, authorization):
+        return self.client.get('api/drives/{}/passenger-requests'.format(str(drive_id)),
+                               headers={"Content-Type": "application/json", "Authorization": authorization})
+
     # @login_required
     # def help_dummy_func_expired(self):
     #     pass
@@ -121,7 +125,6 @@ class AuthenticationTest(BaseCase):
         response = self.help_login("TEST_MarkD", "MarkIsCool420")
         user = User.check_token(response.json.get("token"))
         self.assertNotEqual(user.username, "TEST_MarkP")
-
 
     # def test_expired_tokens(self):
     #     response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
@@ -275,3 +278,29 @@ class RequestTest(BaseCase):
         self.assertEqual(response.json.get("status"), "accepted")
         self.assertIsNotNone(response.json.get("time-created"))
         self.assertIsNotNone(response.json.get("time-updated"))
+
+    def test_read_request(self):
+        # Create driver
+        self.help_register("TEST_MarkD", "Mark", "Peeters", "MarkIsCool420")
+        response = self.help_login("TEST_MarkD", "MarkIsCool420")
+        token_d = response.json.get("token")
+        authorization_d = "Bearer {token}".format(token=token_d)
+
+        # Create route
+        response = self.help_add_route([51.130215, 4.571509], [51.18417, 4.41931], 3, "2020-02-12T10:00:00.00",
+                                       authorization_d)
+        drive_id = response.json.get("id")
+
+        # Create passenger
+        response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
+        user_id = response.json.get("id")
+        response = self.help_login("TEST_MarkP", "MarkIsCool420")
+        token = response.json.get("token")
+        authorization = "Bearer {token}".format(token=token)
+
+        # Create request
+        self.help_add_request(drive_id, authorization)
+
+        response = self.help_read_request(drive_id, authorization_d)
+        print(str(response.json))
+        self.assertIsNotNone(response.json)
