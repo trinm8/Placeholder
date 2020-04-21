@@ -1,0 +1,72 @@
+Table Car {
+  LicensePlate varchar [pk]// auto-increment
+  Color varchar
+  Model varchar
+  Seats int
+  ModelYear int
+  Brand varchar
+}
+
+Table User {
+  Username varchar
+  FirstName varchar
+  LastName varchar
+  password varchar
+  ID varchar [pk]
+  Email varchar unique
+  Age int
+  Gender char
+  ProfilePicture varchar
+}
+
+Table Owns {
+  LicensePlate varchar
+  NameOwner varchar
+}
+
+Table Route {
+  Creator varchar
+  Expired bool
+  From1 double
+  From2 double
+  To1 double
+  To2 double
+  DepartureTime timestamp
+  ArrivalTime timestamp
+  DepartureLocation varchar
+  ArrivalLocation varchar
+  Seats int
+  ID varchar [pk]
+  DriverID varchar
+}
+
+Table PassengerIDs {
+  RideID varchar
+  PassengerID varchar
+}
+
+Table Preferences {
+  ID varchar [pk]
+}
+
+Table PassengerRequest {
+  ID varchar [pk]
+  Username varchar
+  Status varchar
+  Time_created timestamp
+  Time_updated timestamp
+}
+
+Ref: "Car"."LicensePlate" < "Owns"."LicensePlate"
+
+Ref: "User"."ID" < "Owns"."NameOwner"
+
+Ref: "User"."ID" < "Route"."Creator"
+
+Ref: "User"."ID" - "Preferences"."ID"
+
+Ref: "Route"."ID" < "PassengerIDs"."RideID"
+
+Ref: "PassengerIDs"."PassengerID" > "User"."ID"
+
+Ref: "User"."ID" < "PassengerRequest"."Username"

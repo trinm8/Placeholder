@@ -171,25 +171,3 @@ def overview():
     return
 
 
-@bp.route('/user/<int:id>', methods=['GET'])
-@login_required
-def get_user(id):
-    # Is user the driver?
-    user = User.query.get_or_404(id)
-    # Return response
-    response = jsonify(user.to_dict())
-    response.status_code = 200
-    return response
-
-
-@bp.route('/user', methods=['DELETE'])
-@login_required
-def delete_user():
-    User.query.get_or_404(g.current_user.id).delete()
-    db.session.commit()
-
-    response = jsonify({})
-    response.status_code = 201
-    return response
-
-# TODO: edit user

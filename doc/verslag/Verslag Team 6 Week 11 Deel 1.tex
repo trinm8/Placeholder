@@ -1,0 +1,151 @@
+\documentclass{article}
+
+
+\usepackage[urlcolor=blue, linkcolor=black, colorlinks=true]{hyperref}
+\usepackage[dutch]{babel}
+\usepackage{minutes}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\makeatletter
+\addto\extrasdutch{%
+\def\min@textTask{Taak}%
+}
+\makeatother%
+\makeatletter
+\def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+
+
+
+\newcounter{team}
+
+% TODO: Enter team number here:
+\setcounter{team}{6}
+
+
+\begin{document}
+%	\tableofcontents
+
+	\begin{Minutes}{Programming Project Databases \\ Wekelijks Verslag Team \arabic{team}}
+		\moderation{Arno Deceuninck}
+		\minutetaker{Arno Deceuninck}
+		\participant{Arno Deceuninck, Sam Peeters, Sien Nuyens, Tim Sanders}
+		\missingNoExcuse{/}
+		\missingExcused{/}
+%		\guest{\ldots}
+		\minutesdate{21 April 2020}
+		\starttime{11u15}
+		\endtime{12u00}
+
+		\maketitle
+
+
+		\topic{Coordinator Vergadering}
+    		Is niet doorgegaan omdat het nogsteeds paasvakantie is.
+
+		\topic{Status}
+
+			\subtopic{Overzicht Taken}
+			    \task*[DONE]{Adres string in database}
+			    \task*[DONE]{Testen route request overview page}
+			    \task*[TODO]{Routes homepage sorteren}
+			    \task*[DONE]{Hover notifications niet allemaal op eenzelfde lijn}
+			    \task*[DONE]{Doorklikken op notificatie bij route of request pagina}
+			    \task*[DONE]{Next route notificatie niet meetellen in getal}
+			    \task*[DONE]{Passengers in de main}
+			    \task*[DONE]{Routes zoeken verfijnen met range}
+			    \task*[DONE]{Layout accept/reject pagina}
+			    \task*[DONE]{Playlist toevoegen aan route}
+			    \task*[TODO]{Zoekresultaten sorteren op overeenkomende muziek tags}
+			    \task*[DONE]{Stateless jwt authentication}
+			    \task*[WIP]{API tests}
+			        \begin{itemize}
+			            \item \task*[DONE]{Authentication tests}
+			            \item \task*[DONE]{Route creation tests}
+			            \item \task*[WIP]{Request tests}
+			            \item \task*[TODO]{Route search tests}
+			            \item \task*[TODO]{User delete and update tests}
+			        \end{itemize}
+			    \task*[DONE]{CRUD}
+			    \task*[DONE]{Markers op kaarten}
+			    \task*[DONE]{Database Diagram}
+			    \task*[DONE]{Tussentijds rapport}
+			    \task*[TODO]{Deploy on server}
+
+		\topic{Besproken Onderwerpen}
+		       \subtopic{Presentatie}
+		            De presentatie is morgen om 9:25. Zorg ervoor dat iedereen om 9:10 al in de call is, zodat we alles nog kunnen testen. De vergadering vindt \href{https://meet.jit.si/PPDB_Team6_Tokyo}{hier} plaats.
+				    Hoe gaan we dit aanpakken? Gaan we gewoon met de slides van vorige keer werken, die we dan een beetje aanpassen? Wat moeten we in de presentatie zeggen?
+				    Sam voegt nieuwe screenshots toe aan de presentatie. Voor de rest zijn er nog een paar kleine aanpassingen gemaakt aan de slides.
+
+				\subtopic{Routes homepage sorteren}
+				    Sien licht toe. De order by werkt niet. Op de routes apart werkt de order by van SQLAlchemy wel, maar bij de UNION niet. Sien gaat proberen de python lijst van Routes te sorteren met een python sorteerfunctie (onafhankelijk van SQLAlchemy dus).
+				    Voor de homepage zouden alle non-confirmed routes ook niet mogen weergegeven worden.
+
+				\subtopic{Notificaties}
+				    Je ziet de locatie niet in de notifificaties niet, enkel de tijd. Dit is geen probleem.
+
+				\subtopic{Main page logged in}
+				    In de rechterkolom komt ipv nog eens de FROM en TO de playlist. De map heeft ook nog problemen met de grootte.
+
+				\subtopic{Accept/reject page}
+				    De passengers worden hierop niet meer weergegeven omdat dit logischer is als je vraagt om mee te rijden. Anders lijkt het eerder alsof je gevraagd wordt om mee te rijden.
+
+				\subtopic{Routes editten via de API}
+				    Dit gaat momenteel volgens de minimum required API, op termijn moet het editten van de dingen die onze app uniek maken (spotify playlists) ook toegevoegd worden.
+
+				\subtopic{Routes sorteren op basis van overeenkomstige muziek tags}
+				    Dit is nog een grotere TODO en is geen minimumvereiste, zal dus op termijn gedaan worden, maar niet vandaag.
+
+				\subtopic{Cancel request knop}
+				    Niet zeker of deze werkt, dit is heel snel te fixen. DONE
+
+ 		\topTODOic{Afspraken \& Planning}
+
+ 		    \subtopic{Volgende vergadering}
+ 		    Direct na de presentatie morgen zullen we weer een korte vergadering houden om te bespreken wat we volgende week gaan doen.
+
+			\begin{itemize}
+			   \item Sien sorteert homepage
+			   \item Tim regelt de map op de homepage
+			   \item Arno voegt de playlist rechts toe op de homepage.
+			   \item Arno zorgt voor het editten van users via de API
+			   \item Sam zorgt nog voor tests voor request te deleten en readen
+			   \item Sien doet nog route zoek tests, als ze voor 20u niet werken laat ze dat ASAP weten, zodat anderen nog kunnen inspringen.
+			   \item Arno maakt nog user delete en update tests
+			   \item Arno checkt nog dat op de homepage enkel geaccepteerde requests komen te staan
+			   \item Sam voegt screenshots toe aan de slides
+			\end{itemize}
+
+
+		\topic{Varia}
+			\emph{Eventuele varia punten. Hierbij vragen we ook aan alle aanwezigen of zij nog iets te zeggen hebben.}
+				\subtopic{Sien}
+				    Euh, ik heb niets te zeggen.
+				\subtopic{Sam}
+				    RIP mijn compiler. Mijn presentatie gaat een korte zijn.
+				\subtopic{Tim}
+				    Nope
+				\subtopic{Arno}
+				    Niets te zeggen.
+
+
+		\blfootnote{
+			\href{%
+				mailto:joey.depauw@uantwerpen.be%
+				?subject=PPDB 2019-2020: Wekelijks Verslag Team \arabic{team}%
+				&body=Liefste Joey\%0D\%0A%
+				\%0D\%0A%
+				Gelieve ons wekelijks verslag terug te vinden in de bijlage.\%0D\%0A%
+				\%0D\%0A%
+				Groetjes\%0D\%0A%
+				Team \arabic{team}\%0D\%0A%
+			}{Klik hier} om mij op te sturen.
+		}
+
+
+	\end{Minutes}
+\end{document}

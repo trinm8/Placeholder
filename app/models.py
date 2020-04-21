@@ -185,7 +185,8 @@ class User(UserMixin, db.Model):
         future_routes_unsort = routes.filter(Route.departure_time > current_time).all()
         #ORDER BY
         future_routes = []
-        future_routes.append(future_routes_unsort[0])
+        if future_routes_unsort:
+            future_routes.append(future_routes_unsort[0])
         for unsort_route in future_routes_unsort:
             temp_routes = []
             for route in future_routes:

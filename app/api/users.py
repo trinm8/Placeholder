@@ -1,14 +1,14 @@
-from flask import jsonify, request, url_for
+from flask import jsonify, request, url_for, g
 from app.models import User
 from app.api.errors import bad_request
 from app.auth.routes import register_user_func
 from app.api import bp
-
+from app.api.tokens import login_required
+from app import db
 
 
 @bp.route('/users/register', methods=['POST'])
 def register_user():
-
     data = request.get_json() or {}
     if "username" not in data or "password" not in data or "firstname" not in data or "lastname" not in data:
         return bad_request("Must include username, password, firstname and lastname")
@@ -18,7 +18,7 @@ def register_user():
     response = jsonify(id=user_id)
     response.status_code = 201
     return response
-    #response.headers['Location'] = url_for('api.auth', user_id=user_id)
+    # response.headers['Location'] = url_for('api.auth', user_id=user_id)
 
     # Body:
     # {
@@ -63,6 +63,39 @@ def auth():
 #     pass
 
 
-@bp.route('/users/<int:id>', methods=['GET'])
-def update_user(id):
-    return jsonify(User.query.get_or_404(id).to_dict())
+@bp.route('/user/<int:id>', methods=['GET'])
+@login_required
+def get_user(id):
+    # Is user the driver?
+    user = User.query.get_or_404(id)
+    # Return response
+    response = jsonify(user.to_dict())
+    response.status_code = 200
+    return response
+
+
+@bp.route('/user', methods=['DELETE'])
+@login_required
+def delete_user():
+    User.query.filter_by(id=g.current_user.id).delete()
+    db.session.commit()
+
+    response = jsonify({})
+    response.status_code = 201
+    return response
+
+
+@bp.route('/user', methods=['PUT'])
+@login_required
+def update_user():
+    data = request.get_json() or {}
+    user = User.query.get_or_404(g.current_user.id)
+
+    user.from_dict(data)
+    db.session.commit()
+
+    user = User.query.get(g.current_user.id)
+    response = jsonify(user.to_dict())
+    response.status_code = 201
+    response.headers['Location'] = url_for('api.get_user', id=user.id)
+    return response
