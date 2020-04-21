@@ -269,9 +269,9 @@ def overview():
                            dest=addr(lat_to, long_to), form=form)
 
 
-def filter_routes(allowed_distance, arrival_location, departure_location, time):
+def filter_routes(allowed_distance, arrival_location, departure_location, time, limit=20):
     same_day_routes = Route.query.filter(
-        cast(Route.departure_time, Date) == time.date()).all()  # https://gist.github.com/Tukki/3953990
+        cast(Route.departure_time, Date) == time.date()).limit(limit).all()  # https://gist.github.com/Tukki/3953990
     routes = []
     from geopy import distance  # No idea why this include won't work when placed outside this function
     # allowed_distance = 2

@@ -6,6 +6,7 @@ from app import db
 from app.api.auth import auth, token_auth
 from app.routes_drive.routes import edit_route, filter_routes
 from app.api.tokens import login_required
+from datetime import datetime
 
 
 @bp.route('/drives/<int:drive_id>', methods=['GET'])
@@ -152,22 +153,47 @@ def change_request_status(drive_id, user_id):
     return response
 
 
-@bp.route("/overview", methods=["GET"])
-def overview():
-    data = request.get_json() or {}
-    if "from" not in data or "to" not in data or "passenger-places" not in data or "arrive-by" not in data:
-        return bad_request("Must include from, to passenger-places and time")
+@bp.route("/drives/search", methods=["GET"])
+def search():
+    from_location = request.args.get("from").split(',')
+    from_location = [float(from_location[0]), float(from_location[1])]
+    to_location = request.args.get("to").split(',')
+    to_location = [float(to_location[0]), float(to_location[1])]
+    time = request.args.get("arrive-by")
+    try:
+        time = datetime.strptime(time, '%Y-%m-%dT%H:%M:%S')
+    except ValueError:
+        try:
+            time = datetime.strptime(time, '%Y-%m-%dT%H:%M:%S.%f')
+        except ValueError:
+            return bad_request("Problem with time")
+    limit = request.args.get("limit")
+    if not limit:
+        limit = 10
+    # data = request.get_json() or {} # Only for POST requests!!!!
 
-    lat_from = data["from"][0]
-    long_from = data["from"][1]
-    lat_to = data["to"][0]
-    long_to = data["to"][1]
-    datetime = data["time"]  # Should only be the date
-    time = datetime.strptime(datetime, '%Y-%m-%d %H:%M:%S')
+    # try:
+    #     lat_from = data["from"][0]
+    #     long_from = data["from"][1]
+    #     lat_to = data["to"][0]
+    #     long_to = data["to"][1]
+    #     datetime = data["time"]  # Should only be the date
+    #     time = datetime.strptime(datetime, '%Y-%m-%d %H:%M:%S')
+    # except (KeyError, ValueError):
+    #     return bad_request("Must include from, to and time")
+    #
+    # # Nr of search results to return
+    # limit = 10
+    # if "limit" in data:
+    #     limit = data.get("limit")
 
-    routes = filter_routes(5, (lat_to, long_to), (lat_from, long_from), time)
-    response = jsonify([route.to_dict() for route in routes])
-    response.status_code = 200
-    return
+
+    try:
+        routes = filter_routes(5, to_location, from_location, time, limit=limit)
+        response = jsonify([route.to_dict() for route in routes])
+        response.status_code = 200
+        return response
+    except:
+        return bad_request("Must include from, to and time")
 
 
