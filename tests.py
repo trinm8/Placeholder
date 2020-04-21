@@ -219,6 +219,49 @@ class RouteTest(BaseCase):
         self.assertEqual("2020-02-12T10:00:00.00", response.json.get("arrive-by"))
 
 
+    def test_search_route(self):
+        # Create driver1
+        self.help_register("TEST_MarkD1", "Mark", "Peeters", "MarkIsCool420")
+        response = self.help_login("TEST_MarkD1", "MarkIsCool420")
+        token_d = response.json.get("token")
+        authorization_d1 = "Bearer {token}".format(token=token_d)
+        # Create route1
+        # Bartstraat 26 -> Edegemsesteenweg 100
+        response = self.help_add_route([51.13731, 4.60960], [51.16459, 4.40659], 3, "2020-02-12T10:00:00.00",
+                                       authorization_d1)
+        drive_id1 = response.json.get("id")
+
+        # Create driver2
+        self.help_register("TEST_MarkD2", "Mark", "Peeters", "MarkIsCool420")
+        response = self.help_login("TEST_MarkD2", "MarkIsCool420")
+        token_d = response.json.get("token")
+        authorization_d2 = "Bearer {token}".format(token=token_d)
+        # Create route2
+        # Rendierstraat 1 -> Hilda Ramstraat 39
+        response = self.help_add_route([51.17378, 4.42141], [51.18852, 4.42173], 3, "2020-02-12T10:00:00.00",
+                                       authorization_d2)
+        drive_id2 = response.json.get("id")
+
+        # Create driver3
+        self.help_register("TEST_MarkD3", "Mark", "Peeters", "MarkIsCool420")
+        response = self.help_login("TEST_MarkD3", "MarkIsCool420")
+        token_d = response.json.get("token")
+        authorization_d3 = "Bearer {token}".format(token=token_d)
+        # Create route3
+        # Bartstraat 26 -> Hilda Ramstraat 39
+        response = self.help_add_route([51.13731, 4.60960], [51.18852, 4.42173], 3, "2020-02-12T10:00:00.00",
+                                       authorization_d3)
+        drive_id3 = response.json.get("id")
+
+        # Create passenger
+        response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
+        user_id = response.json.get("id")
+        response = self.help_login("TEST_MarkP", "MarkIsCool420")
+        token = response.json.get("token")
+        authorization = "Bearer {token}".format(token=token)
+
+        # -------------- ACTUAL TEST ----------------
+
 class RequestTest(BaseCase):
 
     def test_add_request(self):
