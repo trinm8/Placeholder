@@ -38,7 +38,8 @@
                                 <strong>From: </strong> {{ trip.text_from() }} <br>
                                 <strong>To: </strong> {{ trip.text_to() }}<br>
                                 <strong>{{ trip.departure_time }}</strong> <br>
-                                <a class="button" href="{{ url_for('routes_drive.drive',  drive_id=trip.id) }}">More info</a>
+                                <a class="button" href="{{ url_for('routes_drive.drive',  drive_id=trip.id) }}">More
+                                    info</a>
                             </div>
                         {% endfor %}
                     {% endif %}
@@ -49,19 +50,19 @@
 
                 <div class="column is-8 full-height">
                     <div style="height: 20%">
-                    {% if future_routes[0] is none %}
-                        <h1 class="title">
-                            No routes planned
-                        </h1>
-                    {% else %}
-                        <h1 class="title">
-                            From: {{ future_routes[0].text_from() }}<br>
-                            To: {{ future_routes[0].text_to() }}
-                        </h1>
-                        <h2 class="subtitle">
-                            {{ future_routes[0].departure_time }}
-                        </h2>
-                    {% endif %}
+                        {% if future_routes[0] is none %}
+                            <h1 class="title">
+                                No routes planned
+                            </h1>
+                        {% else %}
+                            <h1 class="title">
+                                From: {{ future_routes[0].text_from() }}<br>
+                                To: {{ future_routes[0].text_to() }}
+                            </h1>
+                            <h2 class="subtitle">
+                                {{ future_routes[0].departure_time }}
+                            </h2>
+                        {% endif %}
                     </div>
                     <div style="height: 80%">
                         {{ map.map() }}
@@ -86,9 +87,27 @@
                             </div>
                         </div>
 
-                    {% endif %}<br>
+                    {% endif %}<br><br>
 
-
+                    {% if future_routes[0] and future_routes[0].playlist %}
+                        <p>Here is the playlist that was added to the route.</p><br>
+                        <iframe src="https://open.spotify.com/embed/playlist/{{ future_routes[0].playlist }}"
+                                width="100%"
+                                height="80%" frameborder="10" allowtransparency="true"
+                                allow="encrypted-media"></iframe>
+                    {% elif range(0, 10) | random %}
+                        <p>No playlist added to this route. </p>
+                        <p>Here is some other music to cheer you up.</p><br>
+                        <iframe src="https://open.spotify.com/embed/playlist/2MClsgoo2g1jaWfshyduRL?"
+                                uri="theme=white" width="100%" height="80%" frameborder="10" allowtransparency="true"
+                                allow="encrypted-media"></iframe>
+                    {% else %}
+                        <p>No playlist added to this route. </p>
+                        <p>Here is some other music, hehe.</p><br>
+                        <iframe src="https://open.spotify.com/embed/album/6N9PS4QXF1D0OWPk0Sxtb4" width="100%"
+                                height="80%" frameborder="10" allowtransparency="true"
+                                allow="encrypted-media"></iframe>
+                    {% endif %}
 
 
                 </div>
