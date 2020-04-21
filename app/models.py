@@ -183,16 +183,19 @@ class User(UserMixin, db.Model):
         routes = routes_driver.union(routes_passenger)
         # future_routes = routes.filter(Route.departure_time >= current_time).all()
         future_routes = routes.filter(Route.departure_time > current_time).all()
+        #ORDER BY
 
         notifications = []
+
         if (len(future_routes) > 0):
-            f = "Next route: " + future_routes[0].departure_time.isoformat() + "\n" + future_routes[0].text_to()
-            notifications.append(f)
+            #f = "Next route: " + future_routes[0].departure_time.isoformat() + "\n" + future_routes[0].text_to()
+            notifications.append(future_routes[0])
         else:
             notifications.append("No routes planned in the future")
 
         for request in requests:
             notifications.append(request)
+
 
         return notifications
 
@@ -269,7 +272,7 @@ class Route(db.Model):
         passengers = RouteRequest.query.filter_by(route_id=self.id, status=RequestStatus.accepted).all()
         passenger_ids = []
         for passenger in passengers:
-            passenger_ids += passenger.user_id
+            passenger_ids.append(passenger.user_id)
         return passenger_ids
 
 class RequestStatus(enum.Enum):

@@ -76,9 +76,9 @@
                                 {% if future_routes.first().passenger_places is none %}
                                     No passengers
                                 {% else %}
-                                    {% for passenger in future_routes.first().passenger_places %}
+                                    {% for passenger in passengers %}
                                         <i class="fas fa-user"></i>
-                                        <a href="{{ url_for('users.user_page', username=passenger) }}"> {{ passenger }} </a>
+                                        <a href="{{ url_for('users.user_page', username=passenger.username) }}"> {{ passenger.name() }} </a>
                                         <br>
                                     {% endfor %}
                                 {% endif %}

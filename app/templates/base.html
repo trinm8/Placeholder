@@ -148,15 +148,27 @@
                            <span class="icon">
                                <i class="far fa-bell"></i>
                            </span>
-                           <button type="button" class="btn btn-primary">
-                               <span class="badge badge-light">{{ current_user.getNotifications()|length }}</span>
-                           </button>
+
+                           <span class="tag is-info is-light">{{ current_user.getNotifications()|length -1 }}</span>
+
                        </a>
                        <div class="navbar-dropdown is-boxed">
                            {% for notification in current_user.getNotifications() %}
-                           <a class="navbar-item">
-                               {{ notification }}
-                           </a>
+                           {% if notification == "No routes planned in the future" %}
+                                 <a class="navbar-item">
+                                    {{ notification }}
+                                 </a>
+                           {% else %}
+                                {% if notification == current_user.getNotifications()[0] %}
+                                <a class="navbar-item" href="{{ url_for('routes_drive.drive',  drive_id=notification.id) }}">
+                                    Next route: {{ notification.departure_time.isoformat() }}
+                                </a>
+                                {% else %}
+                                 <a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
+                                    {{ notification }}
+                                </a>
+                                {% endif %}
+                           {% endif %}
                            {% endfor %}
                        </div>
                    </div>
