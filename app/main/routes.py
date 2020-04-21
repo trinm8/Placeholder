@@ -36,7 +36,9 @@ def index():
         #future_routes = future_routes.order_by(text("departure_time"))
         #order by
 
-        passengerIds = future_routes.first().passengers()
+        passengerIds = []
+        if future_routes.first():
+            passengerIds = future_routes.first().passengers()
         passengers = []
         for passengerId in passengerIds:
             user = User.query.filter_by(id=passengerId).first_or_404()
