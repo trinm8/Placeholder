@@ -45,7 +45,7 @@ def index():
             future_routes = temp_routes
 
         passengerIds = []
-        if future_routes[0]:
+        if len(future_routes) > 0 and future_routes[0]:
             passengerIds = future_routes[0].passengers()
         passengers = []
         for passengerId in passengerIds:
