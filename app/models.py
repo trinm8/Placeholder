@@ -182,11 +182,20 @@ class User(UserMixin, db.Model):
         routes_passenger = Route.query.filter(RouteRequest.query.filter_by(user_id=self.id, route_id=Route.id).exists())
         routes = routes_driver.union(routes_passenger)
         # future_routes = routes.filter(Route.departure_time >= current_time).all()
-        future_routes = routes.filter(Route.departure_time > current_time).all()
+        future_routes_unsort = routes.filter(Route.departure_time > current_time).all()
         #ORDER BY
+        future_routes = []
+        future_routes.append(future_routes_unsort[0])
+        for unsort_route in future_routes_unsort:
+            temp_routes = []
+            for route in future_routes:
+                if route.departure_time > unsort_route.departure_time:
+                    temp_routes.append(unsort_route)
+
+                temp_routes.append(route)
+            future_routes = temp_routes
 
         notifications = []
-
         if (len(future_routes) > 0):
             #f = "Next route: " + future_routes[0].departure_time.isoformat() + "\n" + future_routes[0].text_to()
             notifications.append(future_routes[0])

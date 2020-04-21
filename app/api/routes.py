@@ -78,7 +78,7 @@ def update_route(id):
 def get_passenger_requests(drive_id):
     # Is user the driver?
     drive = Route.query.get_or_404(drive_id)
-    if g.current_user.id != drive.user_id:
+    if g.current_user.id != drive.driver_id:
         return bad_request('Only the driver can view requests for this drive.')
 
     # Return response
