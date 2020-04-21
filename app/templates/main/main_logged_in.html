@@ -41,8 +41,9 @@
                                 <a class="button" href="{{ url_for('routes_drive.drive',  drive_id=trip.id) }}">More info</a>
                             </div>
                         {% endfor %}
-                        <a class="button" href="{{ url_for('routes_drive.history') }}">History</a>
                     {% endif %}
+                    {{ card("History", link=url_for("routes_drive.history")) }}
+
 
                 </div>
 

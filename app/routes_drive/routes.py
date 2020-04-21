@@ -293,7 +293,18 @@ def history():
         RouteRequest.query.filter_by(user_id=current_user.id, route_id=Route.id).exists())
     routes = routes_driver.union(routes_passenger)
 
-    past_routes = routes.filter(Route.departure_time <= current_time)
+    past_routes_unsort = routes.filter(Route.departure_time <= current_time)
+
+    past_routes = []
+    if past_routes_unsort:
+        past_routes.append(past_routes_unsort.first())
+    for unsort_route in past_routes_unsort:
+        temp_routes = []
+        for route in past_routes:
+            if route.departure_time > unsort_route.departure_time:
+                temp_routes.append(unsort_route)
+            temp_routes.append(route)
+        past_routes = temp_routes
 
     return render_template('main/history.html', title='Notifications', routes=past_routes)
 

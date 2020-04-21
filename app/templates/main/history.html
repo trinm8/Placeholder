@@ -8,7 +8,6 @@
         <table class="table">
             <thead>
             <tr>
-                <th>Creator</th>
                 <th>From</th>
                 <th>To</th>
                 <th>Time</th>
@@ -17,7 +16,6 @@
 
             {% for route in routes %}
                 <tr>
-                    <td>{{ route.creator }}</td>
                     <td>{{ route.text_from() }}</td>
                     <td>{{ route.text_to() }}</td>
                     <td>{{ route.departure_time }}</td>
