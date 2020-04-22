@@ -1,0 +1,112 @@
+\documentclass{article}
+
+
+\usepackage[urlcolor=blue, linkcolor=black, colorlinks=true]{hyperref}
+\usepackage[dutch]{babel}
+\usepackage{minutes}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\makeatletter
+\addto\extrasdutch{%
+\def\min@textTask{Taak}%
+}
+\makeatother%
+\makeatletter
+\def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+
+
+
+\newcounter{team}
+
+% TODO: Enter team number here:
+\setcounter{team}{6}
+
+
+\begin{document}
+%	\tableofcontents
+
+	\begin{Minutes}{Programming Project Databases \\ Wekelijks Verslag Team \arabic{team}}
+		\moderation{Arno Deceuninck}
+		\minutetaker{Arno Deceuninck}
+		\participant{Arno Deceuninck, Sam Peeters, Sien Nuyens, Tim Sanders}
+		\missingNoExcuse{/}
+		\missingExcused{/}
+%		\guest{\ldots}
+		\minutesdate{22 April 2020}
+		\starttime{9u55}
+		\endtime{10u15}
+
+		\maketitle
+
+		\topic{Status}
+
+			\subtopic{Overzicht Taken}
+			    \task*[DONE]{Routes homepage sorteren}
+			    \task*[TODO]{Zoekresultaten sorteren op overeenkomende muziek tags}
+			    \task*[DONE]{API tests}
+			        \begin{itemize}
+			            \item \task*[DONE]{Request tests}
+			            \item \task*[DONE]{Route search tests}
+			            \item \task*[DONE]{User delete and update tests}
+			        \end{itemize}
+			    \task*[DONE]{Deploy on server}
+
+		\topic{Besproken Onderwerpen}
+		       \subtopic{Presentatie}
+		            Goed dat we al om 9u00 hadden afgesproken, aangezien er nog veel problemen waren met geluid een verbinding. Dit zou via Discord makkelijker geweest zijn. Deze ochtend was er ook nog een probleem met de history page. Dit zou
+		            De search functie deed raar tijdens de presentatie, dus hier moeten we zeker een kijkje naar nemen.
+		            De Don't Click here button was zelfs bij de prof een succes.
+		            Sorteren op overeenkomstige muziekkeuzes moeten we ook nog doen.
+		            Routes die toegevoegd zijn via de api hebben geen address string.
+		            Blijkbaar is er ook nog een vershil met de plaatsing van de map op de site en lokaal, ookal is er vlak voor de presentatie nog gepullt op de server.
+
+
+ 		\topic{Afspraken \& Planning}
+
+ 		    \subtopic{Volgende vergadering}
+ 		    Direct na de presentatie morgen zullen we weer een korte vergadering houden om te bespreken wat we volgende week gaan doen.
+
+			\begin{itemize}
+			   \item Tim zorgt voor tussenstops
+			   \item Tim zorgt voor adresstrings bij de API en voor de routes waarvoor er nog geen zijn.
+			   \item Sam kijkt naar sorteren op overeenkomstige muziekkeuzes
+			   \item Sam neemt een kijkje naar music preferences op account page
+			   \item Sien neemt een kijkje naar waarom je maar 1 route ziet op de homepage
+			   \item Arno zorgt voor localization
+			   \item Sien voegt playlist and music preferences toe aan API
+			   \item Sam zorgt voor constraints bij alle inputvelden in de GUI en de API
+			\end{itemize}
+
+
+		\topic{Varia}
+			\emph{Eventuele varia punten. Hierbij vragen we ook aan alle aanwezigen of zij nog iets te zeggen hebben.}
+				\subtopic{Sien}
+				    Nope
+				\subtopic{Sam}
+				    Ik ben moe, ik wil terug naar bed
+				\subtopic{Tim}
+				    Euughr, nee niet echt
+				\subtopic{Arno}
+				    Niets te zeggen.
+
+
+		\blfootnote{
+			\href{%
+				mailto:joey.depauw@uantwerpen.be%
+				?subject=PPDB 2019-2020: Wekelijks Verslag Team \arabic{team}%
+				&body=Liefste Joey\%0D\%0A%
+				\%0D\%0A%
+				Gelieve ons wekelijks verslag terug te vinden in de bijlage.\%0D\%0A%
+				\%0D\%0A%
+				Groetjes\%0D\%0A%
+				Team \arabic{team}\%0D\%0A%
+			}{Klik hier} om mij op te sturen.
+		}
+
+
+	\end{Minutes}
+\end{document}
