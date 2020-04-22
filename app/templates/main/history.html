@@ -15,11 +15,13 @@
             </thead>
 
             {% for route in routes %}
+                {% if route %}
                 <tr>
                     <td>{{ route.text_from() }}</td>
                     <td>{{ route.text_to() }}</td>
                     <td>{{ route.departure_time }}</td>
                 </tr>
+                {% endif %}
             {% endfor %}
         </table>
 
