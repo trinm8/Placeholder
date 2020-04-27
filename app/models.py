@@ -246,8 +246,10 @@ class Route(db.Model):
     def from_dict(self, data):
         if "from" in data:
             self.departure_location_lat, self.departure_location_long = data["from"]
+            self.departure_location_string = addr(self.departure_location_lat, self.departure_location_long)
         if "to" in data:
             self.arrival_location_lat, self.arrival_location_long = data["to"]
+            self.arrival_location_string = addr(self.arrival_location_lat, self.arrival_location_long)
         if "passenger-places" in data:
             self.passenger_places = data["passenger-places"]
         if "arrive-by" in data:
