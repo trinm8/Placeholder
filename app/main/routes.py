@@ -9,6 +9,8 @@ from sqlalchemy import union
 
 from datetime import datetime
 
+from flask_babel import _
+
 
 @bp.route('/lol')
 def lol():
@@ -54,15 +56,15 @@ def index():
             user = User.query.filter_by(id=passengerId).first_or_404()
             passengers.append(user)
 
-        return render_template('main/main_logged_in.html', title='Dashboard', future_routes=future_routes, passengers=passengers)
-    return render_template('main/home.html', title='Welcome')
+        return render_template('main/main_logged_in.html', title=_('Dashboard'), future_routes=future_routes, passengers=passengers)
+    return render_template('main/home.html', title=_('Welcome'))
 
 
 @bp.route('/about')
 def about():
     counter = Statistics.query.first()
     if counter is None:
-        counter = "over 9000"
+        counter = _("over 9000")
     else:
         counter = counter.rickroll_counter
     return render_template('main/about.html', title='About', counter=counter)

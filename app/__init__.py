@@ -1,9 +1,9 @@
-from flask import Flask
+from flask import Flask, current_app, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_mail import Mail
-
+from flask_babel import Babel, lazy_gettext as _l
 from config import Config
 
 import logging
@@ -12,8 +12,10 @@ from logging.handlers import SMTPHandler
 mail = Mail()
 db = SQLAlchemy()
 migrate = Migrate()
+babel = Babel()
 login = LoginManager()
 login.login_view = 'auth.login'
+login.login_message = _l('Please log in to access this page.')
 
 
 # factory design pattern :)
@@ -50,8 +52,13 @@ def register_blueprints(application):
     from app.users import bp as users_bp
     application.register_blueprint(users_bp)
 
+@babel.localeselector
+def get_locale():
+    return "nl"
+    return request.accept_languages.best_match(current_app.config['LANGUAGES'])
 
 def init_modules(app):
+    babel.init_app(app)
     mail.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)

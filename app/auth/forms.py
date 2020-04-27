@@ -3,37 +3,39 @@ from wtforms import StringField, PasswordField, SubmitField, ValidationError
 from ..models import User
 from wtforms.validators import DataRequired, EqualTo, Email
 
+from flask_babel import lazy_gettext as _l
+
 
 class ForgotPassword(FlaskForm):
-    username = StringField('username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    submit = SubmitField('Send Reset Link')
+    username = StringField(_l('username'), validators=[DataRequired()])
+    email = StringField(_l('Email'), validators=[DataRequired(), Email()])
+    submit = SubmitField(_l('Send Reset Link'))
 
 
 class ResetPasswordForm(FlaskForm):
-    password = PasswordField('Password', validators=[DataRequired()])
+    password = PasswordField(_l('Password'), validators=[DataRequired()])
     password2 = PasswordField(
-        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Update Password')
+        _l('Repeat Password'), validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField(_l('Update Password'))
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    username = StringField(_l('Username'), validators=[DataRequired()])
+    password = PasswordField(_l('Password'), validators=[DataRequired()])
     # remember_me = BooleanField('Remember Me')
-    login = SubmitField('Sign In')
+    login = SubmitField(_l('Sign In'))
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    firstname = StringField('First name', validators=[DataRequired()])
-    lastname = StringField('Last name', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    username = StringField(_l('Username'), validators=[DataRequired()])
+    firstname = StringField(_l('First name'), validators=[DataRequired()])
+    lastname = StringField(_l('Last name'), validators=[DataRequired()])
+    password = PasswordField(_l('Password'), validators=[DataRequired()])
     password2 = PasswordField(
-        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Register')
+        _l('Repeat Password'), validators=[DataRequired(), EqualTo('password')]) # TODO: wat doet die EqualTo('password')? Schrijf comments
+    submit = SubmitField(_l('Register'))
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
-            raise ValidationError('Please use a different username. The given one is already used.')
+            raise ValidationError(_l('Please use a different username. The given one is already used.'))

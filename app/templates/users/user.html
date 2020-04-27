@@ -10,7 +10,7 @@
     <div class="hero-body">
         <div class="container has-text-centered">
             <h1 class="title">
-                Your account
+                {{ _("Your account")}}
             </h1>
         </div>
     </div>
@@ -19,47 +19,47 @@
 <div class="tile is-ancestor">
   <div class="tile is-4 is-vertical is-parent">
     <div class="tile is-child box">
-      <p class="title">Profile</p>
+      <p class="title">{{ _("Profile") }}</p>
        <figure class="image is-128x128">
            <img class="is-rounded" src="{{ user.avatar(128) }}">
        </figure><br>
         <table class="table">
             <tbody>
             <tr>
-                <td>Name:</td>
+                <td>{{ _("Name:")}}</td>
                 <td>{{ user.firstname }} {{ user.lastname }}</td>
             </tr>
             <tr>
-                <td>Email:</td>
+                <td>{{ _("Email:")}}</td>
                 <td>{{ user.email }}</td>
             </tr>
             <tr>
-                <td>Phone Number:</td>
+                <td>{{ _("Phone Number:")}}</td>
                 <td>{{ user.phone }}</td>
             </tr>
             </tbody>
         </table>
     </div>
     <div class="tile is-child box">
-      <p class="title">Music</p>
+      <p class="title">{{ _("Music") }}</p>
       <table class="table">
             <tbody>
             <tr>
-                <td>Liked genre(s):</td>
+                <td>{{ _("Liked genre(s):")}}</td>
                 <td>
                     {% for genre in current_user.musicpref %}
                         {% if genre.likes %}
-                            {{ genre.genre }}
+                            {{ _(genre.genre) }}
                         {% endif %}
                     {% endfor %}
                 </td>
             </tr>
             <tr>
-                <td>Disliked genre(s):</td>
+                <td>{{ _("Disliked genre(s):")}}</td>
                 <td>
                     {% for genre in current_user.musicpref %}
                         {% if not genre.likes %}
-                            {{ genre.genre }}
+                            {{ _(genre.genre) }}
                         {% endif %}
                     {% endfor %}
                 </td>
@@ -77,15 +77,15 @@
       <table class="table">
             <tbody>
             <tr>
-                <td>Brand:</td>
+                <td>{{ _("Brand:")}}</td>
                 <td>{{ user.car_brand }}</td>
             </tr>
             <tr>
-                <td>Color:</td>
+                <td>{{ _("Color:")}}</td>
                 <td>{{ user.car_color }}</td>
             </tr>
             <tr>
-                <td>Licence Plate:</td>
+                <td>{{ _("Licence Plate:")}}</td>
                 <td>{{ user.car_plate }}</td>
             </tr>
             </tbody>

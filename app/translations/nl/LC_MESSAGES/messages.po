@@ -1,0 +1,972 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version:  PlaceHolder\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2020-04-27 16:18+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: app/__init__.py:18
+msgid "Please log in to access this page."
+msgstr "Log alstublieft in om toegang te krijgen tot deze pagina."
+
+#: app/models.py:42
+msgid "Geocoder timed out"
+msgstr "Time-out voor Geocoder"
+
+#: app/auth/emails.py:7
+msgid "[PlaceHolder] Reset Your Password"
+msgstr "[PlaceHolder] Reset uw wachtwoord"
+
+#: app/auth/forms.py:10
+msgid "username"
+msgstr "gebruikersnaam"
+
+#: app/auth/forms.py:11 app/users/forms.py:12
+msgid "Email"
+msgstr "E-mail"
+
+#: app/auth/forms.py:12
+msgid "Send Reset Link"
+msgstr "Stuur resetlink"
+
+#: app/auth/forms.py:16 app/auth/forms.py:24 app/auth/forms.py:33
+#: app/users/forms.py:13
+msgid "Password"
+msgstr "Wachtwoord"
+
+#: app/auth/forms.py:18 app/auth/forms.py:35
+msgid "Repeat Password"
+msgstr "Herhaal wachtwoord"
+
+#: app/auth/forms.py:19
+msgid "Update Password"
+msgstr "Vernieuw wachtwoord"
+
+#: app/auth/forms.py:23 app/auth/forms.py:30
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+#: app/auth/forms.py:26
+msgid "Sign In"
+msgstr "Log in"
+
+#: app/auth/forms.py:31 app/users/forms.py:10
+msgid "First name"
+msgstr "Voornaam"
+
+#: app/auth/forms.py:32 app/users/forms.py:11
+msgid "Last name"
+msgstr "Achternaam"
+
+#: app/auth/forms.py:36
+msgid "Register"
+msgstr "Registreren"
+
+#: app/auth/forms.py:41
+msgid "Please use a different username. The given one is already used."
+msgstr "Gebruik een andere gebruikersnaam. De opgegeven is al gebruikt."
+
+#: app/auth/routes.py:19
+msgid "Invalid username or password"
+msgstr "ongeldige gebruikersnaam of wachtwoord"
+
+#: app/auth/routes.py:70
+msgid "Congratulations, you are now a registered user!"
+msgstr "Gefeliciteerd, je bent nu een geregistreerde gebruiker!"
+
+#: app/auth/routes.py:85
+msgid ""
+"Check your email for the instructions to reset your password. Check your "
+"junk mail too when you didn't receive anything"
+msgstr ""
+"Controleer uw e-mail voor de instructies om uw wachtwoord opnieuw in te "
+"stellen. Controleer ook uw ongewenste e-mail wanneer u niets heeft "
+"ontvangen"
+
+#: app/auth/routes.py:88
+msgid "No user found with the given name."
+msgstr "Geen gebruiker gevonden met de opgegeven naam."
+
+#: app/auth/routes.py:105
+msgid "Your password has been reset."
+msgstr "Je wachtwoord is gereset."
+
+#: app/errors/routes.py:9
+msgid "Page not found"
+msgstr "Pagina niet gevonden"
+
+#: app/errors/routes.py:14
+msgid "Method not allowed"
+msgstr "Methode niet toegestaan"
+
+#: app/errors/routes.py:19
+msgid "Internal error"
+msgstr "Interne fout"
+
+#: app/main/routes.py:59
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: app/main/routes.py:60
+msgid "Welcome"
+msgstr "Welkom"
+
+#: app/main/routes.py:67
+msgid "over 9000"
+msgstr "meer dan 9000"
+
+#: app/routes_drive/forms.py:9
+msgid "type"
+msgstr "type"
+
+#: app/routes_drive/forms.py:9
+msgid "Driver"
+msgstr "Bestuurder"
+
+#: app/routes_drive/forms.py:9
+msgid "Passenger"
+msgstr "Passagier"
+
+#: app/routes_drive/forms.py:10 app/routes_drive/forms.py:24
+#: app/routes_drive/forms.py:38
+msgid "start"
+msgstr "begin"
+
+#: app/routes_drive/forms.py:11 app/routes_drive/forms.py:27
+msgid "Passenger places"
+msgstr "Passagiersplaatsen"
+
+#: app/routes_drive/forms.py:12 app/routes_drive/forms.py:26
+msgid "Spotify playlist ID"
+msgstr "Spotify-afspeellijst-ID"
+
+#: app/routes_drive/forms.py:13 app/routes_drive/forms.py:25
+#: app/routes_drive/forms.py:39
+msgid "destination"
+msgstr "bestemming"
+
+#: app/routes_drive/forms.py:14 app/routes_drive/forms.py:28
+#: app/routes_drive/forms.py:40
+msgid "date"
+msgstr "datum"
+
+#: app/routes_drive/forms.py:15
+msgid "Confirm"
+msgstr "Bevestigen"
+
+#: app/routes_drive/forms.py:19 app/routes_drive/forms.py:33
+msgid ""
+"Be sure to only enter the ID of the playlist.\n"
+"The playlist ID are all chars after the last \"/\" and before the \"?\" "
+"in the link you use to share a playlist"
+msgstr ""
+"Zorg ervoor dat u alleen de ID van de afspeellijst invoert.\n"
+"De afspeellijst-ID zijn allemaal tekens na de laatste \"/\" en vóór de "
+"\"?\" in de link die u gebruikt om een afspeellijst te delen"
+
+#: app/routes_drive/forms.py:29
+msgid "Save Changes"
+msgstr "Wijzigingen opslaan"
+
+#: app/routes_drive/forms.py:41
+msgid "Age"
+msgstr "Leeftijd"
+
+#: app/routes_drive/forms.py:43
+msgid "Search"
+msgstr "Zoeken"
+
+#: app/routes_drive/forms.py:46
+msgid "Accept"
+msgstr "Aanvaarden"
+
+#: app/routes_drive/forms.py:47
+msgid "Reject"
+msgstr "Weigeren"
+
+#: app/routes_drive/forms.py:51
+msgid "Send Request"
+msgstr "Verzend verzoek"
+
+#: app/routes_drive/routes.py:85
+msgid "The geolocator is timing out! please try again"
+msgstr "De geolocator loopt een time-out! probeer het alstublieft opnieuw"
+
+#: app/routes_drive/routes.py:89 app/routes_drive/routes.py:226
+#: app/routes_drive/routes.py:344
+msgid "The Start address is invalid"
+msgstr "Het startadres is ongeldig"
+
+#: app/routes_drive/routes.py:93 app/routes_drive/routes.py:231
+#: app/routes_drive/routes.py:355
+msgid "The destination address is invalid"
+msgstr "Het bestemmingsadres is ongeldig"
+
+#: app/routes_drive/routes.py:102
+msgid "Date is invalid"
+msgstr "Datum is ongeldig"
+
+#: app/routes_drive/routes.py:105
+msgid "New route added"
+msgstr "Nieuwe route toegevoegd"
+
+#: app/routes_drive/routes.py:161
+msgid "Request has been cancelled"
+msgstr "Verzoek is geannuleerd"
+
+#: app/routes_drive/routes.py:164
+msgid "There aren't any places left in the car"
+msgstr "Er zijn geen plaatsen meer in de auto"
+
+#: app/routes_drive/routes.py:169
+msgid "Request has been made"
+msgstr "Er is een verzoek ingediend"
+
+#: app/routes_drive/routes.py:181
+msgid "The request has been cancelled"
+msgstr "Het verzoek is geannuleerd"
+
+#: app/routes_drive/routes.py:194
+msgid "This route request has already been accepted"
+msgstr "Dit routeverzoek is al geaccepteerd"
+
+#: app/routes_drive/routes.py:197
+msgid "This route request has already been rejected"
+msgstr "Dit routeverzoek is al afgewezen"
+
+#: app/routes_drive/routes.py:203
+msgid "You don't have any places left in your car"
+msgstr "Je hebt geen plaatsen meer in je auto"
+
+#: app/routes_drive/routes.py:207
+msgid "The route request was successfully accepted."
+msgstr "Het routeverzoek is met succes geaccepteerd."
+
+#: app/routes_drive/routes.py:211
+msgid "The route request was successfully rejected."
+msgstr "Het routeverzoek is afgewezen."
+
+#: app/routes_drive/routes.py:227 app/routes_drive/routes.py:232
+msgid "New Route"
+msgstr "Nieuwe route"
+
+#: app/routes_drive/routes.py:311
+msgid "Notifications"
+msgstr "Kennisgevingen"
+
+#: app/routes_drive/routes.py:321
+msgid "The route has been deleted successfully"
+msgstr "De route is succesvol verwijderd"
+
+#: app/routes_drive/routes.py:323
+msgid "You have to be the driver of the route in order to remove it"
+msgstr "Je moet de bestuurder van de route zijn om deze te verwijderen"
+
+#: app/routes_drive/routes.py:332
+msgid "You have to be the driver of the route in order to edit it"
+msgstr "Je moet de bestuurder van de route zijn om deze te kunnen bewerken"
+
+#: app/routes_drive/routes.py:345 app/routes_drive/routes.py:356
+#: app/routes_drive/routes.py:360 app/routes_drive/routes.py:365
+#: app/templates/routes/editRoute.html:26
+msgid "Edit Route"
+msgstr "Route bewerken"
+
+#: app/routes_drive/routes.py:363
+msgid "Your changes have been updated"
+msgstr "Uw wijzigingen zijn bijgewerkt"
+
+#: app/templates/base.html:116
+msgid "Home"
+msgstr "Huis"
+
+#: app/templates/base.html:120
+msgid "About"
+msgstr "Over"
+
+#: app/templates/base.html:124
+msgid "Don't click here"
+msgstr "Klik hier niet"
+
+#: app/templates/base.html:133
+msgid "Sign up"
+msgstr "Aanmelden"
+
+#: app/templates/base.html:136
+msgid "Login"
+msgstr "Log in"
+
+#: app/templates/base.html:157
+msgid "No routes planned in the future"
+msgstr "Geen routes gepland in de toekomst"
+
+#: app/templates/base.html:164
+msgid "Next route:"
+msgstr "Volgende route:"
+
+#: app/templates/base.html:177 app/templates/users/settings.html:6
+msgid "Settings"
+msgstr "Instellingen"
+
+#: app/templates/base.html:184
+msgid "Logout"
+msgstr "Uitloggen"
+
+#: app/templates/base.html:212
+msgid "by"
+msgstr "door"
+
+#: app/templates/base.html:212
+msgid "and"
+msgstr "en"
+
+#: app/templates/auth/forgot_password.html:40
+msgid "Forgot your password?"
+msgstr "Je wachtwoord vergeten?"
+
+#: app/templates/auth/forgot_password.html:43
+msgid "Don't worry, you can still set a new one!"
+msgstr "Maak je geen zorgen, je kunt nog steeds een nieuwe instellen!"
+
+#: app/templates/auth/login.html:40 app/templates/auth/register.html:62
+msgid "Welcome to [PlaceHolder]"
+msgstr "Welkom bij [PlaceHolder]"
+
+#: app/templates/auth/login.html:43
+msgid "Please"
+msgstr "Alstublieft"
+
+#: app/templates/auth/login.html:43
+msgid "login"
+msgstr "Log in"
+
+#: app/templates/auth/login.html:43 app/templates/auth/register.html:65
+msgid "to continue!"
+msgstr "doorgaan!"
+
+#: app/templates/auth/register.html:65
+msgid "Let's"
+msgstr "Laten we"
+
+#: app/templates/auth/register.html:65
+msgid "register"
+msgstr "registreren"
+
+#: app/templates/auth/reset_password.html:40
+msgid "Reset Password"
+msgstr "Wachtwoord opnieuw instellen"
+
+#: app/templates/auth/reset_password.html:43
+msgid "Let's change you password"
+msgstr "Laten we uw wachtwoord wijzigen"
+
+#: app/templates/auth/email/reset_password.html:1
+msgid "Hey"
+msgstr "Hallo"
+
+#: app/templates/auth/email/reset_password.html:3
+msgid "To reset your password"
+msgstr "Om uw wachtwoord opnieuw in te stellen"
+
+#: app/templates/auth/email/reset_password.html:5
+msgid "click here"
+msgstr "Klik hier"
+
+#: app/templates/auth/email/reset_password.html:8
+msgid ""
+"Alternatively, you can paste the following link in your browser's address"
+" bar:"
+msgstr ""
+"Als alternatief kunt u de volgende link in de adresbalk van uw browser "
+"plakken:"
+
+#: app/templates/auth/email/reset_password.html:10
+msgid "If you have not requested a password reset simply ignore this message."
+msgstr "Als u geen wachtwoordreset heeft aangevraagd, negeert u dit bericht."
+
+#: app/templates/auth/email/reset_password.html:11
+msgid "Have a nice day,"
+msgstr "Fijne dag,"
+
+#: app/templates/auth/email/reset_password.html:12
+msgid "The PlaceHolder Team"
+msgstr "Het PlaceHolder-team"
+
+#: app/templates/errors/404.html:25
+msgid "Error 404: Page not found"
+msgstr "Fout 404 - Pagina niet gevonden"
+
+#: app/templates/errors/404.html:28
+msgid "Oopsie, please contact us when you think this is an error"
+msgstr "Oepsie, neem contact met ons op als je denkt dat dit een fout is"
+
+#: app/templates/errors/405.html:25
+msgid "Error 405: Method not allowed"
+msgstr "Fout 405: methode niet toegestaan"
+
+#: app/templates/errors/405.html:28
+msgid ""
+"You are not allowed to use the requested method on this page. (e.g. using"
+" a GET request\n"
+"                                        for one of the pages of the API "
+"which only supports POST)"
+msgstr ""
+"Het is niet toegestaan om de gevraagde methode op deze pagina te "
+"gebruiken. (bijv. met behulp van een GET-verzoek\n"
+" voor een van de pagina's van de API die alleen POST ondersteunt)"
+
+#: app/templates/errors/500.html:25
+msgid "Error 500: Internal server error"
+msgstr "Fout 500 - Interne Server Fout"
+
+#: app/templates/errors/500.html:28
+msgid "Someone did an oopsie, sorry for the inconvenience"
+msgstr "Iemand heeft een oopsie gedaan, sorry voor het ongemak"
+
+#: app/templates/errors/wip.html:25
+msgid "W.I.P."
+msgstr "W.I.P."
+
+#: app/templates/errors/wip.html:28
+msgid "We're still working on this page, stay tuned!"
+msgstr "We werken nog aan deze pagina, blijf op de hoogte!"
+
+#: app/templates/main/about.html:13
+msgid "About Us"
+msgstr "Over ons"
+
+#: app/templates/main/about.html:21
+msgid "Who are we?"
+msgstr "Wie zijn we?"
+
+#: app/templates/main/about.html:24
+msgid "Hi, we are the developers of PLACEHOLDER."
+msgstr "Hallo, wij zijn de ontwikkelaars van PLACEHOLDER."
+
+#: app/templates/main/about.html:25
+msgid ""
+"As computerscientists at the University of Antwerp, we had to make this "
+"website for our final project for\n"
+"                    the course \"Programming Project Databases\". In this"
+" course we have learned the practical side of using\n"
+"                    databases.\n"
+"                    The assignment was to create a webapplication for "
+"carpooling where we had to stand our from other already\n"
+"                    existing\n"
+"                    webapplications. We came up with the idea to not only"
+" select availeble options from the route but also\n"
+"                    from peoples music taste. PLACEHOLDER is the result "
+"of our work."
+msgstr ""
+"Als computerwetenschappers aan de Universiteit Antwerpen moesten we deze "
+"website maken voor ons afstudeerproject voor de cursus \"Programming "
+"Project Databases\". In deze cursus hebben we de praktische kant van het "
+"gebruik geleerd databases.\n"
+"De opdracht was om een webapplicatie te maken voor carpoolen waar we ons "
+"al van moesten onderscheidenbestaand web applicaties. We kwamen op het "
+"idee om niet alleen beschikbare opties uit de route te selecteren, maar "
+"ook van de muzieksmaak van mensen. PLACEHOLDER is het resultaat van ons "
+"werk."
+
+#: app/templates/main/about.html:32
+msgid "By"
+msgstr "Door"
+
+#: app/templates/main/about.html:37
+msgid "What is PLACEHOLDER"
+msgstr "Wat is PLACEHOLDER"
+
+#: app/templates/main/about.html:39 app/templates/main/home.html:13
+msgid "Select your groove, when you move"
+msgstr "Selecteer je groove wanneer je beweegt"
+
+#: app/templates/main/about.html:41
+msgid ""
+"This is not just another website for carpooling. It's a fast and easy way"
+" to find the ride which\n"
+"            is perfect just for you. PLACEHOLDER doesn't only find you "
+"someone who can take you from place A to place B.\n"
+"                    No,\n"
+"                    it also finds you the person who will have a same "
+"interest in music as you. Carpooling always brings people\n"
+"                    closer together,\n"
+"                    it's a beautiful and easy was to be social with other"
+" people and with PLACEHOLDER you will already know you\n"
+"            have a common\n"
+"            thing: your music-style. You might be wondering what we've "
+"already achieved."
+msgstr ""
+"Dit is niet zomaar een website voor carpoolen. Het is een snelle en "
+"gemakkelijke manier om de rit te vinden die is perfect voor jou. "
+"PLACEHOLDER vindt niet alleen iemand die u van plaats A naar plaats B kan"
+" brengen. Nee, het vindt u ook de persoon die dezelfde interesse in "
+"muziek zal hebben als u. Carpoolen brengt altijd mensen dichter bij "
+"elkaar, het was mooi en gemakkelijk om sociaal te zijn met andere mensen "
+"en met PLACEHOLDER ken je je al hebben een gemeenschappelijke ding: je "
+"muziekstijl. U vraagt zich misschien af wat we al hebben bereikt."
+
+#: app/templates/main/about.html:48
+msgid "That's a lot, to be exact "
+msgstr "Dat is veel, om exact te zijn"
+
+#: app/templates/main/about.html:49
+msgid "people that have been rickrolled."
+msgstr "die gerickrolledd werden"
+
+#: app/templates/main/history.html:6 app/templates/main/main_logged_in.html:46
+msgid "History"
+msgstr "Geschiedenis"
+
+#: app/templates/main/history.html:7
+msgid "All routes where you have participated in"
+msgstr "Alle routes waaraan je hebt deelgenomen"
+
+#: app/templates/main/history.html:11
+msgid "From"
+msgstr "Van"
+
+#: app/templates/main/history.html:12
+msgid "To"
+msgstr "Naar"
+
+#: app/templates/main/history.html:13
+msgid "Time"
+msgstr "Tijd"
+
+#: app/templates/main/home.html:22
+msgid "Choose your music"
+msgstr "Kies je muziek"
+
+#: app/templates/main/home.html:23
+msgid ""
+"You probably know the feeling: You want to save the environment, so you\n"
+"                        decide to go carpooling, but\n"
+"                        then, from the moment you enter the car, you only"
+" hear Jazz music, the music you hated most of all."
+msgstr ""
+"U kent waarschijnlijk het gevoel: u wilt het milieu redden, dus u\n"
+"                        besluiten te gaan carpoolen, maar\n"
+"                        dan hoor je vanaf het moment dat je in de auto "
+"stapt alleen jazzmuziek, de muziek die je het meest haatte."
+
+#: app/templates/main/home.html:27
+msgid ""
+"Well, we have a solution for you, because with [PlaceHolder], you can "
+"hold a place in someones car\n"
+"                            with the music you like. Yes, you read that "
+"right: [PlaceHolder] is a carpooling app which selects\n"
+"                            your optimal trip by taking the music "
+"preferences of the passengers into account."
+msgstr ""
+"Welnu, we hebben een oplossing voor u, want met [PlaceHolder] kunt u een "
+"plaats in iemands auto innemen met de muziek die je leuk vindt. Ja, je "
+"leest het goed: [PlaceHolder] is een carpool-app die selecteert uw "
+"optimale reis door rekening te houden met de muziekvoorkeuren van de "
+"passagiers."
+
+#: app/templates/main/home.html:46
+msgid "Go in style"
+msgstr "Ga in stijl"
+
+#: app/templates/main/home.html:47
+msgid ""
+"You can sign up and add your first ride in less than a minute (we tested\n"
+"                        it). Once signed in, your\n"
+"                        greeted with our minimal design for optimal "
+"functionality. I can keep talking about it, but it's\n"
+"                    best you're going to find it all out by yourself."
+msgstr ""
+"U kunt zich aanmelden en uw eerste rit in minder dan een minuut toevoegen"
+" (we hebben getest het). Eenmaal aangemeld, uw begroet met ons minimale "
+"ontwerp voor optimale functionaliteit. Ik kan erover blijven praten, maar"
+" het is het beste is dat je het allemaal zelf gaat ontdekken."
+
+#: app/templates/main/home.html:50
+msgid ""
+"So why are you still reading this? Let's\n"
+"                    select\n"
+"                    your groove, while you move."
+msgstr ""
+"Dus waarom lees je dit nog steeds? Laten we selecteer je groove, terwijl "
+"je beweegt."
+
+#: app/templates/main/main_logged_in.html:29
+msgid "Add a new trip"
+msgstr "Nieuwe route toevoegen"
+
+#: app/templates/main/main_logged_in.html:33
+#: app/templates/main/main_logged_in.html:55
+msgid "No routes planned"
+msgstr "Geen routes gepland"
+
+#: app/templates/main/main_logged_in.html:38
+#: app/templates/main/main_logged_in.html:59
+#: app/templates/routes/request_route.html:35
+#: app/templates/routes/route_request.html:36
+msgid "From:"
+msgstr "Van:"
+
+#: app/templates/main/main_logged_in.html:39
+#: app/templates/main/main_logged_in.html:60
+#: app/templates/routes/request_route.html:36
+#: app/templates/routes/route_request.html:37
+msgid "To:"
+msgstr "Naar:"
+
+#: app/templates/main/main_logged_in.html:42
+#: app/templates/routes/request_route.html:63
+#: app/templates/routes/request_route.html:77
+msgid "More info"
+msgstr "Meer informatie"
+
+#: app/templates/main/main_logged_in.html:79
+#: app/templates/routes/request_route.html:81
+msgid "No passengers"
+msgstr "Geen passagiers"
+
+#: app/templates/main/main_logged_in.html:93
+#: app/templates/routes/request_route.html:40
+#: app/templates/routes/route_request.html:42
+msgid "Here is the playlist that was added to the route."
+msgstr "Hier is de afspeellijst die aan de route is toegevoegd."
+
+#: app/templates/main/main_logged_in.html:99
+#: app/templates/main/main_logged_in.html:105
+#: app/templates/routes/request_route.html:43
+#: app/templates/routes/request_route.html:47
+#: app/templates/routes/route_request.html:45
+#: app/templates/routes/route_request.html:49
+msgid "No playlist added to this route."
+msgstr "Geen playlist toegevoegd aan deze route."
+
+#: app/templates/main/main_logged_in.html:100
+#: app/templates/routes/request_route.html:44
+#: app/templates/routes/route_request.html:46
+msgid "Here is some other music to cheer you up."
+msgstr "Hier is wat andere muziek om je op te vrolijken."
+
+#: app/templates/main/main_logged_in.html:106
+#: app/templates/routes/request_route.html:48
+msgid "Here is some other music, hehe."
+msgstr "Hier is wat andere muziek, hehe."
+
+#: app/templates/routes/addRoute.html:35
+msgid "Add Route"
+msgstr "Route toevoegen"
+
+#: app/templates/routes/addRoute.html:38
+msgid "Role:"
+msgstr "Rol:"
+
+#: app/templates/routes/addRoute.html:56 app/templates/routes/editRoute.html:30
+#: app/templates/routes/search_results.html:31
+msgid "Start:"
+msgstr "Begin:"
+
+#: app/templates/routes/addRoute.html:64 app/templates/routes/editRoute.html:38
+#: app/templates/routes/search_results.html:39
+msgid "Destination:"
+msgstr "Bestemming:"
+
+#: app/templates/routes/addRoute.html:73 app/templates/routes/editRoute.html:47
+#: app/templates/routes/search_results.html:47
+msgid "Date:"
+msgstr "Datum:"
+
+#: app/templates/routes/addRoute.html:86 app/templates/routes/editRoute.html:60
+msgid "Passenger places:"
+msgstr "Passagiersplaatsen:"
+
+#: app/templates/routes/addRoute.html:94 app/templates/routes/editRoute.html:68
+msgid "Spotify playlist ID:"
+msgstr "Spotify-afspeellijst-ID:"
+
+#: app/templates/routes/request_route.html:34
+#: app/templates/routes/route_request.html:35
+msgid "Trip information"
+msgstr "Reisinformatie"
+
+#: app/templates/routes/request_route.html:37
+#: app/templates/routes/route_request.html:38
+msgid "Time:"
+msgstr "Tijd:"
+
+#: app/templates/routes/request_route.html:38
+#: app/templates/routes/route_request.html:39
+msgid "Places left:"
+msgstr "Resterende plaatsen:"
+
+#: app/templates/routes/request_route.html:55
+msgid "Driver information"
+msgstr "Informatie over de bestuurder"
+
+#: app/templates/routes/request_route.html:60
+#: app/templates/routes/request_route.html:73
+#: app/templates/routes/route_request.html:60 app/templates/users/user.html:29
+msgid "Name:"
+msgstr "Naam:"
+
+#: app/templates/routes/request_route.html:61
+#: app/templates/routes/request_route.html:74
+#: app/templates/routes/route_request.html:61
+msgid "email:"
+msgstr "e-mail:"
+
+#: app/templates/routes/request_route.html:66
+msgid "Passengers information"
+msgstr "Passagiersinformatie"
+
+#: app/templates/routes/request_route.html:93
+msgid "Cancel request"
+msgstr "Annuleer verzoek"
+
+#: app/templates/routes/request_route.html:100
+msgid "Edit"
+msgstr "Bewerk"
+
+#: app/templates/routes/request_route.html:101
+msgid "Delete"
+msgstr "Verwijderen"
+
+#: app/templates/routes/requests.html:6
+msgid "Request overview"
+msgstr "Overzicht opvragen"
+
+#: app/templates/routes/requests.html:7
+msgid "All requests for routes where you are the driver for"
+msgstr "Alle aanvragen voor routes waar jij de chauffeur voor bent"
+
+#: app/templates/routes/requests.html:22
+msgid "Accepted"
+msgstr "Geaccepteerd"
+
+#: app/templates/routes/requests.html:24
+msgid "Rejected"
+msgstr "Afgekeurd"
+
+#: app/templates/routes/requests.html:26
+msgid "Pending"
+msgstr "In afwachting"
+
+#: app/templates/routes/requests.html:28
+msgid "wants to ride!"
+msgstr "wil rijden!"
+
+#: app/templates/routes/requests.html:29
+#: app/templates/routes/route_overview.html:14
+#: app/templates/routes/search_results.html:103
+msgid "FROM:"
+msgstr "VAN:"
+
+#: app/templates/routes/requests.html:30
+#: app/templates/routes/route_overview.html:15
+#: app/templates/routes/search_results.html:104
+msgid "TO:"
+msgstr "NAAR:"
+
+#: app/templates/routes/requests.html:31
+#: app/templates/routes/route_overview.html:16
+#: app/templates/routes/search_results.html:105
+msgid "TIME:"
+msgstr "TIJD:"
+
+#: app/templates/routes/requests.html:34
+#: app/templates/routes/search_results.html:108
+msgid "View"
+msgstr "Visie"
+
+#: app/templates/routes/route_overview.html:7
+msgid "Search results"
+msgstr "Zoekresultaten"
+
+#: app/templates/routes/route_overview.html:8
+msgid "Departure near"
+msgstr "Vertrek nabij"
+
+#: app/templates/routes/route_overview.html:9
+msgid "Arrive near"
+msgstr "Kom dichtbij"
+
+#: app/templates/routes/route_request.html:32
+msgid "wants to ride with you!"
+msgstr "wil met je rijden!"
+
+#: app/templates/routes/route_request.html:50
+msgid "Here is some other music, hehep."
+msgstr "Hier is wat andere muziek, hehep."
+
+#: app/templates/routes/route_request.html:55
+msgid "User information"
+msgstr "Gebruikers informatie"
+
+#: app/templates/routes/search_results.html:60
+msgid "Distance (km):"
+msgstr "Afstand (km):"
+
+#: app/templates/users/settings.html:7
+msgid "Edit your preferences"
+msgstr "Bewerk uw voorkeuren"
+
+#: app/templates/users/settings.html:17
+msgid "Edit profile"
+msgstr "Bewerk profiel"
+
+#: app/templates/users/settings.html:20
+msgid "First name:"
+msgstr "Voornaam:"
+
+#: app/templates/users/settings.html:29
+msgid "Last name:"
+msgstr "Achternaam:"
+
+#: app/templates/users/settings.html:38 app/templates/users/user.html:33
+msgid "Email:"
+msgstr "E-mail adres:"
+
+#: app/templates/users/settings.html:54
+msgid "Change password:"
+msgstr "Wachtwoord wijzigen:"
+
+#: app/templates/users/settings.html:79
+msgid "Music Settings"
+msgstr "Muziekinstellingen"
+
+#: app/templates/users/settings.html:83
+msgid "Add liked genre:"
+msgstr "Geliefd genre toevoegen:"
+
+#: app/templates/users/settings.html:116
+msgid "Add disliked genre:"
+msgstr "Niet leuk genre toevoegen:"
+
+#: app/templates/users/settings.html:154
+msgid "Car Settings"
+msgstr "Auto-instellingen"
+
+#: app/templates/users/settings.html:158 app/templates/users/user.html:84
+msgid "Color:"
+msgstr "Kleur:"
+
+#: app/templates/users/settings.html:167 app/templates/users/user.html:80
+msgid "Brand:"
+msgstr "Merk:"
+
+#: app/templates/users/settings.html:176
+msgid "License plate:"
+msgstr "Nummerplaat:"
+
+#: app/templates/users/settings.html:192
+msgid "Delete account"
+msgstr "Account verwijderen"
+
+#: app/templates/users/user.html:13
+msgid "Your account"
+msgstr "Jouw rekening"
+
+#: app/templates/users/user.html:22
+msgid "Profile"
+msgstr "Profiel"
+
+#: app/templates/users/user.html:37
+msgid "Phone Number:"
+msgstr "Telefoonnummer:"
+
+#: app/templates/users/user.html:44
+msgid "Music"
+msgstr "Muziek"
+
+#: app/templates/users/user.html:48
+msgid "Liked genre(s):"
+msgstr "Gelikte genre (s):"
+
+#: app/templates/users/user.html:58
+msgid "Disliked genre(s):"
+msgstr "Niet leuk genre (s):"
+
+#: app/templates/users/user.html:88
+msgid "Licence Plate:"
+msgstr "Kentekenplaat:"
+
+#: app/users/forms.py:14
+msgid "Update Profile"
+msgstr "Profiel bijwerken"
+
+#: app/users/forms.py:17
+msgid "Liked Genre"
+msgstr "Vond Genre"
+
+#: app/users/forms.py:18
+msgid "Disliked Genre"
+msgstr "Hield niet van genre"
+
+#: app/users/forms.py:19 app/users/forms.py:20
+msgid "Add"
+msgstr "Toevoegen"
+
+#: app/users/forms.py:23
+msgid "Color"
+msgstr "Kleur"
+
+#: app/users/forms.py:24
+msgid "Brand"
+msgstr "Merk"
+
+#: app/users/forms.py:25
+msgid "License plate"
+msgstr "Nummerplaat"
+
+#: app/users/forms.py:26
+msgid "Update Car"
+msgstr "Auto bijwerken"
+
+#: app/users/routes.py:16
+msgid "Account"
+msgstr "Account"
+
+#: app/users/routes.py:47
+msgid "Profile settings updated!"
+msgstr "Profielinstellingen bijgewerkt!"
+
+#: app/users/routes.py:56
+msgid "Liked genre added!"
+msgstr "Geliefd genre toegevoegd!"
+
+#: app/users/routes.py:65
+msgid "Disliked genre added!"
+msgstr "Niet leuk genre toegevoegd!"
+
+#: app/users/routes.py:74
+msgid "Car settings updated!"
+msgstr "Auto-instellingen bijgewerkt!"
+
+#: app/users/routes.py:86
+msgid "Genre removed!"
+msgstr "Genre verwijderd!"
+
+#: app/users/routes.py:98
+msgid "Your account has been deleted successfully"
+msgstr "Uw account is succesvol verwijderd"
+
+#: app/users/routes.py:100
+msgid "You can only delete your own account"
+msgstr "Je kunt alleen je eigen account verwijderen"
+
+#~ msgid ""
+#~ "That's a lot, to be exact\n"
+#~ "            %(counter)s people that have been rickrolled."
+#~ msgstr ""
+#~ "Dat is veel om precies te zijn\n"
+#~ "            % (counter) s mensen die rickrolled zijn."
+
+#~ msgid " people that have been rickrolled."
+#~ msgstr " mensen die al gerickrolled zijn"
+

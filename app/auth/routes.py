@@ -6,6 +6,7 @@ from app.auth.forms import LoginForm, RegistrationForm, ForgotPassword, ResetPas
 from app.models import User
 from app import db
 from app.auth.emails import send_password_reset_email
+from flask_babel import _
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -15,7 +16,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+            flash(_('Invalid username or password'))
             return redirect(url_for('auth.login'))
         login_user(user)  # TODO:, remember=form.remember_me.data)
         next_page = request.args.get('next')
@@ -66,7 +67,7 @@ def register():
     if form.validate_on_submit():
         register_user_func(username=form.username.data, firstname=form.firstname.data, lastname=form.lastname.data,
                            password=form.password.data)
-        flash('Congratulations, you are now a registered user!')
+        flash(_('Congratulations, you are now a registered user!')) # TODO: Auto login after registering
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', title='Register', form=form)
 
@@ -81,10 +82,10 @@ def reset_password_request():
         if user:
             send_password_reset_email(user, form.email.data)
             flash(
-                "Check your email for the instructions to reset your password. Check your junk mail too when you didn't receive anything")
+                _("Check your email for the instructions to reset your password. Check your junk mail too when you didn't receive anything"))
             return redirect(url_for('auth.login'))
         else:
-            flash('No user found with the given name.')
+            flash(_('No user found with the given name.'))
             return redirect(url_for('auth.reset_password_request'))
     return render_template('auth/forgot_password.html',
                            title='Reset Password', form=form)
@@ -101,6 +102,6 @@ def reset_password(token):
     if form.validate_on_submit():
         user.set_password(form.password.data)
         db.session.commit()
-        flash('Your password has been reset.')
+        flash(_('Your password has been reset.'))
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', form=form)

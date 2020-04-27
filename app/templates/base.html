@@ -113,15 +113,15 @@
     <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
             <a class="navbar-item" href="{{ url_for('main.index') }}">
-                Home
+                {{ _('Home') }}
             </a>
 
             <a class="navbar-item" href="{{ url_for('main.about') }}">
-                About
+                {{ _("About") }}
             </a>
 
             <a class="navbar-item" href="{{ url_for('main.lol') }}">
-                Don't click here
+                {{ _("Don't click here") }}
             </a>
         </div>
 
@@ -130,10 +130,10 @@
                 <div class="buttons">
                     {% if current_user.is_anonymous %}
                     <a class="button is-primary" href="{{ url_for('auth.register') }}">
-                        <strong>Sign up</strong>
+                        <strong>{{ _("Sign up")}}</strong>
                     </a>
                     <a class="button is-light" href="{{ url_for('auth.login') }}">
-                        Login
+                        {{ _("Login") }}
                     </a>
                     {% else %}
                     <!--a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
@@ -154,14 +154,14 @@
                        </a>
                        <div class="navbar-dropdown is-boxed">
                            {% for notification in current_user.getNotifications() %}
-                           {% if notification == "No routes planned in the future" %}
+                           {% if notification == _("No routes planned in the future") %}
                                  <a class="navbar-item">
                                     {{ notification }}
                                  </a>
                            {% else %}
                                 {% if notification == current_user.getNotifications()[0] %}
                                 <a class="navbar-item" href="{{ url_for('routes_drive.drive',  drive_id=notification.id) }}">
-                                    Next route: {{ notification.departure_time.isoformat() }}
+                                    {{ _("Next route:")}} {{ notification.departure_time }} <!-- .isoformat() }} TODO: when is a date stored as a string? -->
                                 </a>
                                 {% else %}
                                  <a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
@@ -174,14 +174,14 @@
                    </div>
 
                     <a class="navbar-item" href="{{ url_for('users.account_settings') }}">
-                        Settings
+                        {{ _("Settings") }}
                     </a>
                     <a class="navbar-item" href="{{ url_for('users.user_page', username=current_user.username) }}">
                         {{ current_user.firstname }} {{ current_user.lastname }}
                         <img hspace="10" src="{{ current_user.avatar(128) }}">
                     </a>
                     <a class="button is-light" href="{{ url_for('auth.logout') }}">
-                        Logout
+                        {{ _("Logout") }}
                     </a>
                     {% endif %}
                 </div>
@@ -209,7 +209,7 @@
 <footer class="footer">
     <div class="contW.I.P.ent has-text-centered">
         <p>
-            <strong>[PlaceHolder]</strong> by Arno Deceuninck, Sam Peeters, Sien Nuyens and Tim Sanders.
+            <strong>[PlaceHolder]</strong> {{ _("by") }} Arno Deceuninck, Sam Peeters, Sien Nuyens {{_("and")}} Tim Sanders.
         </p>
     </div>
 </footer>

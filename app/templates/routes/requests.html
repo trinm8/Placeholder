@@ -3,8 +3,8 @@
 {% block body %}
 
     <section class="section">
-        <h1 class="title">Request overview</h1>
-        <h2 class="subtitle">All requests for routes where you are the driver for</h2>
+        <h1 class="title">{{ _("Request overview")}}</h1>
+        <h2 class="subtitle">{{ _("All requests for routes where you are the driver for")}}</h2>
 
         <div class="columns is-multiline">
             {% for request in requests %}
@@ -19,19 +19,19 @@
                 {% endif %}">
                         <div class="message-body">
                             {% if request.status.name == 'accepted' %}
-                                <p class="tag is-success">Accepted</p>
+                                <p class="tag is-success">{{ _("Accepted") }}</p>
                             {% elif request.status.name == 'rejected' %}
-                                <p class="tag is-danger">Rejected</p>
+                                <p class="tag is-danger">{{ _("Rejected") }}</p>
                             {% else %}
-                                <p class="tag is-primary">Pending</p>
+                                <p class="tag is-primary">{{ _("Pending") }}</p>
                             {% endif %}
-                            <p class="title">{{ request.user().name() }} wants to ride!</p>
-                            <strong>FROM: </strong> {{ request.route().text_from() }}<br>
-                            <strong>TO: </strong> {{ request.route().text_to() }}<br>
-                            <strong>TIME: </strong> {{ request.route().departure_time.isoformat() }}<br>
+                            <p class="title">{{ request.user().name() }} {{ _("wants to ride!") }}</p>
+                            <strong>{{ _("FROM:")}} </strong> {{ request.route().text_from() }}<br>
+                            <strong>{{ _("TO:")}} </strong> {{ request.route().text_to() }}<br>
+                            <strong>{{ _("TIME:")}} </strong> {{ request.route().departure_time.isoformat() }}<br>
                             <a class="button"
                                href="{{ url_for("routes_drive.passenger_request", drive_id=request.route().id, user_id=request.user_id) }}">
-                                View
+                                {{ _("View") }}
                             </a>
                         </div>
                     </div>

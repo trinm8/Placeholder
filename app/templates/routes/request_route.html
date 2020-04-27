@@ -31,54 +31,54 @@
                     <h1 class="title">Ride with {{ user.firstname }}!</h1>
                     <div class="columns full-height">
                         <div class="column full-height">
-                            <h2 class="subtitle">Trip information</h2>
-                            <p> From: {{ trip.text_from() }}</p>
-                            <p> To: {{ trip.text_to() }} </p>
-                            <p> Time: {{ trip.departure_time }} </p>
-                            <p> Places left: {{ trip.places_left() }}</p><br><br>
+                            <h2 class="subtitle">{{ _("Trip information")}}</h2>
+                            <p> {{ _("From:")}} {{ trip.text_from() }}</p>
+                            <p> {{ _("To:")}} {{ trip.text_to() }} </p>
+                            <p> {{ _("Time:")}} {{ trip.departure_time }} </p>
+                            <p> {{ _("Places left:")}} {{ trip.places_left() }}</p><br><br>
                             {% if trip.playlist %}
-                            <p>Here is the playlist that was added to the route.</p><br>
+                            <p>{{ _("Here is the playlist that was added to the route.")}}</p><br>
                             <iframe src="https://open.spotify.com/embed/playlist/{{ trip.playlist }}" width="80%" height="100%" frameborder="10" allowtransparency="true" allow="encrypted-media"></iframe>
                             {% elif range(0, 10) | random%}
-                                <p>No playlist added to this route. </p>
-                            <p>Here is some other music to cheer you up.</p><br>
+                                <p>{{ _("No playlist added to this route.")}} </p>
+                            <p>{{ _("Here is some other music to cheer you up.")}}</p><br>
                                 <iframe src="https://open.spotify.com/embed/playlist/2MClsgoo2g1jaWfshyduRL?" uri="theme=white" width="80%" height="100%" frameborder="10" allowtransparency="true" allow="encrypted-media"></iframe>
                             {% else %}
-                                <p>No playlist added to this route. </p>
-                            <p>Here is some other music, hehep.</p><br>
+                                <p>{{ _("No playlist added to this route.")}} </p>
+                            <p>{{ _("Here is some other music, hehe.")}}</p><br>
                                 <iframe src="https://open.spotify.com/embed/album/6N9PS4QXF1D0OWPk0Sxtb4" width="80%" height="100%" frameborder="10" allowtransparency="true" allow="encrypted-media"></iframe>
                             {% endif %}
                         </div>
                         <div class="column">
                             <div class="columns">
                                 <div class="column">
-                                    <h2 class="subtitle">Driver information</h2>
+                                    <h2 class="subtitle">{{ _("Driver information")}}</h2>
                                     <figure class="image is-128x128">
                                         <img class="is-rounded" src="{{ user.avatar(128) }}">
                                     </figure>
                                     <br>
-                                    <p> Name: {{ user.firstname }} {{ user.lastname }} </p>
-                                    <p> email: {{ user.email }} </p>
-                                    <a class="button" href="{{ url_for('users.user_page',  username=user.username) }}">More
-                                        info</a>
+                                    <p> {{ _("Name:") }} {{ user.firstname }} {{ user.lastname }} </p>
+                                    <p> {{ _("email:")}} {{ user.email }} </p>
+                                    <a class="button" href="{{ url_for('users.user_page',  username=user.username) }}">
+                                        {{ _("More info")}}</a>
                                 </div>
                                 <div class="column">
-                                    <h2 class="subtitle">Passengers information</h2>
+                                    <h2 class="subtitle">{{ _("Passengers information")}}</h2>
                                     {% if passengers %}
                                         {% for passenger in passengers %}
                                             <figure class="image is-128x128">
                                                 <img class="is-rounded" src="{{ passenger.avatar(128) }}">
                                             </figure>
                                             <br>
-                                            <p> Name: {{ passenger.firstname }} {{ passenger.lastname }} </p>
-                                            <p> email: {{ passenger.email }} </p>
+                                            <p> {{ _("Name:")}} {{ passenger.firstname }} {{ passenger.lastname }} </p>
+                                            <p> {{ _("email:")}} {{ passenger.email }} </p>
                                             <a class="button"
-                                               href="{{ url_for('users.user_page',  username=passenger.username) }}">More
-                                                info</a>
+                                               href="{{ url_for('users.user_page',  username=passenger.username) }}">
+                                                {{ _("More info")}}</a>
                                         {% endfor %}
                                     {% else %}
                                         <div>
-                                            <strong>No passengers</strong>
+                                            <strong>{{ _("No passengers")}}</strong>
                                         </div>
                                     {% endif %}
                                 </div>
@@ -89,15 +89,16 @@
                     {% if not isdriver %}
                         <div class="buttons">
                             {% if requested %}
-                                <button class="button is-primary" href="{{ url_for('routes_drive.cancel_request', drive_id=trip.id) }}">Cancel request</button>
+                                <button class="button is-primary" href="{{ url_for('routes_drive.cancel_request', drive_id=trip.id) }}">
+                                    {{ _("Cancel request")}}</button>
                             {% else %}
                                 {{ form.submit(class="button is-primary") }}
                             {% endif %}
                         </div>
                     {% else %}
                         <div class="buttons">
-                            <a class="button is-primary" href="{{ url_for('routes_drive.editRoute', id=trip.id) }}">Edit</a>
-                            <a class="button is-danger" href="{{ url_for('routes_drive.delete', id=trip.id) }}">Delete</a>
+                            <a class="button is-primary" href="{{ url_for('routes_drive.editRoute', id=trip.id) }}">{{ _("Edit") }}</a>
+                            <a class="button is-danger" href="{{ url_for('routes_drive.delete', id=trip.id) }}">{{ _("Delete") }}</a>
                         </div>
                     {% endif %}
                 </div>

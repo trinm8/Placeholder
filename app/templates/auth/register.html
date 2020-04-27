@@ -15,35 +15,35 @@ margin-top: 10%;
 {% for error in form.username.errors %}
 <div class="notification is-danger">
     <button class="delete"></button>
-    {{ error }}
+    {{ _(error) }}
 </div>
 {% endfor %}
 
 {% for error in form.firstname.errors %}
 <div class="notification is-danger">
     <button class="delete"></button>
-    {{ error }}
+    {{ _(error) }}
 </div>
 {% endfor %}
 
 {% for error in form.lastname.errors %}
 <div class="notification is-danger">
     <button class="delete"></button>
-    {{ error }}
+    {{ _(error) }}
 </div>
 {% endfor %}
 
 {% for error in form.password.errors %}
 <div class="notification is-danger">
     <button class="delete"></button>
-    {{ error }}
+    {{ _(error) }}
 </div>
 {% endfor %}
 
 {% for error in form.password2.errors %}
 <div class="notification is-danger">
     <button class="delete"></button>
-    {{ error }}
+    {{ _(error) }}
 </div>
 {% endfor %}
 
@@ -59,10 +59,10 @@ margin-top: 10%;
                         <!--            Info column-->
                         <div class="container">
                             <h1 class="title">
-                                Welcome to [PlaceHolder]
+                                {{ _("Welcome to [PlaceHolder]")}}
                             </h1>
                             <p class="subtitle">
-                                Let's <strong>register</strong> to continue!
+                                {{ _("Let's")}} <strong>{{ _("register") }}</strong> {{ _("to continue!")}}
                             </p>
                         </div>
                     </div>

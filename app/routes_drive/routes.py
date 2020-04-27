@@ -14,12 +14,14 @@ from datetime import datetime  # Todo: Datetime
 from time import sleep
 from datetime import datetime, date  # Todo: Datetime
 
+from flask_babel import _
+
 
 def createRoute(form, departurelocation, arrivallocation):
     creator = User.query.filter_by(id=current_user.get_id()).first()
     creatorname = creator.username
     # Driver id is None wanneer de creator geen driver is zodat er later een driver zich kan aanbieden voor de route
-    if form.type.data == 'Driver':
+    if form.type.data == 'Driver': # TODO: does this work with translation?
         driverid = creator.id
     else:
         driverid = None
@@ -80,27 +82,27 @@ def addRoute():
             arrival_location = geolocator.geocode(form.destination.data)
             sleep(1.1)  # sleep for 1 sec (required by Nominatim usage policy)
         except GeocoderTimedOut:
-            flash("The geolocator is timing out! please try again")
+            flash(_("The geolocator is timing out! please try again"))
             return render_template('routes/addRoute.html', title='New Route', form=form)
 
         if departure_location is None:
-            flash("The Start address is invalid")
+            flash(_("The Start address is invalid"))
             return render_template('routes/addRoute.html', title='New Route', form=form)
 
         if arrival_location is None:
-            flash("The destination address is invalid")
+            flash(_("The destination address is invalid"))
             return render_template('routes/addRoute.html', title='New Route', form=form)
-        if form.type.data == 'Passenger':
+        if form.type.data == 'Passenger': # TODO: does this work with translation
             return redirect(
                 url_for("routes_drive.overview", lat_from=departure_location.latitude,
                         long_from=departure_location.longitude,
                         lat_to=arrival_location.latitude, long_to=arrival_location.longitude, time=form.date.data))
 
         if form.date.data < datetime.now():  # TODO datetime
-            flash("Date is invalid")
+            flash(_("Date is invalid"))
             return render_template('routes/addRoute.html', title='New Route', form=form)
         createRoute(form, departure_location, arrival_location)
-        flash('New route added')
+        flash(_('New route added'))
         return redirect(url_for('main.index'))
     return render_template('routes/addRoute.html', title='New Route', form=form)
 
@@ -156,15 +158,15 @@ def drive(drive_id):
         if requested:
             RouteRequest.query.filter_by(route_id=drive_id, user_id=current_user.id).delete()
             db.session.commit()
-            flash("Request has been cancelled")
+            flash(_("Request has been cancelled"))
         else:
             if not trip.places_left():
-                flash("There aren't any places left in the car")
+                flash(_("There aren't any places left in the car"))
                 return redirect(url_for("main.index"))
             request = RouteRequest(route_id=drive_id, user_id=current_user.id)
             db.session.add(request)
             db.session.commit()
-            flash("Request has been made")
+            flash(_("Request has been made"))
         return redirect(url_for("main.index"))
 
     return render_template('routes/request_route.html', form=form, user=driver, trip=trip, requested=requested,
@@ -176,7 +178,7 @@ def drive(drive_id):
 def cancel_request(drive_id):
     RouteRequest.query.filter_by(route_id=drive_id, user_id=current_user.id).delete()
     db.session.commit()
-    flash("The request has been cancelled")
+    flash(_("The request has been cancelled"))
     return redirect(url_for('main.index'))
 
 
@@ -189,24 +191,24 @@ def passenger_request(drive_id, user_id):
     request = RouteRequest.query.filter_by(route_id=drive_id, user_id=user_id).first_or_404()
 
     if request.status == RequestStatus.accepted:
-        flash("This route request has already been accepted")
+        flash(_("This route request has already been accepted"))
         return redirect(url_for("main.index"))
     if request.status == RequestStatus.rejected:
-        flash("This route request has already been rejected")
+        flash(_("This route request has already been rejected"))
         return redirect(url_for("main.index"))
 
     if form.validate_on_submit():
         if form.accept.data:
             if not trip.places_left():
-                flash("You don't have any places left in your car")
+                flash(_("You don't have any places left in your car"))
                 return redirect(url_for("main.index"))
             request.status = RequestStatus.accepted
             db.session.commit()
-            flash("The route request was successfully accepted.")
+            flash(_("The route request was successfully accepted."))
         elif form.reject.data:
             request.status = RequestStatus.rejected
             db.session.commit()
-            flash("The route request was successfully rejected.")
+            flash(_("The route request was successfully rejected."))
         return redirect(url_for("main.index"))
 
     return render_template('routes/route_request.html', form=form, user=user, trip=trip, title='Route Request')
@@ -221,13 +223,13 @@ def overview():
         departure_location = geolocator.geocode(form.start.data)
         sleep(1.1)
         if departure_location is None:
-            flash("The Start address is invalid")
-            return render_template('routes/search_results.html', title='New Route', form=form)
+            flash(_("The Start address is invalid"))
+            return render_template('routes/search_results.html', title=_('New Route'), form=form)
         arrival_location = geolocator.geocode(form.destination.data)
         sleep(1.1)
         if arrival_location is None:
-            flash("The destination address is invalid")
-            return render_template('routes/search_results.html', title='New Route', form=form)
+            flash(_("The destination address is invalid"))
+            return render_template('routes/search_results.html', title=_('New Route'), form=form)
 
         lat_from = departure_location.latitude
         long_from = departure_location.longitude
@@ -306,7 +308,7 @@ def history():
             temp_routes.append(route)
         past_routes = temp_routes
 
-    return render_template('main/history.html', title='Notifications', routes=past_routes)
+    return render_template('main/history.html', title=_('Notifications'), routes=past_routes)
 
 
 @bp.route('/drives/<id>/delete', methods=['GET'])
@@ -316,9 +318,9 @@ def delete(id):
     if Route.query.get(id).driver().id == current_user.id:
         Route.query.filter_by(id=id).delete()
         db.session.commit()
-        flash("The route has been deleted successfully")
+        flash(_("The route has been deleted successfully"))
     else:
-        flash("You have to be the driver of the route in order to remove it")
+        flash(_("You have to be the driver of the route in order to remove it"))
     return redirect(url_for("main.index"))
 
 
@@ -327,7 +329,7 @@ def delete(id):
 def editRoute(id):
     # TODO: not yet tested (not enough time)
     if Route.query.get(id).driver().id != current_user.id:
-        flash("You have to be the driver of the route in order to edit it")
+        flash(_("You have to be the driver of the route in order to edit it"))
         return redirect(url_for("main.index"))
     # flash("Warning: this page won't submit anything to the database yet. We're working on it.")
     form = EditRouteForm(request.form)
@@ -339,8 +341,8 @@ def editRoute(id):
         if form.start.data and form.start.data != "":
             departure_location = geolocator.geocode(form.start.data)
             if departure_location is None:
-                flash("The Start address is invalid")
-                return render_template('routes/editRoute.html', title='Edit Route', form=form)
+                flash(_("The Start address is invalid"))
+                return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
             trip = Route.query.get_or_404(id)
             trip.arrival_location_string = form.start.data
             db.session.commit()
@@ -350,14 +352,14 @@ def editRoute(id):
             trip.arrival_location_string = form.destination.data
             db.session.commit()
             if arrival_location is None:
-                flash("The destination address is invalid")
-                return render_template('routes/editRoute.html', title='New Route', form=form)
+                flash(_("The destination address is invalid"))
+                return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
         if form.date.data:
             if form.date.data < datetime.now():  # TODO datetime
                 flash("Date is invalid")
-                return render_template('routes/editRoute.html', title='New Route', form=form)
+                return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
             time = form.date.data
         edit_route(id, departure_location, arrival_location, time, form.places.data, form.playlist.data)
-        flash('Your changes have been updated')
+        flash(_('Your changes have been updated'))
         return redirect(url_for('routes_drive.drive', drive_id=id))
-    return render_template('routes/editRoute.html', title='Edit Route', form=form)
+    return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)

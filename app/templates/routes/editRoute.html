@@ -23,11 +23,11 @@
             <form class="column" action="" method="POST" novalidate>
                 <div class="tile is-vertical">
                     {{ form.hidden_tag() }}
-                    <p class="title">Edit Route</p>
+                    <p class="title">{{ _("Edit Route")}}</p>
                     <br>
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">Start:</label>
+                            <label class="label">{{ _("Start:")}}</label>
                         </div>
                         <div class="field-body">
                             {{ form.start(class='input', type='text', onchange='addmarker("start")', placeholder="Don't edit") }}
@@ -35,7 +35,7 @@
                     </div>
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">Destination:</label>
+                            <label class="label">{{ _("Destination:")}}</label>
                         </div>
                         <div class="field-body">
                             {{ form.destination(class='input', type='text', onchange='addmarker("destination")', placeholder="Don't edit") }}
@@ -44,7 +44,7 @@
                     <br>
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">Date:</label>
+                            <label class="label">{{ _("Date:")}}</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
@@ -57,7 +57,7 @@
                     </div>
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">Passenger places:</label>
+                            <label class="label">{{ _("Passenger places:")}}</label>
                         </div>
                         <div class="field-body">
                             {{ form.places(class='input', type='number') }}
@@ -65,7 +65,7 @@
                     </div>
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">Spotify playlist ID:</label>
+                            <label class="label">{{ _("Spotify playlist ID:")}}</label>
                         </div>
                         <div class="field-body">
                             {{ form.playlist(class='input', type='text') }}

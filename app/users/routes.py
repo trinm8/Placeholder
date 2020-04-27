@@ -6,12 +6,14 @@ from app.users.forms import Settings
 from flask import render_template, flash, redirect, url_for
 from flask_login import login_required, current_user, logout_user
 
+from flask_babel import _
+
 
 @bp.route('/users/<username>')
 @login_required
 def user_page(username):
     user = User.query.filter_by(username=username).first_or_404()
-    return render_template('users/user.html', title='Account', user=user)
+    return render_template('users/user.html', title=_('Account'), user=user)
 
 
 def get_suggested_genres():
@@ -42,7 +44,7 @@ def account_settings():
                 usr.set_password(form.password.data)
             db.session.commit()
 
-            flash("Profile settings updated!")
+            flash(_("Profile settings updated!"))
 
         # Add liked genre
         if form.submit_liked.data:
@@ -51,7 +53,7 @@ def account_settings():
                 db.session.add(pref)
                 db.session.commit()
 
-                flash("Liked genre added!")
+                flash(_("Liked genre added!"))
 
         # Add disliked genre
         if form.submit_disliked.data:
@@ -60,7 +62,7 @@ def account_settings():
                 db.session.add(pref)
                 db.session.commit()
 
-                flash("Disliked genre added!")
+                flash(_("Disliked genre added!"))
 
         # Car settings
         if form.submit_car.data:
@@ -69,7 +71,7 @@ def account_settings():
             usr.car_plate = form.plate.data
             db.session.commit()
 
-            flash("Car settings updated!")
+            flash(_("Car settings updated!"))
 
     return render_template('users/settings.html', title='Account Settings', form=form,
                            suggested_genres=get_suggested_genres())
@@ -81,7 +83,7 @@ def remove_genre(id):
     MusicPref.query.filter_by(id=id).delete()
     db.session.commit()
 
-    flash("Genre removed!")
+    flash(_("Genre removed!"))
     return redirect(url_for('users.account_settings'))
 
 
@@ -93,8 +95,8 @@ def delete(id):
         logout_user()
         User.query.filter_by(id=id).delete()
         db.session.commit()
-        flash("Your account has been deleted successfully")
+        flash(_("Your account has been deleted successfully"))
     else:
-        flash("You can only delete your own account")
+        flash(_("You can only delete your own account"))
     return redirect(url_for("main.index"))
 

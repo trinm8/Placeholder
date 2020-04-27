@@ -3,8 +3,8 @@
 {% block body %}
     <section class="section">
         <div class="container">
-            <h1 class="title is-medium">Settings</h1>
-            <h2 class="subtitle">Edit your preferences</h2>
+            <h1 class="title is-medium">{{ _("Settings") }}</h1>
+            <h2 class="subtitle">{{ _("Edit your preferences")}}</h2>
             <hr class="hr">
         </div>
     </section>
@@ -14,10 +14,10 @@
         <section class="section">
             <div class="container box">
 
-                <p class="subtitle">Edit profile</p>
+                <p class="subtitle">{{ _("Edit profile")}}</p>
                 <div class="columns">
                     <div class="column is-2">
-                        <p>First name:</p>
+                        <p>{{ _("First name:")}}</p>
                     </div>
                     <div class="column is-5">
                         {{ form.firstname(type="text", class="input", placeholder="First name", value=current_user.firstname) }}
@@ -26,7 +26,7 @@
 
                 <div class="columns">
                     <div class="column is-2">
-                        <p>Last name:</p>
+                        <p>{{ _("Last name:")}}</p>
                     </div>
                     <div class="column is-5">
                         {{ form.lastname(type="text", class="input", placeholder="Last name", value=current_user.lastname) }}
@@ -35,7 +35,7 @@
 
                 <div class="columns">
                     <div class="column is-2">
-                        <p>Email:</p>
+                        <p>{{ _("Email:")}}</p>
                     </div>
                     <div class="column is-5">
                         <div class="field">
@@ -51,7 +51,7 @@
 
                 <div class="columns">
                     <div class="column is-2">
-                        <p>Change password:</p>
+                        <p>{{ _("Change password:")}}</p>
                     </div>
                     <div class="column is-5">
                         <div class="field">
@@ -76,11 +76,11 @@
         <section class="section">
             <div class="container box">
 
-                <p class="subtitle">Music Settings</p>
+                <p class="subtitle">{{ _("Music Settings")}}</p>
 
                 <div class="columns">
                     <div class="column is-2">
-                        <p>Add liked genre:</p>
+                        <p>{{ _("Add liked genre:")}}</p>
                     </div>
                     <div class="column is-5">
                         <datalist id="liked_genre_suggestions">
@@ -113,7 +113,7 @@
 
                 <div class="columns">
                     <div class="column is-2">
-                        <p>Add disliked genre:</p>
+                        <p>{{ _("Add disliked genre:")}}</p>
                     </div>
                     <div class="column is-5">
                         <datalist id="disliked_genre_suggestions">
@@ -151,11 +151,11 @@
         <section class="section">
             <div class="container box">
 
-                <p class="subtitle">Car Settings</p>
+                <p class="subtitle">{{ _("Car Settings")}}</p>
 
                 <div class="columns">
                     <div class="column is-2">
-                        <p>Color:</p>
+                        <p>{{ _("Color:")}}</p>
                     </div>
                     <div class="column is-5">
                         {{ form.color(type="input", class="input", placeholder="Color", value=current_user.car_color) }}
@@ -164,7 +164,7 @@
 
                 <div class="columns">
                     <div class="column is-2">
-                        <p>Brand:</p>
+                        <p>{{ _("Brand:")}}</p>
                     </div>
                     <div class="column is-5">
                         {{ form.brand(type="input", class="input", placeholder="Brand", value=current_user.car_brand) }}
@@ -173,7 +173,7 @@
 
                 <div class="columns">
                     <div class="column is-2">
-                        <p>License plate:</p>
+                        <p>{{ _("License plate:")}}</p>
                     </div>
                     <div class="column is-5">
                         {{ form.plate(type="input", class="input", placeholder="1-aaa-000", value=current_user.car_plate) }}
@@ -189,5 +189,5 @@
         </section>
     </form>
     <br>
-    <a class="button is-danger" href="{{ url_for('users.delete', id=current_user.id) }}">Delete account</a>
+    <a class="button is-danger" href="{{ url_for('users.delete', id=current_user.id) }}">{{ _("Delete account")}}</a>
 {% endblock %}

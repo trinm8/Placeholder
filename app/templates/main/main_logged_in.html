@@ -26,24 +26,24 @@
         <section class="section full-height" style="height: 100%">
             <div class="columns full-height" style="height: 100%">
                 <div class="column is-2">
-                    {{ card("Add a new trip", link=url_for("routes_drive.addRoute")) }}
+                    {{ card(_("Add a new trip"), link=url_for("routes_drive.addRoute")) }}
 
                     {% if future_routes is none or future_routes[0] is none %}
                         <div class="card">
-                            No routes planned
+                            {{ _("No routes planned")}}
                         </div>
                     {% else %}
                         {% for trip in future_routes %}
                             <div class="card" style="padding: 10px">
-                                <strong>From: </strong> {{ trip.text_from() }} <br>
-                                <strong>To: </strong> {{ trip.text_to() }}<br>
+                                <strong>{{ _("From:")}} </strong> {{ trip.text_from() }} <br>
+                                <strong>{{ _("To:")}} </strong> {{ trip.text_to() }}<br>
                                 <strong>{{ trip.departure_time }}</strong> <br>
-                                <a class="button" href="{{ url_for('routes_drive.drive',  drive_id=trip.id) }}">More
-                                    info</a>
+                                <a class="button" href="{{ url_for('routes_drive.drive',  drive_id=trip.id) }}">
+                                    {{ _("More info")}}</a>
                             </div>
                         {% endfor %}
                     {% endif %}
-                    {{ card("History", link=url_for("routes_drive.history")) }}
+                    {{ card(_("History"), link=url_for("routes_drive.history")) }}
 
 
                 </div>
@@ -52,12 +52,12 @@
                     <div style="height: 20%">
                         {% if future_routes[0] is none %}
                             <h1 class="title">
-                                No routes planned
+                                {{ _("No routes planned")}}
                             </h1>
                         {% else %}
                             <h1 class="title">
-                                From: {{ future_routes[0].text_from() }}<br>
-                                To: {{ future_routes[0].text_to() }}
+                                {{ _("From:")}} {{ future_routes[0].text_from() }}<br>
+                                {{ _("To:")}} {{ future_routes[0].text_to() }}
                             </h1>
                             <h2 class="subtitle">
                                 {{ future_routes[0].departure_time }}
@@ -76,7 +76,7 @@
                                 <i class="fas fa-car"></i><a
                                     href="{{ url_for('users.user_page', username=future_routes[0].driver().username) }} "> {{ future_routes[0].driver().name() }} </a><br>
                                 {% if future_routes[0].passenger_places is none %}
-                                    No passengers
+                                {{ _("No passengers")}}
                                 {% else %}
                                     {% for passenger in passengers %}
                                         <i class="fas fa-user"></i>
@@ -90,20 +90,20 @@
                     {% endif %}<br><br>
 
                     {% if future_routes[0] and future_routes[0].playlist %}
-                        <p>Here is the playlist that was added to the route.</p><br>
+                        <p>{{ _("Here is the playlist that was added to the route.")}}</p><br>
                         <iframe src="https://open.spotify.com/embed/playlist/{{ future_routes[0].playlist }}"
                                 width="100%"
                                 height="80%" frameborder="10" allowtransparency="true"
                                 allow="encrypted-media"></iframe>
                     {% elif range(0, 10) | random %}
-                        <p>No playlist added to this route. </p>
-                        <p>Here is some other music to cheer you up.</p><br>
+                        <p>{{ _("No playlist added to this route.")}} </p>
+                        <p>{{ _("Here is some other music to cheer you up.")}}</p><br>
                         <iframe src="https://open.spotify.com/embed/playlist/2MClsgoo2g1jaWfshyduRL?"
                                 uri="theme=white" width="100%" height="80%" frameborder="10" allowtransparency="true"
                                 allow="encrypted-media"></iframe>
                     {% else %}
-                        <p>No playlist added to this route. </p>
-                        <p>Here is some other music, hehe.</p><br>
+                        <p>{{ _("No playlist added to this route.")}} </p>
+                        <p>{{ _("Here is some other music, hehe.")}}</p><br>
                         <iframe src="https://open.spotify.com/embed/album/6N9PS4QXF1D0OWPk0Sxtb4" width="100%"
                                 height="80%" frameborder="10" allowtransparency="true"
                                 allow="encrypted-media"></iframe>

@@ -6,6 +6,8 @@ from app import db, login
 from flask import current_app
 from flask_login import UserMixin
 
+from flask_babel import _
+
 import jwt
 from hashlib import md5
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -37,7 +39,7 @@ def addr(lat, long):
           # sleep for 1 sec (required by Nominatim usage policy)
     except GeocoderTimedOut:
         print("Geocoder timed out")
-        return "Geocoder timed out"
+        return _("Geocoder timed out")
     except GeocoderQueryError:
         return "Geocoder errored on query"
     print("succesfull")
@@ -61,7 +63,7 @@ def addr(lat, long):
     if len(location_str) <= 4:
         location_str = str(location.address)
 
-    return location_str
+    return _(location_str)
 
 
 @login.user_loader
@@ -103,7 +105,7 @@ class User(UserMixin, db.Model):
             "lastname": self.lastname,
             "username": self.username,
             "email": self.email,
-            "car_color": self.car_color,
+            "car_color": _(self.car_color),
             "car_plate": self.car_plate,
             "car_brand": self.car_brand
         }

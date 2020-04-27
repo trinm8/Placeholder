@@ -21,3 +21,5 @@ class Config(object):
     MAIL_USERNAME = "team6.ppdb@gmail.com"
     MAIL_PASSWORD = "Tim is gay!"
     ADMINS = ['team6.ppdb@gmail.com']
+
+    LANGUAGES = ['en', 'nl']
