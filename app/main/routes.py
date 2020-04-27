@@ -34,7 +34,8 @@ def index():
         future_routes_unsort = routes.filter(Route.departure_time >= current_time)
         #order by
         future_routes = []
-        future_routes.append(future_routes_unsort.first())
+        if future_routes_unsort:
+            future_routes.append(future_routes_unsort.first())
         for unsort_route in future_routes_unsort:
             temp_routes = []
             for route in future_routes:
@@ -45,7 +46,7 @@ def index():
             future_routes = temp_routes
 
         passengerIds = []
-        if future_routes[0]:
+        if len(future_routes) > 0 and future_routes[0]:
             passengerIds = future_routes[0].passengers()
         passengers = []
         for passengerId in passengerIds:

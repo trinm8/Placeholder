@@ -86,7 +86,7 @@ class BaseCase(TestCase):
 
     def help_delete_request(self, drive_id, user_id, authorization):
         return self.client.delete('api/drives/{}/passenger-requests/{}'.format(str(drive_id), str(user_id)),
-                                headers={"Content-Type": "application/json", "Authorization": authorization})
+                                  headers={"Content-Type": "application/json", "Authorization": authorization})
 
     # @login_required
     # def help_dummy_func_expired(self):
@@ -219,6 +219,36 @@ class RouteTest(BaseCase):
         self.assertEqual("2020-02-12T10:00:00.00", response.json.get("arrive-by"))
 
 
+    def test_search_route(self):
+        self.help_register("TEST_MarkD", "Mark", "Peeters", "MarkIsCool420")
+        response = self.help_login("TEST_MarkD", "MarkIsCool420")
+        token = response.json.get("token")
+        authorization = "Bearer {token}".format(token=token)
+
+        # Rendierstraat 1 -> Hilda Ramstraat 39 (not close enough)
+        response = self.help_add_route([51.17378, 4.42141], [51.18852, 4.42173], 3, "2020-02-12T10:00:00.00",
+                                       authorization)
+        drive_id1 = response.json.get("id")
+
+        # Bartstraat 26 -> Hilda Ramstraat 39 (what we're searching for)
+        response = self.help_add_route([51.13731, 4.60960], [51.18852, 4.42173], 3, "2020-02-12T10:00:00.00",
+                                       authorization)
+        drive_id2 = response.json.get("id")
+
+        # Bartstraat 26 -> Hilda Ramstraat 39 (other date)
+        response = self.help_add_route([51.13731, 4.60960], [51.18852, 4.42173], 3, "2020-02-13T10:00:00.00",
+                                       authorization)
+        drive_id3 = response.json.get("id")
+
+        # -------------- ACTUAL TEST ----------------
+        data = {"from": "{lat}, {long}".format(lat=51.13731, long=4.60960), "to": "{lat}, {long}".format(lat=51.18852, long=4.42173), "arrive-by": "2020-02-12T10:00:00.00", "limit": 3}
+        response = self.client.get('/api/drives/search'.format(id=id),
+                                   headers={"Content-Type": "application/json", "Authorization": authorization}, query_string=data)
+
+        routes = response.json
+        self.assertEqual(1, len(routes))
+        self.assertEqual(drive_id2, routes[0].get("id"))
+
 class RequestTest(BaseCase):
 
     def test_add_request(self):
@@ -276,7 +306,7 @@ class RequestTest(BaseCase):
 
         # -------------- ACTUAL TEST ----------------
         response = self.help_status_request(drive_id, user_id, "accept", authorization_d)
-        print(str(response.json))
+        # print(str(response.json))
         self.assertEqual(response.json.get("id"), user_id)
         self.assertEqual(response.json.get("username"), "TEST_MarkP")
         self.assertEqual(response.json.get("status"), "accepted")
@@ -335,3 +365,38 @@ class RequestTest(BaseCase):
 
         route_request = RouteRequest.query.filter_by(route_id=drive_id, user_id=user_id).first()
         self.assertIsNone(route_request)
+
+
+class UserTests(BaseCase):
+    def test_update_user(self):
+        response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
+        id = response.json.get("id")
+        response = self.help_login("TEST_MarkP", "MarkIsCool420")
+        authorization = "Bearer {token}".format(token=response.json.get("token"))
+
+        payload = json.dumps({
+            "email": "mark.peeters@gmail.com"
+        })
+
+        response = self.client.get('/api/user/{id}'.format(id=id), headers={"Content-Type": "application/json", "Authorization": authorization})
+
+        self.assertEqual(None, response.json.get("email"))
+        self.assertEqual("TEST_MarkP", response.json.get("username"))
+
+        response = self.client.put('/api/user',
+                                   headers={"Content-Type": "application/json", "Authorization": authorization},
+                                   data=payload)
+        self.assertEqual("mark.peeters@gmail.com", response.json.get("email"))
+        self.assertEqual(201, response.status_code)
+
+    def test_delete_user(self):
+        response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
+        id = response.json.get("id")
+        response = self.help_login("TEST_MarkP", "MarkIsCool420")
+        token = response.json.get("token")
+        authorization = "Bearer {token}".format(token=token)
+
+        self.assertNotEqual(None, User.query.get(id))
+        response = self.client.delete('/api/user',
+                                      headers={"Content-Type": "application/json", "Authorization": authorization})
+        self.assertEqual(None, User.query.get(id))
