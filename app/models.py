@@ -260,14 +260,16 @@ class Route(db.Model):
         if self.departure_location_string:
             return self.departure_location_string
         else:
-            return ""
+            self.departure_location_string = addr(self.departure_location_lat, self.departure_location_long)
+            return self.departure_location_string
         #return addr(self.departure_location_lat, self.departure_location_long)
 
     def text_to(self):
         if self.arrival_location_string:
             return self.arrival_location_string
         else:
-            return ""
+            self.arrival_location_string = addr(self.arrival_location_lat, self.arrival_location_long)
+            return self.arrival_location_string
         #return addr(self.arrival_location_lat, self.arrival_location_long)
 
     def driver(self):
