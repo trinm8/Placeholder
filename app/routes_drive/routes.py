@@ -23,7 +23,7 @@ def createRoute(form, departurelocation, arrivallocation):
     creator = User.query.filter_by(id=current_user.get_id()).first()
     creatorname = creator.username
     # Driver id is None wanneer de creator geen driver is zodat er later een driver zich kan aanbieden voor de route
-    if form.type.data == 'Driver': # TODO: does this work with translation?
+    if form.type.data == 'Driver':  # TODO: does this work with translation?
         driverid = creator.id
     else:
         driverid = None
@@ -94,7 +94,7 @@ def addRoute():
         if arrival_location is None:
             flash(_("The destination address is invalid"))
             return render_template('routes/addRoute.html', title='New Route', form=form)
-        if form.type.data == 'Passenger': # TODO: does this work with translation
+        if form.type.data == 'Passenger':  # TODO: does this work with translation
             return redirect(
                 url_for("routes_drive.overview", lat_from=departure_location.latitude,
                         long_from=departure_location.longitude,
@@ -216,6 +216,25 @@ def passenger_request(drive_id, user_id):
     return render_template('routes/route_request.html', form=form, user=user, trip=trip, title='Route Request')
 
 
+# Returns a score based on music preference of user u and v
+def compareMusicPrefs(u: User, v: User) -> int:
+
+    score = 0
+
+    # Search for matching genres
+    # Increase for both like (and)
+    # Decease for one like one dislike (xor)
+    for up in u.musicpref:
+        for vp in v.musicpref:
+            if up.genre == vp.genre:
+                if up.likes and vp.likes:
+                    score += 1
+                if up.likes != vp.likes:
+                    score -= 1
+
+    return score
+
+
 @bp.route("/overview", methods=["GET", "POST"])
 def overview():
     form = RouteSearchForm(request.form)
@@ -268,6 +287,8 @@ def overview():
     arrival_location = (lat_to, long_to)
 
     routes = filter_routes(allowed_distance, arrival_location, departure_location, time)
+    # TODO: find a way to toggle the below line
+    # routes = sorted(routes, key=lambda x:  compareMusicPrefs(current_user, User.query.get(x.driver_id)), reverse=True)
 
     return render_template('routes/search_results.html', routes=routes, title="Search", src=addr(lat_from, long_from),
                            dest=addr(lat_to, long_to), form=form)
@@ -289,8 +310,8 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
         if route.maximum_deviation is None:
             route.maximum_deviation = 15
 
-        if routeLineSegment.distance(pickupPoint) < route.maximum_deviation*100 and \
-                routeLineSegment.distance(dropoffPoint) < allowed_distance*100:
+        if routeLineSegment.distance(pickupPoint) < route.maximum_deviation * 100 and \
+                routeLineSegment.distance(dropoffPoint) < allowed_distance * 100:
             routes.append(route)
 
         # if distance.distance(route_dep, departure_location).km <= allowed_distance and \
@@ -298,12 +319,14 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
         #     routes.append(route)
     return routes
 
+
 def toCartesian(lat, lng):
     x = 6371 * cos(float(lat)) * cos(float(lng))
     y = 6371 * cos(float(lat)) * sin(float(lng))
     z = 6371 * sin(float(lat))
 
     return x, y, z
+
 
 @bp.route('/history', methods=['GET'])
 @login_required
