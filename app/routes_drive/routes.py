@@ -10,6 +10,8 @@ from sqlalchemy import Date, cast
 
 from geopy import Nominatim
 from geopy.exc import GeocoderTimedOut
+from sympy.geometry import *
+from math import cos, sin
 from datetime import datetime  # Todo: Datetime
 from time import sleep
 from datetime import datetime, date  # Todo: Datetime
@@ -35,7 +37,7 @@ def createRoute(form, departurelocation, arrivallocation):
         departure_location_long=departurelocation.longitude, arrival_location_lat=arrivallocation.latitude,
         arrival_location_long=arrivallocation.longitude, driver_id=driverid, departure_time=d,
         departure_location_string=form.start.data, arrival_location_string=form.destination.data,
-        playlist=form.playlist.data, passenger_places=form.places.data)
+        playlist=form.playlist.data, passenger_places=form.places.data, maximum_deviation=15)
     db.session.add(route)
     db.session.commit()
 
@@ -277,14 +279,29 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
     routes = []
     from geopy import distance  # No idea why this include won't work when placed outside this function
     # allowed_distance = 2
+    pickupPoint = Point(toCartesian(*departure_location))
     for route in same_day_routes:
         route_dep = (route.departure_location_lat, route.departure_location_long)
         route_arr = (route.arrival_location_lat, route.arrival_location_long)
-        if distance.distance(route_dep, departure_location).km <= allowed_distance and \
-                distance.distance(route_arr, arrival_location).km <= allowed_distance:
+        routeLineSegment = Line(Point(toCartesian(*route_dep)), Point(toCartesian(*route_arr)))
+
+        if route.maximum_deviation is None:
+            route.maximum_deviation = 15
+
+        if routeLineSegment.distance(pickupPoint) < route.maximum_deviation*100:
             routes.append(route)
+
+        # if distance.distance(route_dep, departure_location).km <= allowed_distance and \
+        #         distance.distance(route_arr, arrival_location).km <= allowed_distance:
+        #     routes.append(route)
     return routes
 
+def toCartesian(lat, lng):
+    x = 6371 * cos(float(lat)) * cos(float(lng))
+    y = 6371 * cos(float(lat)) * sin(float(lng))
+    z = 6371 * sin(float(lat))
+
+    return x, y, z
 
 @bp.route('/history', methods=['GET'])
 @login_required
