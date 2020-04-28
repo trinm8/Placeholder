@@ -10,7 +10,7 @@
     <div class="hero-body">
         <div class="container has-text-centered">
             <h1 class="title">
-                {{ _("Your account")}}
+                {{ user.firstname }}'s account
             </h1>
         </div>
     </div>
@@ -47,7 +47,7 @@
             <tr>
                 <td>{{ _("Liked genre(s):")}}</td>
                 <td>
-                    {% for genre in current_user.musicpref %}
+                    {% for genre in user.musicpref %}
                         {% if genre.likes %}
                             {{ _(genre.genre) }}
                         {% endif %}
@@ -57,7 +57,7 @@
             <tr>
                 <td>{{ _("Disliked genre(s):")}}</td>
                 <td>
-                    {% for genre in current_user.musicpref %}
+                    {% for genre in user.musicpref %}
                         {% if not genre.likes %}
                             {{ _(genre.genre) }}
                         {% endif %}
