@@ -32,6 +32,7 @@ def createRoute(form, departurelocation, arrivallocation):
     # arrival_location_lat = uniform(49.536612, 51.464020)
     # arrival_location_long = uniform(2.634966, 6.115877)
     d = form.date.data
+
     route = Route(  # creator=creatorname,
         departure_location_lat=departurelocation.latitude,
         departure_location_long=departurelocation.longitude, arrival_location_lat=arrivallocation.latitude,
@@ -102,6 +103,18 @@ def addRoute():
 
         if form.date.data < datetime.now():  # TODO datetime
             flash(_("Date is invalid"))
+            return render_template('routes/addRoute.html', title='New Route', form=form)
+        if len(form.start.data) > 256:
+            flash(_("Start data exceeds character limit"))
+            return render_template('routes/addRoute.html', title='New Route', form=form)
+        if len(form.destination.data) > 256:
+            flash(_("Destination data exceeds character limit"))
+            return render_template('routes/addRoute.html', title='New Route', form=form)
+        if len(form.playlist.data) > 32:
+            flash(_("Playlist data exceeds character limit"))
+            return render_template('routes/addRoute.html', title='New Route', form=form)
+        if not form.places.data.isdigit():
+            flash(_("Passenger places must be a number!"))
             return render_template('routes/addRoute.html', title='New Route', form=form)
         createRoute(form, departure_location, arrival_location)
         flash(_('New route added'))
@@ -218,7 +231,6 @@ def passenger_request(drive_id, user_id):
 
 # Returns a score based on music preference of user u and v
 def compareMusicPrefs(u: User, v: User) -> int:
-
     score = 0
 
     # Search for matching genres
@@ -381,6 +393,9 @@ def editRoute(id):
         time = None
         geolocator = Nominatim(user_agent="[PlaceHolder]")
         if form.start.data and form.start.data != "":
+            if len(form.start.data) > 256:
+                flash(_("Start data exceeds character limit"))
+                return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
             departure_location = geolocator.geocode(form.start.data)
             if departure_location is None:
                 flash(_("The Start address is invalid"))
@@ -389,6 +404,9 @@ def editRoute(id):
             trip.arrival_location_string = form.start.data
             db.session.commit()
         if form.destination.data and form.destination.data != "":
+            if len(form.destination.data) > 256:
+                flash(_("Destination data exceeds character limit"))
+                return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
             arrival_location = geolocator.geocode(form.destination.data)
             trip = Route.query.get_or_404(id)
             trip.arrival_location_string = form.destination.data
@@ -401,6 +419,12 @@ def editRoute(id):
                 flash("Date is invalid")
                 return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
             time = form.date.data
+        if not form.places.data.isdigit():
+            flash(_("Passenger places must be a number"))
+            return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
+        if len(form.playlist.data) > 32:
+            flash(_("Playlist data exceeds character limit"))
+            return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
         edit_route(id, departure_location, arrival_location, time, form.places.data, form.playlist.data)
         flash(_('Your changes have been updated'))
         return redirect(url_for('routes_drive.drive', drive_id=id))
