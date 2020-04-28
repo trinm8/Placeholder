@@ -280,6 +280,7 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
     from geopy import distance  # No idea why this include won't work when placed outside this function
     # allowed_distance = 2
     pickupPoint = Point(toCartesian(*departure_location))
+    dropoffPoint = Point(toCartesian(*arrival_location))
     for route in same_day_routes:
         route_dep = (route.departure_location_lat, route.departure_location_long)
         route_arr = (route.arrival_location_lat, route.arrival_location_long)
@@ -288,7 +289,8 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
         if route.maximum_deviation is None:
             route.maximum_deviation = 15
 
-        if routeLineSegment.distance(pickupPoint) < route.maximum_deviation*100:
+        if routeLineSegment.distance(pickupPoint) < route.maximum_deviation*100 and \
+                routeLineSegment.distance(dropoffPoint) < allowed_distance*100:
             routes.append(route)
 
         # if distance.distance(route_dep, departure_location).km <= allowed_distance and \
