@@ -6,7 +6,7 @@ from flask_babel import lazy_gettext as _l
 
 
 class AddRouteForm(FlaskForm):
-    type = RadioField(_l('type'), choices=[(_l('Driver'), 'Driver'), (_l('Passenger'), 'Passenger')]) # TODO: wich one to translate?
+    type = RadioField(_l('type'), choices=[('Driver', _l('Driver')), ('Passenger', _l('Passenger'))]) # TODO: wich one to translate?
     start = StringField(_l('start'))
     places = IntegerField(_l('Passenger places'), validators=[])
     playlist = StringField(_l('Spotify playlist ID'))
