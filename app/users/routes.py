@@ -37,17 +37,28 @@ def account_settings():
 
         # Profile settings
         if form.submit_profile.data:
-            usr.firstname = form.firstname.data
-            usr.lastname = form.lastname.data
-            usr.email = form.email.data
-            if len(form.password.data) > 0:
-                usr.set_password(form.password.data)
-            db.session.commit()
+
+            # Check lengths
+            if (len(form.firstname.data) > 64
+                    or len(form.lastname.data) > 64
+                    or len(form.email.data) > 120):
+                flash(_("User data field exceeds character limit"))
+
+            else:
+                usr.firstname = form.firstname.data
+                usr.lastname = form.lastname.data
+                usr.email = form.email.data
+
+                if len(form.password.data) > 0:
+                    usr.set_password(form.password.data)
+                db.session.commit()
 
             flash(_("Profile settings updated!"))
 
         # Add liked genre
         if form.submit_liked.data:
+            if len(form.liked_genre.data) > 64:
+                flash(_("Genre exceeds character limit"))
             if len(form.liked_genre.data) > 0:
                 pref = MusicPref(user=usr.id, genre=form.liked_genre.data, likes=True)
                 db.session.add(pref)
@@ -57,6 +68,8 @@ def account_settings():
 
         # Add disliked genre
         if form.submit_disliked.data:
+            if len(form.disliked_genre.data) > 64:
+                flash(_("Genre exceeds character limit"))
             if len(form.disliked_genre.data) > 0:
                 pref = MusicPref(user=usr.id, genre=form.disliked_genre.data, likes=False)
                 db.session.add(pref)
@@ -66,10 +79,15 @@ def account_settings():
 
         # Car settings
         if form.submit_car.data:
-            usr.car_color = form.color.data
-            usr.car_brand = form.brand.data
-            usr.car_plate = form.plate.data
-            db.session.commit()
+            if (len(form.color.data) > 64 or
+                    len(form.brand.data) > 64 or
+                    len(form.plate.data) > 32):
+                flash(_("Car data field exceeds character limit"))
+            else:
+                usr.car_color = form.color.data
+                usr.car_brand = form.brand.data
+                usr.car_plate = form.plate.data
+                db.session.commit()
 
             flash(_("Car settings updated!"))
 
@@ -99,4 +117,3 @@ def delete(id):
     else:
         flash(_("You can only delete your own account"))
     return redirect(url_for("main.index"))
-

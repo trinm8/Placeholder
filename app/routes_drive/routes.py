@@ -10,6 +10,8 @@ from sqlalchemy import Date, cast
 
 from geopy import Nominatim
 from geopy.exc import GeocoderTimedOut
+from sympy.geometry import *
+from math import cos, sin
 from datetime import datetime  # Todo: Datetime
 from time import sleep
 from datetime import datetime, date  # Todo: Datetime
@@ -21,7 +23,7 @@ def createRoute(form, departurelocation, arrivallocation):
     creator = User.query.filter_by(id=current_user.get_id()).first()
     creatorname = creator.username
     # Driver id is None wanneer de creator geen driver is zodat er later een driver zich kan aanbieden voor de route
-    if form.type.data == 'Driver': # TODO: does this work with translation?
+    if form.type.data == 'Driver':  # TODO: does this work with translation?
         driverid = creator.id
     else:
         driverid = None
@@ -30,12 +32,13 @@ def createRoute(form, departurelocation, arrivallocation):
     # arrival_location_lat = uniform(49.536612, 51.464020)
     # arrival_location_long = uniform(2.634966, 6.115877)
     d = form.date.data
+
     route = Route(  # creator=creatorname,
         departure_location_lat=departurelocation.latitude,
         departure_location_long=departurelocation.longitude, arrival_location_lat=arrivallocation.latitude,
         arrival_location_long=arrivallocation.longitude, driver_id=driverid, departure_time=d,
         departure_location_string=form.start.data, arrival_location_string=form.destination.data,
-        playlist=form.playlist.data, passenger_places=form.places.data)
+        playlist=form.playlist.data, passenger_places=form.places.data, maximum_deviation=15)
     db.session.add(route)
     db.session.commit()
 
@@ -92,7 +95,7 @@ def addRoute():
         if arrival_location is None:
             flash(_("The destination address is invalid"))
             return render_template('routes/addRoute.html', title='New Route', form=form)
-        if form.type.data == 'Passenger': # TODO: does this work with translation
+        if form.type.data == 'Passenger':  # TODO: does this work with translation
             return redirect(
                 url_for("routes_drive.overview", lat_from=departure_location.latitude,
                         long_from=departure_location.longitude,
@@ -100,6 +103,18 @@ def addRoute():
 
         if form.date.data < datetime.now():  # TODO datetime
             flash(_("Date is invalid"))
+            return render_template('routes/addRoute.html', title='New Route', form=form)
+        if len(form.start.data) > 256:
+            flash(_("Start data exceeds character limit"))
+            return render_template('routes/addRoute.html', title='New Route', form=form)
+        if len(form.destination.data) > 256:
+            flash(_("Destination data exceeds character limit"))
+            return render_template('routes/addRoute.html', title='New Route', form=form)
+        if len(form.playlist.data) > 32:
+            flash(_("Playlist data exceeds character limit"))
+            return render_template('routes/addRoute.html', title='New Route', form=form)
+        if not form.places.data.isdigit():
+            flash(_("Passenger places must be a number!"))
             return render_template('routes/addRoute.html', title='New Route', form=form)
         createRoute(form, departure_location, arrival_location)
         flash(_('New route added'))
@@ -214,6 +229,24 @@ def passenger_request(drive_id, user_id):
     return render_template('routes/route_request.html', form=form, user=user, trip=trip, title='Route Request')
 
 
+# Returns a score based on music preference of user u and v
+def compareMusicPrefs(u: User, v: User) -> int:
+    score = 0
+
+    # Search for matching genres
+    # Increase for both like (and)
+    # Decease for one like one dislike (xor)
+    for up in u.musicpref:
+        for vp in v.musicpref:
+            if up.genre == vp.genre:
+                if up.likes and vp.likes:
+                    score += 1
+                if up.likes != vp.likes:
+                    score -= 1
+
+    return score
+
+
 @bp.route("/overview", methods=["GET", "POST"])
 def overview():
     form = RouteSearchForm(request.form)
@@ -266,6 +299,8 @@ def overview():
     arrival_location = (lat_to, long_to)
 
     routes = filter_routes(allowed_distance, arrival_location, departure_location, time)
+    # TODO: find a way to toggle the below line
+    # routes = sorted(routes, key=lambda x:  compareMusicPrefs(current_user, User.query.get(x.driver_id)), reverse=True)
 
     return render_template('routes/search_results.html', routes=routes, title="Search", src=addr(lat_from, long_from),
                            dest=addr(lat_to, long_to), form=form)
@@ -277,13 +312,32 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
     routes = []
     from geopy import distance  # No idea why this include won't work when placed outside this function
     # allowed_distance = 2
+    pickupPoint = Point(toCartesian(*departure_location))
+    dropoffPoint = Point(toCartesian(*arrival_location))
     for route in same_day_routes:
         route_dep = (route.departure_location_lat, route.departure_location_long)
         route_arr = (route.arrival_location_lat, route.arrival_location_long)
-        if distance.distance(route_dep, departure_location).km <= allowed_distance and \
-                distance.distance(route_arr, arrival_location).km <= allowed_distance:
+        routeLineSegment = Line(Point(toCartesian(*route_dep)), Point(toCartesian(*route_arr)))
+
+        if route.maximum_deviation is None:
+            route.maximum_deviation = 15
+
+        if routeLineSegment.distance(pickupPoint) < route.maximum_deviation * 100 and \
+                routeLineSegment.distance(dropoffPoint) < allowed_distance * 100:
             routes.append(route)
+
+        # if distance.distance(route_dep, departure_location).km <= allowed_distance and \
+        #         distance.distance(route_arr, arrival_location).km <= allowed_distance:
+        #     routes.append(route)
     return routes
+
+
+def toCartesian(lat, lng):
+    x = 6371 * cos(float(lat)) * cos(float(lng))
+    y = 6371 * cos(float(lat)) * sin(float(lng))
+    z = 6371 * sin(float(lat))
+
+    return x, y, z
 
 
 @bp.route('/history', methods=['GET'])
@@ -339,6 +393,9 @@ def editRoute(id):
         time = None
         geolocator = Nominatim(user_agent="[PlaceHolder]")
         if form.start.data and form.start.data != "":
+            if len(form.start.data) > 256:
+                flash(_("Start data exceeds character limit"))
+                return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
             departure_location = geolocator.geocode(form.start.data)
             if departure_location is None:
                 flash(_("The Start address is invalid"))
@@ -347,6 +404,9 @@ def editRoute(id):
             trip.arrival_location_string = form.start.data
             db.session.commit()
         if form.destination.data and form.destination.data != "":
+            if len(form.destination.data) > 256:
+                flash(_("Destination data exceeds character limit"))
+                return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
             arrival_location = geolocator.geocode(form.destination.data)
             trip = Route.query.get_or_404(id)
             trip.arrival_location_string = form.destination.data
@@ -359,6 +419,12 @@ def editRoute(id):
                 flash("Date is invalid")
                 return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
             time = form.date.data
+        if not form.places.data.isdigit():
+            flash(_("Passenger places must be a number"))
+            return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
+        if len(form.playlist.data) > 32:
+            flash(_("Playlist data exceeds character limit"))
+            return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
         edit_route(id, departure_location, arrival_location, time, form.places.data, form.playlist.data)
         flash(_('Your changes have been updated'))
         return redirect(url_for('routes_drive.drive', drive_id=id))

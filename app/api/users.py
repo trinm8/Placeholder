@@ -12,6 +12,14 @@ def register_user():
     data = request.get_json() or {}
     if "username" not in data or "password" not in data or "firstname" not in data or "lastname" not in data:
         return bad_request("Must include username, password, firstname and lastname")
+    if len(data["username"]) > 64:
+        return bad_request("Username cannot exceed 64 characters")
+    if "firstname" in data:
+        if len(data["firstname"]) > 64:
+            return bad_request("First name cannot exceed 64 characters")
+    if "lastname" in data:
+        if len(data["lastname"]) > 64:
+            return bad_request("Last name cannot exceed 64 characters")
     user_id = register_user_func(data["username"], data["firstname"], data["lastname"], data["password"])
     if not user_id:
         return bad_request("User couldn't be created. The name is probably already taken.")

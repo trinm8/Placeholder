@@ -224,6 +224,7 @@ class Route(db.Model):
     arrival_location_string = db.Column(db.String(256))
     driver_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
     passenger_places = db.Column(db.Integer)
+    maximum_deviation = db.Column(db.FLOAT(precision=3))
 
     playlist = db.Column(db.String(32))  # Should be the spotify playlist id
 
@@ -255,6 +256,7 @@ class Route(db.Model):
         if "arrive-by" in data:
             # src: https://stackoverflow.com/questions/969285/how-do-i-translate-an-iso-8601-datetime-string-into-a-python-datetime-object
             self.departure_time = dateutil.parser.parse(data["arrive-by"])
+        self.maximum_deviation = 15
 
     def text_from(self):
         if self.departure_location_string:
