@@ -1,0 +1,150 @@
+\documentclass{article}
+
+
+\usepackage[urlcolor=blue, linkcolor=black, colorlinks=true]{hyperref}
+\usepackage[dutch]{babel}
+\usepackage{minutes}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\makeatletter
+\addto\extrasdutch{%
+\def\min@textTask{Taak}%
+}
+\makeatother%
+\makeatletter
+\def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+
+
+
+\newcounter{team}
+
+% TODO: Enter team number here:
+\setcounter{team}{6}
+
+
+\begin{document}
+%	\tableofcontents
+
+	\begin{Minutes}{Programming Project Databases \\ Wekelijks Verslag Team \arabic{team}}
+		\moderation{Arno Deceuninck}
+		\minutetaker{Arno Deceuninck}
+		\participant{Arno Deceuninck, Sam Peeters, Sien Nuyens, Tim Sanders}
+		\missingNoExcuse{/}
+		\missingExcused{/}
+%		\guest{\ldots}
+		\minutesdate{22 April 2020}
+		\starttime{9u55}
+		\endtime{10u15}
+
+		\maketitle
+
+        \topic{Coordinator Vergadering}
+            \begin{itemize}
+                \item Data generatie script: Team 1 en Team 6 kunnen data requests runnen. De rest nog niet. Het script staat online: ieder team kan da zelf runnen en aanpassen zodat het volgens hun API kan werken. Uitleg staat vooral in de readme, bij andere vragen kan je best Joey contacteren.
+                \item Examens: Via een online call? Een video opnemen? Voordelen video: Kan handig zijn om een project te laten zien voor een studentenjob ofzo. Online call: Meer interactie en er moeten toch vragen gesteld worden. Het is met een online call, maar je kan kiezen of je daarin met een presentatie of video of eender hoe je het wil presenteren werkt.
+                \item Evaluatie: Straks komt hij in Discord langs per groep voor de evaluatie te bespreken. Dit staat niet meer op punten.
+                \item Evaluatie vak: Positief. Vooral API zou iedereen wat anders aanpakken, maar dat verschilt van persoon tot persoon.
+                \item Varia: Laten problemen indien problemen met GCP budget. Arno 2: Hadden al veel uitbereidingen gemaakt, zoeken nu nog extra uitbereidingen. Ewout: Geen problemen met credits, nog niet door eerste account. Maxim: ook nog maar crediet op 1 account erdoor. Google cloud heeft ook app engine ipv compute engine. App engine zet zich vanzelf uit. Reden waarom dit niet gebruikt wordt is omdat we zelf ook moeten leren hoe we de server moeten opzetten en niet gewoon leren werken met Google zijn producten.
+            \end{itemize}
+
+        \topic{Feedback}
+            \begin{itemize}
+                \item Algemene opmerkingen: Niet heel te vreden met verslag: Vooral oplijsting, weinig details, moeilijk om informatie uit te halen. Oppassen met dingen die we vanzelfsprekend vinden $\rightarrow$ zorgen dat er geen twijfel is: paragrafen, introductie, zorg voor structuur en overzicht in het verslag. Vergadering template: best een apart template gebruiken voor het verslag.
+                \item Autocomplete niet mogelijk met Nominatim, genoeg andere services die het wel gratis aanbieden. Best eens een kijkje naar nemen dus.
+                \item Meer rekening houden met verslag van heel het project, ipv gewoon een weekverslag of een opsomming. Het rapport is uiteindelijk wat gebruikt word om te zien wat we gedaan hebben.
+                \item Links naar API zien te vermijden. Best screenshots ofzo erin zetten, zodat we niet na de deadline zelf er nog aan kunnen werken.
+                \item ER-Diagram vrij beperkt: bv. Route request: wat is de database, rechts twee pijlen, fouten in het ER-Diagram zelf. User tabel te groot. Best auto en authenticatie apart houden. Verklaren waarom we bepaalde dingen in de database doen. Bij de route gebruiken gewoon float. Filteren in Python gebruikt best op database niveau (m.b.v. Postgis), anders kan het veel te zwaar worden om te processen als je heel veel routes hebt.
+                \item Zorg dat ons muziek ding goed is uitgewerkt. Exacte match moet niet, rekening houden met aantal overeenkomstige matches.
+                \item Gewichten van getallen staan beschrijven in tabel in eerste opdracht. We krijgen enkel het eindresultaat.
+                \item Meer focus leggen op muzieksmaak.
+            \end{itemize}
+
+		\topic{Status}
+
+			\subtopic{Overzicht Taken}
+    			   \task*[PARTIALLY DONE]{Tim zorgt voor tussenstops}
+			   \task*[DONE] {Tim zorgt voor adresstrings bij de API en voor de routes waarvoor er nog geen zijn.}
+			   \task*[WIP] {Sam kijkt naar sorteren op overeenkomstige muziekkeuzes}
+			   \task*[DONE] {Sam neemt een kijkje naar music preferences op account page}
+			   \task*[TODO] {Sien neemt een kijkje naar waarom je maar 1 route ziet op de homepage}
+			   \task*[DONE] {Arno zorgt voor localization}
+			   \task*[WIP] {Sien voegt playlist and music preferences toe aan API}
+			   \task*[DONE]{Sam zorgt voor constraints bij alle inputvelden in de GUI en de API}
+
+		\topic{Besproken Onderwerpen}
+		       \subtopic{Tussenstops}
+		            Zijn toegevoegd, de passengers moeten dicht genoeg bij de rechte van twee punten liggen om mee te kunnen rijden. Passenger kan instellen hoe ver hij van zijn afzetpunt ligt en driver kan instellen hoeveel hij kan afwijken van zijn route. Best aparte tab in route overview page om de tussenstops in een bepaalde volgorde al te sugereren. Momenteel wordt adres van passenger nog niet bijgehouden. Best aparte tabel voor passengers met hun tussenstops.
+		      \subtopic{Adresstrings}
+		            In de from dict wordt de string opgeslagen. Als er een adres wordt opgevraagd waarvan er nog geen string is, wordt dit automatisch opgevraagd.
+
+		      \subtopic{Sorteren overeenkomstige music preferences}
+		            Functie al geschreven die van 2 users de muziekkeuzes kan vergelijken. Er bestaat al een sorteerfunctie. Wordt nog niet gebruikt in zoekfunctie.
+
+		      \subtopic{Music preferences account page}
+		            Easy fix. Er stond current\_user ipv user. Your account is ook veranderd naar de echte naam van de user.
+
+		      \subtopic{1 route op homepage}
+		            Geen idee, werkt lokaal wel. Tim heeft gisteren wel iets vreemd gevonden. Bij Tim werkt het soms wel, soms niet. Sam had er ook problemen mee.
+
+		      \subtopic{Localization}
+		            Echt cringy Nederlands. Gebruikt de taal van de browser. Misschien best taal preference als een cookie gaan bijhouden, aangezien veel termen in het Nederlands echt niet klinken. Alle strings moeten de functie \_(str) gebruiken, \_l(str) moet gebruikt worden bij alle strings in de code die geladen worden voor het request (voor alle forms dus voornamelijk). Ook in de Jinja pages moet die functie gebruikt worden.
+
+				\subtopic{Music preferences API}
+				    Ze denkt dat het gelukt is, maar de tests werken nog altijd niet bij haar omdat psycopg2 niet geinstalleerd geraakt. Ondertussen werkt het via teminal. De testen die Sien had geschreven falen nog wel.
+
+				\subtopic{Constraints inputvelden}
+				    Hij heeft het toegevoegd waar hij dacht dat het nodig was. Grotendeels zijn dit gewoon lengtetests om te zien of het in de database past. Bovendien gebeuren er ook testen of een nummer, weldegelijk een nummer is. Moest je nog plaatsen vinden waar constraint testen nodig zijn, laat het dan weten.
+
+				\subtopic{Route tussenstop search}
+				    Resultaten filteren op tijd en eindpunt, en dan zijn er niet te veel resultaten meer voor Python om het te processen.
+
+				\subtopic{GUI tests}
+				    Enkel als een heel harde optional.
+
+ 		\topic{Afspraken \& Planning}
+
+			\begin{itemize}
+			   \item Tim zorgt voor tussenstops
+			   \item Sam werkt verder aan de sortering van de search results
+			   \item Sien werkt verder aan de API tests
+			   \item Arno voegt een optie toe om je taal te selecteren
+			   \item Arno regelt kalender integratie
+			   \item Arno splitst user tabel op in database
+			   \item Tim zorgt voor review structuur in Database
+			   \item Sien voegt reviews overzicht en toevoeg optie toe aan GUI, nog niet gekoppeld aan de database
+			   \item Sam zorgt bij de zoekresultaten ervoor dat bij de request naar onze databse, ook gegevens worden opgevraagd uit de database van Team 3 (via hun API), en zorgt ervoor dat deze mee in onze search resultaten komen (wel achteraan, aangezien zij geen muziek preferences gespecifieerd hebben)
+			\end{itemize}
+
+
+		\topic{Varia}
+			\emph{Eventuele varia punten. Hierbij vragen we ook aan alle aanwezigen of zij nog iets te zeggen hebben.}
+				\subtopic{Sien}
+				    Nee.
+				\subtopic{Sam}
+				    Doe push to talk weg \#freePPDB2019-2020
+				\subtopic{Tim}
+				    Ik vond die push to talk ook irritant.
+				\subtopic{Arno}
+				    Probeer alles op tijd af te krijgen, alles komt nu dichter bij de examens en als je een feature niet afkrijgt, moet je dit de week erna afmaken, en krijg je er alsnog een nieuwe bij, dus dan stapelt alles gewoon op.
+
+
+		\blfootnote{
+			\href{%
+				mailto:joey.depauw@uantwerpen.be%
+				?subject=PPDB 2019-2020: Wekelijks Verslag Team \arabic{team}%
+				&body=Liefste Joey\%0D\%0A%
+				\%0D\%0A%
+				Gelieve ons wekelijks verslag terug te vinden in de bijlage.\%0D\%0A%
+				\%0D\%0A%
+				Groetjes\%0D\%0A%
+				Team \arabic{team}\%0D\%0A%
+			}{Klik hier} om mij op te sturen.
+		}
+
+
+	\end{Minutes}
+\end{document}
