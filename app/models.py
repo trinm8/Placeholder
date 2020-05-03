@@ -34,17 +34,17 @@ def get_from_dict(dictionary, *args):
 
 def addr(lat, long):
     geolocator = Nominatim(user_agent="[PlaceHolder]")
-    print("query")
+    # print("query")
     try:
         sleep(1.1)
         location = geolocator.reverse(str(lat) + ", " + str(long))
         # sleep for 1 sec (required by Nominatim usage policy)
     except GeocoderTimedOut:
-        print("Geocoder timed out")
+        # print("Geocoder timed out")
         return _("Geocoder timed out")
     except GeocoderQueryError:
         return "Geocoder errored on query"
-    print("succesfull")
+    # print("succesfull")
 
     addr_dict = location.raw["address"]
 
