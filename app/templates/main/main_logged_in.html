@@ -96,7 +96,7 @@
                                 {% else %}
                                     {% for passenger in passengers %}
                                         <i class="fas fa-user"></i>
-                                        <a href="{{ url_for('users.user_page', username=passenger.id) }}"> {{ passenger.name() }} </a>
+                                        <a href="{{ url_for('users.user_page', id=passenger.id) }}"> {{ passenger.name() }} </a>
                                         <br>
                                     {% endfor %}
                                 {% endif %}
