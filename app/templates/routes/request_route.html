@@ -99,7 +99,7 @@
                             <a class="button is-primary" href="{{ url_for('routes_drive.editRoute', id=trip.id) }}">{{ _("Edit") }}</a>
                             <a class="button is-danger" href="{{ url_for('routes_drive.delete', id=trip.id) }}">{{ _("Delete") }}</a>
                     {% endif %}
-                            <a class="button" href="{{ trip.google_calendar_link() }}">{{ _("Add to calendar") }}</a>
+                            <a class="button" href="{{ trip.google_calendar_link() }}" target="_blank">{{ _("Add to calendar") }}</a>
                         </div>
                 </div>
             </form>
