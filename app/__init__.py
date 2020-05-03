@@ -56,6 +56,7 @@ def register_blueprints(application):
 def get_locale():
     # return "nl"
     language = request.cookies.get('language')
+    print("Language cookie: {}".format(str(language)))
     if language:
         return language
     else:
