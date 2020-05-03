@@ -55,7 +55,11 @@ def register_blueprints(application):
 @babel.localeselector
 def get_locale():
     # return "nl"
-    return request.accept_languages.best_match(current_app.config['LANGUAGES'])
+    language = request.cookies.get('language')
+    if language:
+        return language
+    else:
+        return request.accept_languages.best_match(current_app.config['LANGUAGES'])
 
 def init_modules(app):
     babel.init_app(app)

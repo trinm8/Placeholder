@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    {% block metadata %}{%endblock%}
+    {% block metadata %}{% endblock %}
 
     <link rel="icon" href="/static/wheel.png">
     {% if title %}
@@ -16,9 +16,15 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
 
-<!--    Javascript for deleting notifications-->
+    <!--    Javascript for deleting notifications-->
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-    <script>document.addEventListener('DOMContentLoaded', () => {
+
+    <script>function language_cookie(language) {
+        document.cookie = "language=" + language;
+        location.reload();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
         (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
             $notification = $delete.parentNode;
 
@@ -28,33 +34,33 @@
         });
     });</script>
 
-<!--    Javascript for the burger menu-->
+    <!--    Javascript for the burger menu-->
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', () => {
 
-      // Get all "navbar-burger" elements
-      const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+            // Get all "navbar-burger" elements
+            const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
 
-      // Check if there are any navbar burgers
-      if ($navbarBurgers.length > 0) {
+            // Check if there are any navbar burgers
+            if ($navbarBurgers.length > 0) {
 
-        // Add a click event on each of them
-        $navbarBurgers.forEach( el => {
-          el.addEventListener('click', () => {
+                // Add a click event on each of them
+                $navbarBurgers.forEach(el => {
+                    el.addEventListener('click', () => {
 
-            // Get the target from the "data-target" attribute
-            const target = el.dataset.target;
-            const $target = document.getElementById(target);
+                        // Get the target from the "data-target" attribute
+                        const target = el.dataset.target;
+                        const $target = document.getElementById(target);
 
-            // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-            el.classList.toggle('is-active');
-            $target.classList.toggle('is-active');
+                        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+                        el.classList.toggle('is-active');
+                        $target.classList.toggle('is-active');
 
-          });
+                    });
+                });
+            }
+
         });
-      }
-
-    });
     </script>
 
     {% block imports %}{% endblock %}
@@ -129,60 +135,85 @@
             <div class="navbar-item">
                 <div class="buttons">
                     {% if current_user.is_anonymous %}
-                    <a class="button is-primary" href="{{ url_for('auth.register') }}">
-                        <strong>{{ _("Sign up")}}</strong>
-                    </a>
-                    <a class="button is-light" href="{{ url_for('auth.login') }}">
-                        {{ _("Login") }}
-                    </a>
+                        <a class="button is-primary" href="{{ url_for('auth.register') }}">
+                            <strong>{{ _("Sign up") }}</strong>
+                        </a>
+                        <a class="button is-light" href="{{ url_for('auth.login') }}">
+                            {{ _("Login") }}
+                        </a>
                     {% else %}
-                    <!--a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
+                        <!--a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
                         <span>Notifications</span>
                         <span class="icon">
                             <i class="far fa-bell"></i>
                         </span>
                     </a-->
 
-                   <div class="navbar-item has-dropdown is-hoverable">
-                       <a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
                            <span class="icon">
                                <i class="far fa-bell"></i>
                            </span>
 
-                           <span class="tag is-info is-light">{{ current_user.getNotifications()|length -1 }}</span>
+                                <span class="tag is-info is-light">{{ current_user.getNotifications()|length -1 }}</span>
 
-                       </a>
-                       <div class="navbar-dropdown is-boxed">
-                           {% for notification in current_user.getNotifications() %}
-                           {% if notification == _("No routes planned in the future") %}
-                                 <a class="navbar-item">
-                                    {{ notification }}
-                                 </a>
-                           {% else %}
-                                {% if notification == current_user.getNotifications()[0] %}
-                                <a class="navbar-item" href="{{ url_for('routes_drive.drive',  drive_id=notification.id) }}">
-                                    {{ _("Next route:")}} {{ notification.departure_time }} <!-- .isoformat() }} TODO: when is a date stored as a string? -->
-                                </a>
-                                {% else %}
-                                 <a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
-                                    {{ notification }}
-                                </a>
-                                {% endif %}
-                           {% endif %}
-                           {% endfor %}
-                       </div>
-                   </div>
+                            </a>
+                            <div class="navbar-dropdown is-boxed">
+                                {% for notification in current_user.getNotifications() %}
+                                    {% if notification == _("No routes planned in the future") %}
+                                        <a class="navbar-item">
+                                            {{ notification }}
+                                        </a>
+                                    {% else %}
+                                        {% if notification == current_user.getNotifications()[0] %}
+                                            <a class="navbar-item"
+                                               href="{{ url_for('routes_drive.drive',  drive_id=notification.id) }}">
+                                                {{ _("Next route:") }} {{ notification.departure_time }}
+                                                <!-- .isoformat() }} TODO: when is a date stored as a string? -->
+                                            </a>
+                                        {% else %}
+                                            <a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
+                                                {{ notification }}
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
 
-                    <a class="navbar-item" href="{{ url_for('users.account_settings') }}">
-                        {{ _("Settings") }}
-                    </a>
-                    <a class="navbar-item" href="{{ url_for('users.user_page', username=current_user.username) }}">
-                        {{ current_user.firstname }} {{ current_user.lastname }}
-                        <img hspace="10" src="{{ current_user.avatar(128) }}">
-                    </a>
-                    <a class="button is-light" href="{{ url_for('auth.logout') }}">
-                        {{ _("Logout") }}
-                    </a>
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-item">
+                           <span class="icon">
+                               <i class="fas fa-globe-americas"></i>
+                           </span>
+
+                            </a>
+
+                            <div class="navbar-dropdown is-boxed">
+                                {% for language in config['LANGUAGES'] %}
+                                    {% if language == config['LANGUAGES'][0] %}
+                                        <a class="navbar-item" onclick="language_cookie('{{ language }}');"> {{ language }} </a>
+                                    {% else %}
+                                        <a class="navbar-item" onclick="language_cookie('{{ language }}');"> {{ language }} </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <a class="navbar-item" href="{{ url_for('users.account_settings') }}">
+{#                            {{ _("Settings") }}#}
+                                <span class="icon">
+                               <i class="fas fa-cog"></i>
+                           </span>
+                        </a>
+
+                        <a class="navbar-item" href="{{ url_for('users.user_page', username=current_user.username) }}">
+                            {{ current_user.firstname }} {{ current_user.lastname }}
+                            <img hspace="10" src="{{ current_user.avatar(128) }}">
+                        </a>
+                        <a class="button is-light" href="{{ url_for('auth.logout') }}">
+                            {{ _("Logout") }}
+                        </a>
                     {% endif %}
                 </div>
             </div>
@@ -193,14 +224,14 @@
 <main class="Site-content">
 
     {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    {% for message in messages %}
-    <div class="notification">
-        <button class="delete"></button>
-        {{ message }}
-    </div>
-    {% endfor %}
-    {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="notification">
+                    <button class="delete"></button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
     {% endwith %}
 
     {% block body %}{% endblock %}
@@ -209,7 +240,8 @@
 <footer class="footer">
     <div class="contW.I.P.ent has-text-centered">
         <p>
-            <strong>[PlaceHolder]</strong> {{ _("by") }} Arno Deceuninck, Sam Peeters, Sien Nuyens {{_("and")}} Tim Sanders.
+            <strong>[PlaceHolder]</strong> {{ _("by") }} Arno Deceuninck, Sam Peeters, Sien Nuyens {{ _("and") }} Tim
+            Sanders.
         </p>
     </div>
 </footer>
