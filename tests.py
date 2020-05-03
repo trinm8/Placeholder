@@ -225,29 +225,37 @@ class RouteTest(BaseCase):
         token = response.json.get("token")
         authorization = "Bearer {token}".format(token=token)
 
-        # Rendierstraat 1 -> Hilda Ramstraat 39 (not close enough)
-        response = self.help_add_route([51.17378, 4.42141], [51.18852, 4.42173], 3, "2020-02-12T10:00:00.00",
+        # 109012, Москва, Красная площадь, 7, Китай-Город Москва Россия -> Hilda Ramstraat 39 (not close enough)
+        response = self.help_add_route([55.752465, 37.623040], [51.18852, 4.42173], 3, "2021-02-12T10:00:00.00",
                                        authorization)
         drive_id1 = response.json.get("id")
 
         # Bartstraat 26 -> Hilda Ramstraat 39 (what we're searching for)
-        response = self.help_add_route([51.13731, 4.60960], [51.18852, 4.42173], 3, "2020-02-12T10:00:00.00",
+        response = self.help_add_route([51.13731, 4.60960], [51.18852, 4.42173], 3, "2021-02-12T10:00:00.00",
                                        authorization)
         drive_id2 = response.json.get("id")
 
-        # Bartstraat 26 -> Hilda Ramstraat 39 (other date)
-        response = self.help_add_route([51.13731, 4.60960], [51.18852, 4.42173], 3, "2020-02-13T10:00:00.00",
+        # Marnixdreef (Lier) 51.137939, 4.594519 -> zijstraat van Hilda Ram (what we also want)
+        response = self.help_add_route([51.13731, 4.60960], [51.188626, 4.421392], 3, "2021-02-12T10:00:00.00",
                                        authorization)
         drive_id3 = response.json.get("id")
 
+        # Bartstraat 26 -> Hilda Ramstraat 39 (other date)
+        response = self.help_add_route([51.13731, 4.60960], [51.18852, 4.42173], 3, "2021-02-13T10:00:00.00",
+                                       authorization)
+        drive_id4 = response.json.get("id")
+
         # -------------- ACTUAL TEST ----------------
-        data = {"from": "{lat}, {long}".format(lat=51.13731, long=4.60960), "to": "{lat}, {long}".format(lat=51.18852, long=4.42173), "arrive-by": "2020-02-12T10:00:00.00", "limit": 3}
+        data = {"from": "{lat}, {long}".format(lat=51.13731, long=4.60960), "to": "{lat}, {long}".format(lat=51.18852, long=4.42173), "arrive-by": "2021-02-12T10:00:00.00", "limit": 3}
         response = self.client.get('/api/drives/search'.format(id=id),
                                    headers={"Content-Type": "application/json", "Authorization": authorization}, query_string=data)
 
         routes = response.json
-        self.assertEqual(1, len(routes))
+        self.assertEqual(2, len(routes))
+
+        # Deze 2 kunnen ook omgewisseld zijn
         self.assertEqual(drive_id2, routes[0].get("id"))
+        self.assertEqual(drive_id3, routes[1].get("id"))
 
 class RequestTest(BaseCase):
 
