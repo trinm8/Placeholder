@@ -20,7 +20,7 @@ def lol():
         db.session.add(counter)
     counter.rickroll_counter += 1
     db.session.commit()
-    return redirect("https://www.youtube.com/watch?v=cvh0nX08nRw")
+    return redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
 
 
 
