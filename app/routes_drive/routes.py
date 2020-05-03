@@ -113,7 +113,7 @@ def addRoute():
         if len(form.playlist.data) > 32:
             flash(_("Playlist data exceeds character limit"))
             return render_template('routes/addRoute.html', title='New Route', form=form)
-        if not form.places.data.isdigit():
+        if not str(form.places.data).isdigit():
             flash(_("Passenger places must be a number!"))
             return render_template('routes/addRoute.html', title='New Route', form=form)
         createRoute(form, departure_location, arrival_location)

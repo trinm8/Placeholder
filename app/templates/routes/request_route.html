@@ -86,21 +86,21 @@
                         </div>
                     </div>
                     <br><br>
-                    {% if not isdriver %}
+
                         <div class="buttons">
+                    {% if not isdriver %}
                             {% if requested %}
-                                <button class="button is-primary" href="{{ url_for('routes_drive.cancel_request', drive_id=trip.id) }}">
-                                    {{ _("Cancel request")}}</button>
+                                <a class="button is-primary" href="{{ url_for('routes_drive.cancel_request', drive_id=trip.id) }}">
+                                    {{ _("Cancel request")}}</a>
                             {% else %}
                                 {{ form.submit(class="button is-primary") }}
                             {% endif %}
-                        </div>
                     {% else %}
-                        <div class="buttons">
                             <a class="button is-primary" href="{{ url_for('routes_drive.editRoute', id=trip.id) }}">{{ _("Edit") }}</a>
                             <a class="button is-danger" href="{{ url_for('routes_drive.delete', id=trip.id) }}">{{ _("Delete") }}</a>
-                        </div>
                     {% endif %}
+                            <a class="button" href="{{ trip.google_calendar_link() }}">{{ _("Add to calendar") }}</a>
+                        </div>
                 </div>
             </form>
         </div>

@@ -3,7 +3,7 @@ from geopy.exc import GeocoderQueryError
 
 from app import db, login
 
-from flask import current_app
+from flask import current_app, url_for
 from flask_login import UserMixin
 
 from flask_babel import _
@@ -15,6 +15,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from time import time, sleep
 from datetime import datetime, timedelta
 import dateutil.parser
+
+from urllib.parse import quote
 
 import enum
 import base64
@@ -36,7 +38,7 @@ def addr(lat, long):
     try:
         sleep(1.1)
         location = geolocator.reverse(str(lat) + ", " + str(long))
-          # sleep for 1 sec (required by Nominatim usage policy)
+        # sleep for 1 sec (required by Nominatim usage policy)
     except GeocoderTimedOut:
         print("Geocoder timed out")
         return _("Geocoder timed out")
@@ -91,12 +93,6 @@ class User(UserMixin, db.Model):
     car_color = db.Column(db.String(64), index=True)
     car_brand = db.Column(db.String(64), index=True)
     car_plate = db.Column(db.String(32), index=True, unique=True)
-
-    # # Authentication tokens
-    # # TODO: I changed this from 32 to 64, but it didn't get updated with flask db migrate,
-    # #  Drop and add table again to do this probably
-    # token = db.Column(db.String(64), unique=True)
-    # token_expiration = db.Column(db.DateTime)
 
     def to_dict(self):
         data = {
@@ -185,7 +181,7 @@ class User(UserMixin, db.Model):
         routes = routes_driver.union(routes_passenger)
         # future_routes = routes.filter(Route.departure_time >= current_time).all()
         future_routes_unsort = routes.filter(Route.departure_time > current_time).all()
-        #ORDER BY
+        # ORDER BY
         future_routes = []
         if future_routes_unsort:
             future_routes.append(future_routes_unsort[0])
@@ -200,14 +196,13 @@ class User(UserMixin, db.Model):
 
         notifications = []
         if (len(future_routes) > 0):
-            #f = "Next route: " + future_routes[0].departure_time.isoformat() + "\n" + future_routes[0].text_to()
+            # f = "Next route: " + future_routes[0].departure_time.isoformat() + "\n" + future_routes[0].text_to()
             notifications.append(future_routes[0])
         else:
             notifications.append("No routes planned in the future")
 
         for request in requests:
             notifications.append(request)
-
 
         return notifications
 
@@ -264,7 +259,7 @@ class Route(db.Model):
         else:
             self.departure_location_string = addr(self.departure_location_lat, self.departure_location_long)
             return self.departure_location_string
-        #return addr(self.departure_location_lat, self.departure_location_long)
+        # return addr(self.departure_location_lat, self.departure_location_long)
 
     def text_to(self):
         if self.arrival_location_string:
@@ -272,7 +267,7 @@ class Route(db.Model):
         else:
             self.arrival_location_string = addr(self.arrival_location_lat, self.arrival_location_long)
             return self.arrival_location_string
-        #return addr(self.arrival_location_lat, self.arrival_location_long)
+        # return addr(self.arrival_location_lat, self.arrival_location_long)
 
     def driver(self):
         return User.query.get(self.driver_id)
@@ -280,7 +275,7 @@ class Route(db.Model):
     def places_left(self):
         try:
             current_passengers = self.passengers()
-            return self.passenger_places-len(current_passengers)
+            return self.passenger_places - len(current_passengers)
         except:
             return 0
 
@@ -292,6 +287,34 @@ class Route(db.Model):
         for passenger in passengers:
             passenger_ids.append(passenger.user_id)
         return passenger_ids
+
+    def google_calendar_link(self):
+        start_time = self.departure_time.isoformat() # "20180512T230000Z"
+        end_time = (self.departure_time + timedelta(hours=1)).isoformat()
+
+        # Remove the '-' and ':' from the time
+        translation_table = dict.fromkeys(map(ord, '-:'), None) # We want to replace the '-' and ':' with Nothing)
+        start_time = start_time.translate(translation_table)
+        end_time = end_time.translate(translation_table)
+
+        base_url = "https://calendar.google.com/calendar/r/eventedit"
+
+        description = "Your trip from {from_} to {to_}. For details, link here: {route_url}" \
+            .format(from_=self.text_from(),
+                    to_=self.text_to(),
+                    route_url=url_for('routes_drive.drive', drive_id=self.id, _external=True))
+
+        parameters = "?text={event_name}&dates={start_time}/{end_time}&details={description}&location={location}"
+
+        parameters = parameters.format(event_name="[PlaceHolder] Trip",
+                                       start_time=start_time,
+                                       end_time=end_time,
+                                       description=quote(description),
+                                       location=quote(self.text_from()))
+        # quote encodes the special characters in a string to e.g. %20
+
+        return base_url + parameters
+
 
 class RequestStatus(enum.Enum):
     pending = 1
