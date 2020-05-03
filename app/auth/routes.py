@@ -35,7 +35,7 @@ def logout():
 
 def register_user_func(username: str, firstname: str, lastname: str, password: str) -> int:
     # TODO: prevent duplicate code
-    user = User.query.filter_by(username=username).first()
+    user = UserAuthentication.query.filter_by(username=username).first()
     if user is not None:
         # flash("There is already an user with this username. Please choose another one.")
         return 0
