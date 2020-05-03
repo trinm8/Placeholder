@@ -3,22 +3,22 @@ from flask_login import current_user, logout_user, login_user, login_required
 from flask import url_for, redirect, flash, request, render_template
 from werkzeug.urls import url_parse
 from app.auth.forms import LoginForm, RegistrationForm, ForgotPassword, ResetPasswordForm
-from app.models import User
+from app.models import User, UserAuthentication
 from app import db
 from app.auth.emails import send_password_reset_email
 from flask_babel import _
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated:
+    if current_user.is_authenticated: # Current user must be from authentication since the new update
         return redirect(url_for('main.index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        user = UserAuthentication.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
             flash(_('Invalid username or password'))
             return redirect(url_for('auth.login'))
-        login_user(user)  # TODO:, remember=form.remember_me.data)
+        login_user(User.query.get_or_404(user.id))  # TODO:, remember=form.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('main.index')
@@ -40,9 +40,12 @@ def register_user_func(username: str, firstname: str, lastname: str, password: s
         # flash("There is already an user with this username. Please choose another one.")
         return 0
 
-    user = User(username=username, firstname=firstname, lastname=lastname)
-    user.set_password(password)
+    user = User(firstname=firstname, lastname=lastname)
     db.session.add(user)
+    db.session.commit() # Seperate commit to keep the constraints happy
+    authentication = UserAuthentication(username=username, id=user.id)
+    authentication.set_password(password)
+    db.session.add(authentication)
     db.session.commit()
     return user.id
 
@@ -100,7 +103,7 @@ def reset_password(token):
         return redirect(url_for('main.index'))
     form = ResetPasswordForm()
     if form.validate_on_submit():
-        user.set_password(form.password.data)
+        user.authentication().set_password(form.password.data)
         db.session.commit()
         flash(_('Your password has been reset.'))
         return redirect(url_for('auth.login'))

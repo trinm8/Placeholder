@@ -76,34 +76,66 @@ def load_user(id):
 class Statistics(db.Model):
     rickroll_counter = db.Column(db.Integer, primary_key=True)
 
+class UserAuthentication(db.Model):
+    id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True)
+    username = db.Column(db.String(64), index=True, unique=True)
+    password_hash = db.Column(db.String(128))
+
+    def get_token(self, expires=3600):
+        return jwt.encode({'user_id': self.id, 'exp': time() + expires},
+                          current_app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    def user(self):
+        return User.query.get(self.id)
+
+class Car(db.Model):
+    # Car properties
+    color = db.Column(db.String(64), index=True)
+    brand = db.Column(db.String(64), index=True)
+    plate = db.Column(db.String(32), index=True)
+    owner_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True) # Each user can have max 1 car
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     firstname = db.Column(db.String(64), index=True)
     lastname = db.Column(db.String(64), index=True)
-    username = db.Column(db.String(64), index=True, unique=True)
     # age = db.Column(db.Integer)
     email = db.Column(db.String(120), index=True, unique=True)
-    password_hash = db.Column(db.String(128))
 
     # Music preferences
     musicpref = db.relationship('MusicPref')
 
-    # Car properties
-    car_color = db.Column(db.String(64), index=True)
-    car_brand = db.Column(db.String(64), index=True)
-    car_plate = db.Column(db.String(32), index=True, unique=True)
+    def authentication(self):
+        return UserAuthentication.query.get(self.id)
+
+    def username(self):
+        return UserAuthentication.query.with_entities(UserAuthentication.username).filter_by(id=self.id).first().username
+
+    def car(self):
+        return Car.query.get(self.id)
 
     def to_dict(self):
+        car_color = car_plate = car_brand = None
+        car_entity = self.car()
+        if car_entity:
+            car_color = car_entity.color
+            car_brand = car_entity.brand
+            car_plate = car_entity.plate
         data = {
             "id": self.id,
             "firstname": self.firstname,
             "lastname": self.lastname,
-            "username": self.username,
+            "username": self.username(),
             "email": self.email,
-            "car_color": _(self.car_color),
-            "car_plate": self.car_plate,
-            "car_brand": self.car_brand
+            "car_color": _(car_color),
+            "car_plate": car_plate,
+            "car_brand": car_brand
         }
         return data
 
@@ -117,23 +149,17 @@ class User(UserMixin, db.Model):
         if "email" in data:
             self.email = data["email"]
         if "car_color" in data:
-            self.car_color = data["car_color"]
+            self.car().color = data["car_color"]
         if "car_plate" in data:
-            self.car_plate = data["car_plate"]
+            self.car().plate = data["car_plate"]
         if "car_brand" in data:
-            self.car_plate = data["car_brand"]
+            self.car().brand = data["car_brand"]
 
     def __repr__(self):
-        return '<User {} {}>'.format(self.name, self.lastname)
-
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
+        return '<User {} {}>'.format(self.firstname, self.lastname)
 
     def avatar(self, size):
-        digest = md5(self.username.lower().encode('utf-8')).hexdigest()
+        digest = md5(self.username().lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=robohash&s={}'.format(
             digest, size)
 
@@ -150,10 +176,6 @@ class User(UserMixin, db.Model):
         except:
             return
         return User.query.get(id)
-
-    def get_token(self, expires=3600):
-        return jwt.encode({'user_id': self.id, 'exp': time() + expires},
-                          current_app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
 
     @staticmethod
     def check_token(token):
@@ -355,7 +377,7 @@ class RouteRequest(db.Model):
     def to_dict(self):
         data = {
             'id': self.user_id,
-            'username': self.user().username,
+            'username': self.user().username(),
             'status': self.status.name,
             'time-created': self.time_created.isoformat() + '.00'
         }

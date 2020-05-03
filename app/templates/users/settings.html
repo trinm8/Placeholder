@@ -158,7 +158,7 @@
                         <p>{{ _("Color:")}}</p>
                     </div>
                     <div class="column is-5">
-                        {{ form.color(type="input", class="input", placeholder="Color", value=current_user.car_color) }}
+                        {{ form.color(type="input", class="input", placeholder="Color", value=current_user.car().color) }}
                     </div>
                 </div>
 
@@ -167,7 +167,7 @@
                         <p>{{ _("Brand:")}}</p>
                     </div>
                     <div class="column is-5">
-                        {{ form.brand(type="input", class="input", placeholder="Brand", value=current_user.car_brand) }}
+                        {{ form.brand(type="input", class="input", placeholder="Brand", value=current_user.car().brand) }}
                     </div>
                 </div>
 
@@ -176,7 +176,7 @@
                         <p>{{ _("License plate:")}}</p>
                     </div>
                     <div class="column is-5">
-                        {{ form.plate(type="input", class="input", placeholder="1-aaa-000", value=current_user.car_plate) }}
+                        {{ form.plate(type="input", class="input", placeholder="1-aaa-000", value=current_user.car().plate) }}
                     </div>
                 </div>
 

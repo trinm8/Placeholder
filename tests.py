@@ -121,14 +121,14 @@ class AuthenticationTest(BaseCase):
         response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
         response = self.help_login("TEST_MarkP", "MarkIsCool420")
         user = User.check_token(response.json.get("token"))
-        self.assertEqual(user.username, "TEST_MarkP")
+        self.assertEqual(user.username(), "TEST_MarkP")
 
     def test_incorrect_token(self):
         response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
         response = self.help_register("TEST_MarkD", "Mark", "Peeters", "MarkIsCool420")
         response = self.help_login("TEST_MarkD", "MarkIsCool420")
         user = User.check_token(response.json.get("token"))
-        self.assertNotEqual(user.username, "TEST_MarkP")
+        self.assertNotEqual(user.username(), "TEST_MarkP")
 
     # def test_expired_tokens(self):
     #     response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")

@@ -9,10 +9,10 @@ from flask_login import login_required, current_user, logout_user
 from flask_babel import _
 
 
-@bp.route('/users/<username>')
+@bp.route('/users/<id>')
 @login_required
-def user_page(username):
-    user = User.query.filter_by(username=username).first_or_404()
+def user_page(id):
+    user = User.query.get_or_404(id)
     return render_template('users/user.html', title=_('Account'), user=user)
 
 
@@ -50,7 +50,7 @@ def account_settings():
                 usr.email = form.email.data
 
                 if len(form.password.data) > 0:
-                    usr.set_password(form.password.data)
+                    usr.authentication().set_password(form.password.data)
                 db.session.commit()
 
             flash(_("Profile settings updated!"))
@@ -84,9 +84,10 @@ def account_settings():
                     len(form.plate.data) > 32):
                 flash(_("Car data field exceeds character limit"))
             else:
-                usr.car_color = form.color.data
-                usr.car_brand = form.brand.data
-                usr.car_plate = form.plate.data
+                car = usr.car()
+                car.color = form.color.data
+                car.brand = form.brand.data
+                car.plate = form.plate.data
                 db.session.commit()
 
             flash(_("Car settings updated!"))

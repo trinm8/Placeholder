@@ -1,5 +1,5 @@
 from flask import jsonify, request, url_for, g
-from app.models import User
+from app.models import User, UserAuthentication
 from app.api.errors import bad_request
 from app.auth.routes import register_user_func
 from app.api import bp
@@ -47,7 +47,7 @@ def auth():
     data = request.get_json() or {}
     if "username" not in data or "password" not in data:
         return bad_request("Must include username and password")
-    user = User.query.filter_by(username=data["username"]).first()
+    user = UserAuthentication.query.filter_by(username=data["username"]).first()
     if not user.check_password(data["password"]):
         response = jsonify()
         response.status_code = 401

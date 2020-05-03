@@ -78,15 +78,15 @@
             <tbody>
             <tr>
                 <td>{{ _("Brand:")}}</td>
-                <td>{{ user.car_brand }}</td>
+                <td>{{ user.car().brand }}</td>
             </tr>
             <tr>
                 <td>{{ _("Color:")}}</td>
-                <td>{{ user.car_color }}</td>
+                <td>{{ user.car().color }}</td>
             </tr>
             <tr>
                 <td>{{ _("Licence Plate:")}}</td>
-                <td>{{ user.car_plate }}</td>
+                <td>{{ user.car().plate }}</td>
             </tr>
             </tbody>
       </table>

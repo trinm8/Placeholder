@@ -90,13 +90,13 @@
                         <div class="card">
                             <div class="card-content">
                                 <i class="fas fa-car"></i><a
-                                    href="{{ url_for('users.user_page', username=future_routes[0].driver().username) }} "> {{ future_routes[0].driver().name() }} </a><br>
+                                    href="{{ url_for('users.user_page', id=future_routes[0].driver_id) }} "> {{ future_routes[0].driver().name() }} </a><br>
                                 {% if future_routes[0].passenger_places is none %}
                                 {{ _("No passengers")}}
                                 {% else %}
                                     {% for passenger in passengers %}
                                         <i class="fas fa-user"></i>
-                                        <a href="{{ url_for('users.user_page', username=passenger.username) }}"> {{ passenger.name() }} </a>
+                                        <a href="{{ url_for('users.user_page', username=passenger.id) }}"> {{ passenger.name() }} </a>
                                         <br>
                                     {% endfor %}
                                 {% endif %}

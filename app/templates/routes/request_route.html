@@ -59,7 +59,7 @@
                                     <br>
                                     <p> {{ _("Name:") }} {{ user.firstname }} {{ user.lastname }} </p>
                                     <p> {{ _("email:")}} {{ user.email }} </p>
-                                    <a class="button" href="{{ url_for('users.user_page',  username=user.username) }}">
+                                    <a class="button" href="{{ url_for('users.user_page',  id=user.id) }}">
                                         {{ _("More info")}}</a>
                                 </div>
                                 <div class="column">
@@ -73,7 +73,7 @@
                                             <p> {{ _("Name:")}} {{ passenger.firstname }} {{ passenger.lastname }} </p>
                                             <p> {{ _("email:")}} {{ passenger.email }} </p>
                                             <a class="button"
-                                               href="{{ url_for('users.user_page',  username=passenger.username) }}">
+                                               href="{{ url_for('users.user_page',  id=passenger.id) }}">
                                                 {{ _("More info")}}</a>
                                         {% endfor %}
                                     {% else %}
