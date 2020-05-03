@@ -20,7 +20,7 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
     <script>function language_cookie(language) {
-        document.cookie = "language=" + language;
+        document.cookie = "language=" + language + ";path=/";
         location.reload();
     }
 
@@ -135,6 +135,24 @@
             <div class="navbar-item">
                 <div class="buttons">
                     {% if current_user.is_anonymous %}
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-item">
+                           <span class="icon">
+                               <i class="fas fa-globe-americas"></i>
+                           </span>
+
+                            </a>
+
+                            <div class="navbar-dropdown is-boxed">
+                                {% for language in config['LANGUAGES'] %}
+                                    {% if language == config['LANGUAGES'][0] %}
+                                        <a class="navbar-item" onclick="language_cookie('{{ language }}');"> {{ language }} </a>
+                                    {% else %}
+                                        <a class="navbar-item" onclick="language_cookie('{{ language }}');"> {{ language }} </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
                         <a class="button is-primary" href="{{ url_for('auth.register') }}">
                             <strong>{{ _("Sign up") }}</strong>
                         </a>
