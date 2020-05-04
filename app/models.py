@@ -1,6 +1,6 @@
 from geopy.exc import GeocoderTimedOut
 from geopy.exc import GeocoderQueryError
-
+from geopy.distance import distance
 from app import db, login
 
 from flask import current_app, url_for
@@ -310,6 +310,18 @@ class Route(db.Model):
             passenger_ids.append(passenger.user_id)
         return passenger_ids
 
+    def stops(self, sorted=False, passengerNames=False):
+        route = RouteRequest.query.filter_by(route_id=self.id, status=RequestStatus.accepted).all()
+        stops = []
+        for stop in route:
+            newstop = (stop.departure_location_lat, stop.departure_location_long, stop.pickup_text())
+            if passengerNames:
+                newstop += (stop.user().name(),)
+            stops.append(newstop)
+        if sorted:
+            stops.sort(key=lambda x: distance(x[0], x[1]), reverse=True)
+        return stops
+
     def google_calendar_link(self):
         start_time = self.departure_time.isoformat() # "20180512T230000Z"
         end_time = (self.departure_time + timedelta(hours=1)).isoformat()
@@ -351,11 +363,16 @@ class RouteRequest(db.Model):
     time_created = db.Column(db.DateTime)
     time_updated = db.Column(db.DateTime)
 
+    departure_location_lat = db.Column(db.Float(precision=53))
+    departure_location_long = db.Column(db.Float(precision=53))
+    departure_location_string = db.Column(db.String(256))
+
     def __init__(self, route_id, user_id):
         self.status = RequestStatus.pending
         self.route_id = route_id
         self.user_id = user_id
         self.time_created = datetime.utcnow()
+        #TODO: initializen op vertrekpunt route
 
     def route(self):
         return Route.query.get(self.route_id)
@@ -374,16 +391,28 @@ class RouteRequest(db.Model):
         self.time_updated = datetime.utcnow()
         self.status = RequestStatus.rejected
 
+    def pickup_text(self):
+        if self.departure_location_string:
+            return self.departure_location_string
+        else:
+            self.departure_location_string = addr(self.departure_location_lat, self.departure_location_long)
+            return self.departure_location_string
+
     def to_dict(self):
         data = {
             'id': self.user_id,
             'username': self.user().username(),
             'status': self.status.name,
-            'time-created': self.time_created.isoformat() + '.00'
+            'time-created': self.time_created.isoformat() + '.00',
         }
         if self.time_updated is not None:
             data['time-updated'] = self.time_updated.isoformat() + '.00'
         return data
+
+    def set_PickupPoint(self, lat, long, string):
+        self.departure_location_lat = lat
+        self.departure_location_long = long
+        self.departure_location_string = string
 
 
 class MusicPref(db.Model):

@@ -8,7 +8,7 @@ from flask_login import current_user, login_required
 
 from sqlalchemy import Date, cast
 
-from geopy import Nominatim
+from geopy import Nominatim, distance
 from geopy.exc import GeocoderTimedOut
 from sympy.geometry import *
 from math import cos, sin
@@ -78,7 +78,7 @@ def addRoute():
     # flash("Warning: this page won't submit anything to the database yet. We're working on it.")
     form = AddRouteForm()
     if form.submit.data:
-        geolocator = Nominatim(user_agent="Test")
+        geolocator = Nominatim(user_agent="[PlaceHolder]")
         try:
             departure_location = geolocator.geocode(form.start.data)
             sleep(1.1)
@@ -160,11 +160,13 @@ def drive(drive_id):
     acceptedRequests = []
     for requestparse in requests:
         if requestparse.status == RequestStatus.accepted:
-            acceptedRequests.append(User.query.get(requestparse.user_id))
+            acceptedRequests.append((User.query.get(requestparse.user_id), requestparse.pickup_text()))
     requested = bool(RouteRequest.query.filter_by(route_id=drive_id, user_id=current_user.id).first())
     isDriver = False
+    stops = []
     if current_user.id == driver.id:
         isDriver = True
+        stops = trip.stops(sorted=True, passengerNames=True)
     # From routes that where registered without a drive, should be removed in the future
     # if current_user is None:
     #    user = current_user
@@ -178,14 +180,22 @@ def drive(drive_id):
             if not trip.places_left():
                 flash(_("There aren't any places left in the car"))
                 return redirect(url_for("main.index"))
+            geolocator = Nominatim(user_agent="[PlaceHolder]")
+            try:
+                pickup = geolocator.geocode(form.pickupPoint.data)
+                sleep(1.1)
+            except GeocoderTimedOut:
+                flash(_("The geolocator is timing out! please try again"))
+                return render_template('routes/addRoute.html', title='New Route', form=form)
             request = RouteRequest(route_id=drive_id, user_id=current_user.id)
+            request.set_PickupPoint(pickup.latitude, pickup.longitude, form.pickupPoint.data)
             db.session.add(request)
             db.session.commit()
             flash(_("Request has been made"))
         return redirect(url_for("main.index"))
 
     return render_template('routes/request_route.html', form=form, user=driver, trip=trip, requested=requested,
-                           title='Route Request', passengers=acceptedRequests, isdriver=isDriver)
+                           title='Route Request', passengers=acceptedRequests, isdriver=isDriver, stops=stops)
 
 
 @bp.route('/drives/<drive_id>/request/cancel', methods=['GET', 'POST'])
@@ -226,7 +236,8 @@ def passenger_request(drive_id, user_id):
             flash(_("The route request was successfully rejected."))
         return redirect(url_for("main.index"))
 
-    return render_template('routes/route_request.html', form=form, user=user, trip=trip, title='Route Request')
+    return render_template('routes/route_request.html', form=form, user=user, trip=trip, title='Route Request',
+                           pickup=request)
 
 
 # Returns a score based on music preference of user u and v

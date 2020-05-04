@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import RadioField, StringField, DateTimeField, SubmitField, ValidationError, IntegerField
+from wtforms.validators import DataRequired
 from wtforms.fields.html5 import DecimalRangeField
 
 from flask_babel import lazy_gettext as _l
@@ -20,6 +21,7 @@ class AddRouteForm(FlaskForm):
                                   'The playlist ID are all chars after the last "/" and before the "?" '
                                   'in the link you use to share a playlist'))
 
+
 class EditRouteForm(FlaskForm):
     start = StringField(_l('start'))
     destination = StringField(_l('destination'))
@@ -34,6 +36,7 @@ class EditRouteForm(FlaskForm):
                                   'The playlist ID are all chars after the last "/" and before the "?" '
                                   'in the link you use to share a playlist'))
 
+
 class RouteSearchForm(FlaskForm):
     start = StringField(_l('start'))
     destination = StringField(_l('destination'))
@@ -42,10 +45,12 @@ class RouteSearchForm(FlaskForm):
     # https://stackoverflow.com/questions/31136882/displaying-slider-value-alongside-wtforms-fields-html5-decimalrangefield
     submit = SubmitField(_l('Search'))
 
+
 class RequestForm(FlaskForm):
     accept = SubmitField(_l('Accept'))
     reject = SubmitField(_l('Reject'))
 
 
 class SendRequestForm(FlaskForm):
+    pickupPoint = StringField(_l('pickup'), validators=[DataRequired()])
     submit = SubmitField(_l('Send Request'))

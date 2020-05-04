@@ -218,7 +218,6 @@ class RouteTest(BaseCase):
         self.assertEqual(3, response.json.get("passenger-places"))
         self.assertEqual("2020-02-12T10:00:00.00", response.json.get("arrive-by"))
 
-
     def test_search_route(self):
         self.help_register("TEST_MarkD", "Mark", "Peeters", "MarkIsCool420")
         response = self.help_login("TEST_MarkD", "MarkIsCool420")

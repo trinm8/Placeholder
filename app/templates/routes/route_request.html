@@ -25,6 +25,7 @@
             <div class="column is-half full-height" id="mapParent" >
                 {{ map.map() }}
                 <script>loadMarkersRoute({{ trip.departure_location_lat }}, {{ trip.departure_location_long }}, {{ trip.arrival_location_lat }}, {{ trip.arrival_location_long }})</script>
+                <script>addStop({{pickup.departure_location_lat}}, {{pickup.departure_location_long}}, "{{pickup.pickup_text()}}")</script>
             </div>
             <form class="column full-height" action="" method="POST" novalidate>
                 <div class="tile is-vertical">
@@ -33,7 +34,7 @@
                     <div class="columns full-height">
                         <div class="column full-height">
                             <h2 class="subtitle">{{ _("Trip information")}}</h2>
-                            <p> {{ _("From:")}} {{ trip.text_from() }}</p>
+                            <p> {{ _("From:")}} {{ pickup.pickup_text() }}</p>
                             <p> {{ _("To:")}} {{ trip.text_to() }} </p>
                             <p> {{ _("Time:")}} {{ trip.departure_time }} </p>
                             <p> {{ _("Places left:")}} {{ trip.places_left() }}</p><br><br>
