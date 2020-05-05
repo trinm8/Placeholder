@@ -228,6 +228,49 @@ class User(UserMixin, db.Model):
 
         return notifications
 
+    def get_reviews_of_me(self):
+        return Review.query.filter_by(reviewee_id=self.id).all()
+
+    def get_reviews_by_me(self):
+        return Review.query.filter_by(reviewer_id=self.id).all()
+
+    def get_review_score(self):
+        scores = Review.query(Review.score).filter_by(reviewer_id=self.id).all()
+        return sum(scores)/len(scores)
+
+
+class Review(db.Model):
+    reviewer_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True)
+    reviewee_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True)
+    score = db.Column(db.Float(precision=2))
+    review_text = db.Column(db.String)
+
+    def __repr__(self):
+        return '<Review by {} of {}. given score {}>'.format(self.reviewer_id, self.reviewee_id, self.score)
+
+    def to_dict(self):
+        data = {
+            "reviewer_id": self.reviewer_id,
+            "reviewee_id": self.reviewee_id,
+            "score": self.score,
+            "review_text": self.review_text
+        }
+        return data
+
+    def from_dict(self, data):
+        if "reviewee_id" in data:
+            self.reviewee_id = data["reviewee_id"]
+        if "score" in data:
+            self.score = data["score"]
+        if "review_text" in data:
+            self.review_text = data["review_text"]
+
+    def get_reviewer(self):
+        return User.query.get(id=self.reviewer_id)
+
+    def get_reviewee(self):
+        return User.query.get(id=self.reviewee_id)
+
 
 class Route(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -400,7 +443,7 @@ class RouteRequest(db.Model):
 
     def to_dict(self):
         data = {
-            'id': self.user_id,
+            'id': self.user_id, #TODO moet dees ni user_id en route_id zijn?
             'username': self.user().username(),
             'status': self.status.name,
             'time-created': self.time_created.isoformat() + '.00',

@@ -8,7 +8,8 @@ from flask_login import current_user, login_required
 
 from sqlalchemy import Date, cast
 
-from geopy import Nominatim, distance
+from geopy import Nominatim
+from geopy import distance as dist
 from geopy.exc import GeocoderTimedOut
 from sympy.geometry import *
 from math import cos, sin
@@ -319,7 +320,9 @@ def overview():
 
 def filter_routes(allowed_distance, arrival_location, departure_location, time, limit=20):
     same_day_routes = Route.query.filter(
-        cast(Route.departure_time, Date) == time.date()).limit(limit).all()  # https://gist.github.com/Tukki/3953990
+        cast(Route.departure_time, Date) == time.date() and
+        dist.distance((Route.arrival_location_lat, Route.arrival_location_long), arrival_location).km
+        <= allowed_distance).limit(limit).all()  # https://gist.github.com/Tukki/3953990
     routes = []
     from geopy import distance  # No idea why this include won't work when placed outside this function
     # allowed_distance = 2

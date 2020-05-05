@@ -88,6 +88,25 @@ class BaseCase(TestCase):
         return self.client.delete('api/drives/{}/passenger-requests/{}'.format(str(drive_id), str(user_id)),
                                   headers={"Content-Type": "application/json", "Authorization": authorization})
 
+    def help_create_review(self, reviewee_id, score, text, authorization):
+        payload = json.dumps({
+            "reviewee_id": reviewee_id,
+            "score": score,
+            "review_text": text
+        })
+        return self.client.post('api/user/reviews',
+                                headers={"Content-Type": "application/json", "Authorization": authorization},
+                                data=payload)
+
+    def help_delete_review(self, reviewee_id, authorization):
+        return self.client.delete('api/user/reviews/{}'.format(str(reviewee_id)),
+                                headers={"Content-Type": "application/json", "Authorization": authorization})
+
+    def help_read_review(self, reviewer_id, reviewee_id, authorization):
+        return self.client.get('api/user/{}/reviews/{}'.format(str(reviewer_id), str(reviewee_id)),
+                               headers={"Content-Type": "application/json", "Authorization": authorization})
+
+
     # @login_required
     # def help_dummy_func_expired(self):
     #     pass
@@ -407,3 +426,112 @@ class UserTests(BaseCase):
         response = self.client.delete('/api/user',
                                       headers={"Content-Type": "application/json", "Authorization": authorization})
         self.assertEqual(None, User.query.get(id))
+
+
+class ReviewTests(BaseCase):
+    def test_create_review(self):
+        #create Reviewer
+        response = self.help_register("TEST_MarkD", "Mark", "Peeters", "MarkIsCool420")
+        reviewer_id = response.json.get("id")
+        response = self.help_login("TEST_MarkD", "MarkIsCool420")
+        token_d = response.json.get("token")
+        authorization_d = "Bearer {token}".format(token=token_d)
+
+        #create Reviewee
+        response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
+        reviewee_id = response.json.get("id")
+
+        # -------------- ACTUAL TEST ----------------
+        response = self.help_create_review(reviewee_id, 4.5, "test", authorization_d)
+        self.assertEqual(response.json.get("reviewer_id"), reviewer_id)
+        self.assertEqual(response.json.get("reviewee_id"), reviewee_id)
+        self.assertEqual(response.json.get("score"), 4.5)
+        self.assertEqual(response.json.get("review_text"), "test")
+
+    def test_update_review(self):
+        # create Reviewer
+        response = self.help_register("TEST_MarkD", "Mark", "Peeters", "MarkIsCool420")
+        reviewer_id = response.json.get("id")
+        response = self.help_login("TEST_MarkD", "MarkIsCool420")
+        token_d = response.json.get("token")
+        authorization_d = "Bearer {token}".format(token=token_d)
+
+        # create Reviewee
+        response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
+        reviewee_id = response.json.get("id")
+
+        # create Review
+        response = self.help_create_review(reviewee_id, 4.5, "test", authorization_d)
+
+        self.assertEqual(response.json.get("reviewer_id"), reviewer_id)
+        self.assertEqual(response.json.get("reviewee_id"), reviewee_id)
+        self.assertEqual(response.json.get("score"), 4.5)
+        self.assertEqual(response.json.get("review_text"), "test")
+
+        payload = json.dumps({
+            "score": 5,
+            "review_text": "good"
+        })
+
+        # -------------- ACTUAL TEST ----------------
+        response = self.client.put('/api/user/reviews/{reviewee_id}'.format(reviewee_id=reviewee_id),
+                                   headers={"Content-Type": "application/json", "Authorization": authorization_d},
+                                   data=payload)
+
+        self.assertEqual(response.json.get("reviewer_id"), reviewer_id)
+        self.assertEqual(response.json.get("reviewee_id"), reviewee_id)
+        self.assertEqual(response.json.get("score"), 5)
+        self.assertEqual(response.json.get("review_text"), "good")
+
+    def test_delete_review(self):
+        # create Reviewer
+        response = self.help_register("TEST_MarkD", "Mark", "Peeters", "MarkIsCool420")
+        reviewer_id = response.json.get("id")
+        response = self.help_login("TEST_MarkD", "MarkIsCool420")
+        token_d = response.json.get("token")
+        authorization_d = "Bearer {token}".format(token=token_d)
+
+        # create Reviewee
+        response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
+        reviewee_id = response.json.get("id")
+
+        # create Review
+        response = self.help_create_review(reviewee_id, 4.5, "test", authorization_d)
+
+        self.assertNotEqual(None, Review.query.get({"reviewer_id": reviewer_id, "reviewee_id": reviewee_id}))
+
+        # -------------- ACTUAL TEST ----------------
+        self.help_delete_review(reviewee_id, authorization_d)
+
+        self.assertEqual(None, Review.query.get({"reviewer_id": reviewer_id, "reviewee_id": reviewee_id}))
+
+    def test_read_review(self):
+        # create Reviewer
+        response = self.help_register("TEST_MarkD", "Mark", "Peeters", "MarkIsCool420")
+        reviewer_id = response.json.get("id")
+        response = self.help_login("TEST_MarkD", "MarkIsCool420")
+        token_d = response.json.get("token")
+        authorization_d = "Bearer {token}".format(token=token_d)
+
+        # create Reviewee
+        response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
+        reviewee_id = response.json.get("id")
+
+
+
+        response = self.help_create_review(reviewee_id, 4.5, "test", authorization_d)
+
+        # -------------- ACTUAL TEST ----------------
+        response = self.help_read_review(reviewer_id, reviewee_id, authorization_d)
+        self.assertEqual(response.json.get("reviewer_id"), reviewer_id)
+        self.assertEqual(response.json.get("reviewee_id"), reviewee_id)
+        self.assertEqual(response.json.get("score"), 4.5)
+        self.assertEqual(response.json.get("review_text"), "test")
+
+        # switch user
+        response = self.help_login("TEST_MarkP", "MarkIsCool420")
+        token = response.json.get("token")
+        authorization = "Bearer {token}".format(token=token)
+
+        response = self.help_read_review(reviewee_id, reviewer_id, authorization)
+        self.assertEqual(None, response.json)
