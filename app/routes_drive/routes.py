@@ -19,6 +19,7 @@ from datetime import datetime, date  # Todo: Datetime
 
 from flask_babel import _
 
+import requests
 
 def createRoute(form, departurelocation, arrivallocation):
     creator = User.query.filter_by(id=current_user.get_id()).first()
@@ -242,21 +243,17 @@ def passenger_request(drive_id, user_id):
 
 
 # Returns a score based on music preference of user u and v
-def compareMusicPrefs(u: User, v: User) -> int:
-    score = 0
+def compareMusicPrefs(u_id: int, v_id: int) -> int:
+    # Get the users
+    u = User.query.get(id=u_id)
+    v = User.query.get(id=v_id)
 
-    # Search for matching genres
-    # Increase for both like (and)
-    # Decease for one like one dislike (xor)
-    for up in u.musicpref:
-        for vp in v.musicpref:
-            if up.genre == vp.genre:
-                if up.likes and vp.likes:
-                    score += 1
-                if up.likes != vp.likes:
-                    score -= 1
+    # Calculate score where two likes = +1, 1 like and 1 dislike = -1, and otherwise = 0
+    def score(x, y) -> int: return 1 if x.likes and y.likes else -1 if x.likes != y.likes else 0
 
-    return score
+    # Get pairs of music pref where genres match
+    # Then apply the score function and return the sum of the results
+    return sum([score(x, y) for x in u.musicpref for y in v.musicpref if x.genre == y.genre])
 
 
 @bp.route("/overview", methods=["GET", "POST"])
@@ -311,8 +308,9 @@ def overview():
     arrival_location = (lat_to, long_to)
 
     routes = filter_routes(allowed_distance, arrival_location, departure_location, time)
-    # TODO: find a way to toggle the below line
-    # routes = sorted(routes, key=lambda x:  compareMusicPrefs(current_user, User.query.get(x.driver_id)), reverse=True)
+
+    # Sort our routes on music preference
+    routes = sorted(routes, key=lambda x:  compareMusicPrefs(current_user.id, x.driver_id), reverse=True)
 
     return render_template('routes/search_results.html', routes=routes, title="Search", src=addr(lat_from, long_from),
                            dest=addr(lat_to, long_to), form=form)
