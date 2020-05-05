@@ -21,6 +21,7 @@ from flask_babel import _
 
 import requests
 
+
 def createRoute(form, departurelocation, arrivallocation):
     creator = User.query.filter_by(id=current_user.get_id()).first()
     creatorname = creator.username
@@ -310,10 +311,18 @@ def overview():
     routes = filter_routes(allowed_distance, arrival_location, departure_location, time)
 
     # Sort our routes on music preference
-    routes = sorted(routes, key=lambda x:  compareMusicPrefs(current_user.id, x.driver_id), reverse=True)
+    routes = sorted(routes, key=lambda x: compareMusicPrefs(current_user.id, x.driver_id), reverse=True)
+
+    # Try to get some routes from team3
+    try:
+        other_routes = requests.get("http://team3.ppdb.me/api/drives/search?from={0}%2C{1}&to={2}%2C{3}&arrive_by={4}"
+                                    .format(lat_from, long_from, lat_to, long_to, time.isoformat() + '.00')).content
+    finally:
+        other_routes = []
+        print('Something went wrong with GET to team 3')
 
     return render_template('routes/search_results.html', routes=routes, title="Search", src=addr(lat_from, long_from),
-                           dest=addr(lat_to, long_to), form=form)
+                           dest=addr(lat_to, long_to), form=form, other_routes=other_routes)
 
 
 def filter_routes(allowed_distance, arrival_location, departure_location, time, limit=20):

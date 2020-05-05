@@ -4,6 +4,7 @@ import unittest
 import json
 
 # Ughhhh, ik haat testen schrijven
+# Ja tkan wa lastig zijn, maar tis beter da ge t toch doe ze
 # from app import app
 # from database.db import db
 
@@ -14,6 +15,8 @@ from app.models import *
 from flask_testing import TestCase
 from app.auth.routes import register_user_func
 from app.api.tokens import login_required
+
+import requests
 
 
 class BaseCase(TestCase):
@@ -100,12 +103,11 @@ class BaseCase(TestCase):
 
     def help_delete_review(self, reviewee_id, authorization):
         return self.client.delete('api/user/reviews/{}'.format(str(reviewee_id)),
-                                headers={"Content-Type": "application/json", "Authorization": authorization})
+                                  headers={"Content-Type": "application/json", "Authorization": authorization})
 
     def help_read_review(self, reviewer_id, reviewee_id, authorization):
         return self.client.get('api/user/{}/reviews/{}'.format(str(reviewer_id), str(reviewee_id)),
                                headers={"Content-Type": "application/json", "Authorization": authorization})
-
 
     # @login_required
     # def help_dummy_func_expired(self):
@@ -264,9 +266,12 @@ class RouteTest(BaseCase):
         drive_id4 = response.json.get("id")
 
         # -------------- ACTUAL TEST ----------------
-        data = {"from": "{lat}, {long}".format(lat=51.13731, long=4.60960), "to": "{lat}, {long}".format(lat=51.18852, long=4.42173), "arrive-by": "2021-02-12T10:00:00.00", "limit": 3}
+        data = {"from": "{lat}, {long}".format(lat=51.13731, long=4.60960),
+                "to": "{lat}, {long}".format(lat=51.18852, long=4.42173), "arrive-by": "2021-02-12T10:00:00.00",
+                "limit": 3}
         response = self.client.get('/api/drives/search'.format(id=id),
-                                   headers={"Content-Type": "application/json", "Authorization": authorization}, query_string=data)
+                                   headers={"Content-Type": "application/json", "Authorization": authorization},
+                                   query_string=data)
 
         routes = response.json
         self.assertEqual(2, len(routes))
@@ -274,6 +279,7 @@ class RouteTest(BaseCase):
         # Deze 2 kunnen ook omgewisseld zijn
         self.assertEqual(drive_id2, routes[0].get("id"))
         self.assertEqual(drive_id3, routes[1].get("id"))
+
 
 class RequestTest(BaseCase):
 
@@ -404,7 +410,8 @@ class UserTests(BaseCase):
             "email": "mark.peeters@gmail.com"
         })
 
-        response = self.client.get('/api/user/{id}'.format(id=id), headers={"Content-Type": "application/json", "Authorization": authorization})
+        response = self.client.get('/api/user/{id}'.format(id=id),
+                                   headers={"Content-Type": "application/json", "Authorization": authorization})
 
         self.assertEqual(None, response.json.get("email"))
         self.assertEqual("TEST_MarkP", response.json.get("username"))
@@ -430,14 +437,14 @@ class UserTests(BaseCase):
 
 class ReviewTests(BaseCase):
     def test_create_review(self):
-        #create Reviewer
+        # create Reviewer
         response = self.help_register("TEST_MarkD", "Mark", "Peeters", "MarkIsCool420")
         reviewer_id = response.json.get("id")
         response = self.help_login("TEST_MarkD", "MarkIsCool420")
         token_d = response.json.get("token")
         authorization_d = "Bearer {token}".format(token=token_d)
 
-        #create Reviewee
+        # create Reviewee
         response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
         reviewee_id = response.json.get("id")
 
@@ -517,8 +524,6 @@ class ReviewTests(BaseCase):
         response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
         reviewee_id = response.json.get("id")
 
-
-
         response = self.help_create_review(reviewee_id, 4.5, "test", authorization_d)
 
         # -------------- ACTUAL TEST ----------------
@@ -535,3 +540,11 @@ class ReviewTests(BaseCase):
 
         response = self.help_read_review(reviewee_id, reviewer_id, authorization)
         self.assertEqual(None, response.json)
+
+
+class Team3Tests(BaseCase):
+
+    def test_get_search(self):
+        response = requests.get(
+            "http://team3.ppdb.me/api/drives/search?from=51.130215%2C4.571509&to=51.18417%2C4.41931&arrive_by=2020-02-12T10%3A00%3A00.00").content
+        print(response)
