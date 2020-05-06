@@ -28,6 +28,7 @@
                             <p class="title">{{ request.user().name() }} {{ _("wants to ride!") }}</p>
                             <strong>{{ _("FROM:")}} </strong> {{ request.route().text_from() }}<br>
                             <strong>{{ _("TO:")}} </strong> {{ request.route().text_to() }}<br>
+                            <strong>{{ _("PICKUP:")}} </strong> {{ request.pickup_text() }}<br>
                             <strong>{{ _("TIME:")}} </strong> {{ request.route().departure_time.isoformat() }}<br>
                             <a class="button"
                                href="{{ url_for("routes_drive.passenger_request", drive_id=request.route().id, user_id=request.user_id) }}">

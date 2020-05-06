@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% import "map.html" as map %}
 {% import "datepicker.html" as dtpick %}
+{% import "tabs.html" as tabs %}
 
 {% block imports %}
     {{ map.imports() }}
@@ -30,7 +31,7 @@
                     {{ form.hidden_tag() }}
                     <h1 class="title">Ride with {{ user.firstname }}!</h1>
                     <div class="columns full-height">
-                        <div class="column full-height">
+                        <div class="column" style="display: flex; flex-direction: column">
                             <h2 class="subtitle">{{ _("Trip information")}}</h2>
                             <p> {{ _("From:")}} {{ trip.text_from() }}</p>
                             <p> {{ _("To:")}} {{ trip.text_to() }} </p>
@@ -63,17 +64,28 @@
                                         {{ _("More info")}}</a>
                                 </div>
                                 <div class="column">
+                                     {% if isdriver %}
+                                        {{ tabs.openTab() }}
+                                        <div class="tabs">
+                                            <ul>
+                                                <li class="is-active tablinks"><a onclick= "openTab(event, 'Passengers')">{{ _("Passengers") }}</a></li>
+                                                <li class="tablinks"><a onclick="openTab(event, 'Stops')">{{ _("Stops") }}</a></li>
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                    <div id="Passengers" class="tabcontent">
                                     <h2 class="subtitle">{{ _("Passengers information")}}</h2>
                                     {% if passengers %}
                                         {% for passenger in passengers %}
                                             <figure class="image is-128x128">
-                                                <img class="is-rounded" src="{{ passenger.avatar(128) }}">
+                                                <img class="is-rounded" src="{{ passenger[0].avatar(128) }}">
                                             </figure>
                                             <br>
-                                            <p> {{ _("Name:")}} {{ passenger.firstname }} {{ passenger.lastname }} </p>
-                                            <p> {{ _("email:")}} {{ passenger.email }} </p>
+                                            <p> {{ _("Name:")}} {{ passenger[0].firstname }} {{ passenger[0].lastname }} </p>
+                                            <p> {{ _("email:")}} {{ passenger[0].email }} </p>
+                                            <p> {{ _("Pickup Point:") }} {{ passenger[1] }}</p>
                                             <a class="button"
-                                               href="{{ url_for('users.user_page',  id=passenger.id) }}">
+                                               href="{{ url_for('users.user_page',  id=passenger[0].id) }}">
                                                 {{ _("More info")}}</a>
                                         {% endfor %}
                                     {% else %}
@@ -81,18 +93,37 @@
                                             <strong>{{ _("No passengers")}}</strong>
                                         </div>
                                     {% endif %}
+                                    </div>
+                                    {% if isdriver %}
+                                    <div id="Stops" class="tabcontent" style="display: none">
+                                    <h2 class="subtitle">{{ _("Recommended pickup order")}}</h2>
+                                        {% if passengers %}
+                                            {% for stop in stops %}
+                                                <p> {{ "Stop " + loop.index|string + ":" }} {{ stop[2] }}</p>
+                                                <p>{{ stop[3] }}</p>
+                                                <br>
+                                                <script>addStop({{stop[0]}}, {{stop[1]}}, "{{stop[3]}}")</script>
+                                            {% endfor %}
+                                        {% else %}
+                                            <div>
+                                                <strong>{{ _("No passengers")}}</strong>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
                     </div>
                     <br><br>
-
                         <div class="buttons">
                     {% if not isdriver %}
                             {% if requested %}
                                 <a class="button is-primary" href="{{ url_for('routes_drive.cancel_request', drive_id=trip.id) }}">
                                     {{ _("Cancel request")}}</a>
                             {% else %}
+                                {{form.pickupPoint(class='input', type='text', placeholder=_('Where do you want to be picked up?'))}}
+                                 <br><br>
                                 {{ form.submit(class="button is-primary") }}
                             {% endif %}
                     {% else %}

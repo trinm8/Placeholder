@@ -78,15 +78,20 @@
     function centerLeafletMapOnMarker(map, marker) {
         var latLngs;
         var markerBounds;
-        if(startmarker && stopmarker){
-            latLngs = [ L.latLng(startmarker.getLatLng().lat, startmarker.getLatLng().lng) ];
-            var latLngs2 = [ L.latLng(stopmarker.getLatLng().lat, stopmarker.getLatLng().lng) ];
+        if (startmarker && stopmarker) {
+            latLngs = [L.latLng(startmarker.getLatLng().lat, startmarker.getLatLng().lng)];
+            var latLngs2 = [L.latLng(stopmarker.getLatLng().lat, stopmarker.getLatLng().lng)];
             markerBounds = L.latLngBounds(latLngs, latLngs2)
-        }else {
-            latLngs =[ L.latLng(marker.getLatLng().lat, marker.getLatLng().lng) ];
+        } else {
+            latLngs = [L.latLng(marker.getLatLng().lat, marker.getLatLng().lng)];
             markerBounds = L.latLngBounds(latLngs);
         }
         map.flyToBounds(markerBounds);
+    }
+
+    function addStop(lat, long, name) {
+        var marker = L.marker([lat, long]).addTo(mymap);
+        marker.bindPopup('"' + name + '"');
     }
 
 {#    $(window).on("resize", function() {
