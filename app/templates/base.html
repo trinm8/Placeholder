@@ -19,20 +19,38 @@
     <!--    Javascript for deleting notifications-->
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
-    <script>function language_cookie(language) {
-        document.cookie = "language=" + language + ";path=/";
-        location.reload();
+    <script>function playMusic() {
+        // in the js code unmute the audio once the event happened
+        var player = document.getElementById('sound')
+        if (player.muted) {
+            player.muted = false;
+            player.play();
+        } else {
+            player.muted = true;
+            player.pause();
+        }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
-            $notification = $delete.parentNode;
+    function language_cookie(language) {
+            document.cookie = "language=" + language + ";path=/";
+            location.reload();
+        }
 
-            $delete.addEventListener('click', () => {
-                $notification.parentNode.removeChild($notification);
+        function sound_cookie_on() {
+            document.cookie = "language=" + language + ";path=/";
+            location.reload();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                $notification = $delete.parentNode;
+
+                $delete.addEventListener('click', () => {
+                    $notification.parentNode.removeChild($notification);
+                });
             });
         });
-    });</script>
+    </script>
 
     <!--    Javascript for the burger menu-->
     <script>
@@ -134,8 +152,18 @@
         <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons">
+                    <div title="Click to play background music" class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-item" onclick="playMusic()">
+                           <span class="icon">
+                               <i class="fas fa-music"></i>
+{#                               <i class="fas fa-volume-off"></i>#}
+                           </span>
+                        </a>
+                    </div>
                     {% if current_user.is_anonymous %}
                         <div class="navbar-item has-dropdown is-hoverable">
+
+
                             <a class="navbar-item">
                            <span class="icon">
                                <i class="fas fa-globe-americas"></i>
@@ -146,9 +174,11 @@
                             <div class="navbar-dropdown is-boxed">
                                 {% for language in config['LANGUAGES'] %}
                                     {% if language == config['LANGUAGES'][0] %}
-                                        <a class="navbar-item" onclick="language_cookie('{{ language }}');"> {{ language }} </a>
+                                        <a class="navbar-item"
+                                           onclick="language_cookie('{{ language }}');"> {{ language }} </a>
                                     {% else %}
-                                        <a class="navbar-item" onclick="language_cookie('{{ language }}');"> {{ language }} </a>
+                                        <a class="navbar-item"
+                                           onclick="language_cookie('{{ language }}');"> {{ language }} </a>
                                     {% endif %}
                                 {% endfor %}
                             </div>
@@ -210,17 +240,19 @@
                             <div class="navbar-dropdown is-boxed">
                                 {% for language in config['LANGUAGES'] %}
                                     {% if language == config['LANGUAGES'][0] %}
-                                        <a class="navbar-item" onclick="language_cookie('{{ language }}');"> {{ language }} </a>
+                                        <a class="navbar-item"
+                                           onclick="language_cookie('{{ language }}');"> {{ language }} </a>
                                     {% else %}
-                                        <a class="navbar-item" onclick="language_cookie('{{ language }}');"> {{ language }} </a>
+                                        <a class="navbar-item"
+                                           onclick="language_cookie('{{ language }}');"> {{ language }} </a>
                                     {% endif %}
                                 {% endfor %}
                             </div>
                         </div>
 
                         <a class="navbar-item" href="{{ url_for('users.account_settings') }}">
-{#                            {{ _("Settings") }}#}
-                                <span class="icon">
+                            {#                            {{ _("Settings") }}#}
+                            <span class="icon">
                                <i class="fas fa-cog"></i>
                            </span>
                         </a>
@@ -263,5 +295,15 @@
         </p>
     </div>
 </footer>
+
+<audio id="sound" src="/static/minecraft.mp3" muted></audio>
+
 </body>
+
+<script>
+
+    {#The method below doesn't work because Google Chrome is gay#}
+    {#myMusic = new Audio("/static/minecraft.mp3");#}
+    {#myMusic.play();#}
+</script>
 </html>
