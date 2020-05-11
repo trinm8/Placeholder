@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+    <section class="section">
+        <h1 class="title">{{ _("Reviews") }}</h1>
+        <h2 class="subtitle">{{ _("All the reviews of and by") + user.firstname}}</h2>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>{{ _("Reviews of me") }}</th>
+            </tr>
+            </thead>
+            {% for review_of_me in user.reviews_of_me %}
+                {% if review_of_me %}
+                <tr>
+                    <td>{{ review_of_me }}</td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>{{ _("Reviews by me") }}</th>
+            </tr>
+            </thead>
+            {% for review_by_me in user.reviews_by_me %}
+                {% if review_by_me %}
+                <tr>
+                    <td>{{ review_by_me }}</td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+
+    </section>
+
+{% endblock %}
