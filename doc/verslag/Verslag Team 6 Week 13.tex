@@ -1,0 +1,149 @@
+\documentclass{article}
+
+
+\usepackage[urlcolor=blue, linkcolor=black, colorlinks=true]{hyperref}
+\usepackage[dutch]{babel}
+\usepackage{minutes}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\makeatletter
+\addto\extrasdutch{%
+\def\min@textTask{Taak}%
+}
+\makeatother%
+\makeatletter
+\def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+
+
+
+\newcounter{team}
+
+% TODO: Enter team number here:
+\setcounter{team}{6}
+
+
+\begin{document}
+%	\tableofcontents
+
+	\begin{Minutes}{Programming Project Databases \\ Wekelijks Verslag Team \arabic{team}}
+		\moderation{Arno Deceuninck}
+		\minutetaker{Arno Deceuninck}
+		\participant{Arno Deceuninck, Sam Peeters, Tim Sanders}
+		\missingNoExcuse{/}
+		\missingExcused{Sien Nuyens}
+%		\guest{\ldots}
+		\minutesdate{6 Mei 2020}
+		\starttime{11u00}
+		\endtime{12u00}
+
+		\maketitle
+
+        \topic{Coordinator Vergadering}
+            \begin{itemize}
+                \item Joey had geen voorbereiding, dus gewoon een rondje hoe het met jou en je team gaat
+                \begin{itemize}
+                    \item Team 3: Allemaal redelijk goed, hadden al extra feautures, gebruiken nu ook postgis, bezig met calender te exporteren, geen problemen
+                    \item Team 6: Bezig aan uitbereidingen
+                    \item Team 2: Gaat niet zo vlot, beginnen werk over te nemen van mensen die niets doen omdat ze het anders niet gaan afkrijgen.
+                    \item Team 4: Niet zo speciaal, bezig aan extra feautures (periodische ritten + notifications systeem)
+                    \item Team 5: Alles in orde, moeten wel nog wa changes pushen. (hun API kan vandaag of morgen wel broken zijn)
+                    \item Team 1: Alles gaat goed, iedereen begonnen aan zijn deel van uitbereiding. Kleine fixes gebeurd + algemene improvement. Momenteel problemen met Joren (wat ik raar vind, want da lijkt mij iemand die anders wel altijd goe z'n werk doet)
+                \end{itemize}
+                \item Meste mensen doen hun groepsmeetings pas woensdagnamiddag, coordinatormeetings dan verplaatsen? $\rightarrow$ Dit word meegenomen naar volgend jaar, dit jaar wordt hier nog niets aan veranderd
+                \item Vanaf de 20e coordinatormeetings optioneel
+                \item Uitbereiding: Met andere teams moeten samenwerken: Nog niet aan begonnen of geen problemen. Best niet te lang laten wachten, kan zijn dat ander team niet reageert ofzo, laat het dan op tijd weten.
+                \item Live data kunnen we zelf runnen, zou nice zijn als we een melding ofzo binnenkrijgen tijdens de demo zelf.
+            \end{itemize}
+
+        \topic{Sien afwezig}
+            Sien is afwezig omdat ze de opdracht van vorige week fout begrepen had en vond dat ze deze vergadering dus geen extra bijdrage kon leveren. Ze had zelf de review structuur volledig geimplementeerd, maar da paste blijkbaar niet echt bij de structuur van Tim. Qua API tests had ze ook nog niet verder kunnen werken omdat ze het nogsteeds niet kan runnen in pycharm (en dus ook niet kan debuggen). Straks bel ik nog met haar. Ik heb haar alvast laten weten dat ze tegen volgende week sowieso iets nieuw erbij krijgt, omdat het niet de bedoeling is dat mensen die hun dingen niet op tijd afkrijgen, minder moeten doen (tenzij het natuurlijk ineens veel meer werk was dan verwacht ofzo).
+
+		\topic{Status}
+
+			\subtopic{Overzicht Taken}
+    		    \task*[]{Tussenstops}
+			    \task*[] {Sam kijkt naar sorteren op overeenkomstige muziekkeuzes}
+			    \task*[] {Music preferences API test}
+			    \task*[] {Taal selecteren}
+			    \task*[] {Kalender integratie}
+			    \task*[] {User tabel opslplitsen in database}
+			    \task*[]{Review structuur in database}
+			    \task*[]{Review overzicht en toevoeg template GUI}
+			    \task*[]{Team 3 in search results}
+
+		\topic{Besproken Onderwerpen}
+		       \subtopic{Tussenstops}
+		            Tim licht toe. De requests krijgen nu een extra pickup locatie, zit dus mee in het request model. De driver ziet op de route pagina een extra tab voor recommended stops.
+		      \subtopic{Sorteren op overeenkomstige muziekkeuzes}
+		            Sam licht toe. Da zou normaal gezien moeten werken. Probleem was da de settings niets meer wouden opslaan. Best dat iemand hier dus nog een kijkje naar neemt, zou wel moeten werken.
+		      \subtopic{Music preferences API tests}
+		            Sien licht toe. Sien is afwezig. R.I.P. Is nog niet gebeurd omdat Sien niet kan debuggen. Nevermind. Ze is er weer.
+		      \subtopic{Taal selecteren}
+		            Deze optie is toegevoegd in de navigation bar. De vertalingsfiles moeten hiervoor wel gecompileerd zijn (door ./install.sh te runnen).
+
+		      \subtopic{Kalender integratie}
+		            Als je een route bekijkt, heb je nu ook een knop "Add to calendar", die dan Google Calendar opent in een nieuw tablad om de route toe te voegen.
+
+		      \subtopic{User tabel opsplitsen in database}
+		            Van de oorspronkelijke User klasse heb ik nu een Authenticatio, Car en User klasse gemaakt. Speciale migratie was nodig indien je je data wou behouden (zie uitleg messenger). Tim, Arno en op de server hebben het succesvol gedaan zonder hun data te verliezen.
+
+				\subtopic{Review structuur in database}
+				    Tim licht toe. Aparte review table, reviewer_id, gereviewde\_id, score (float op 5), textveld. Ook al wat extra functie toegevoegd om reviews op te vragen en het werkt voor de API (rekening gehouden met CRUD).
+
+				\subtopic{Review overzicht en toevoeg template GUI}
+				    Sien licht toe. Ze had op de user page zelf een score gezet en als je alle reviews wil zien, kom je naar een aparte pagina. Het zou moeten werken als de functie wil werken.
+
+				\subtopic{Team 3 in search results}
+				    Sam licht toe. Hij heeft dit opgezocht en gevonden en kreeg weldegelijk een antwoord, maar dit was een lege array. Team 3 hun site werkt nog niet echt. Nog niet in GUI toegevoegd, aangezien we nog geen data hebben. Werkt met requests module van python.
+
+				\subtopic{Muziek maakt ons uniek (da rijmt)}
+				    Je kan al een playlist toevoegen aan een route, per user kan je je muziekvoorkeuren instellen, waardoor de volgorde van je playlist bepaalt worden. Zijn er nog dingen die we rond muziek kunnen doen om ons unieke aspect meer naar boven te brengen? In onze ogen hebben we genoeg. Het zou misschien nog wel leuk zijn om een achtergrondmuziekje op onze site te hebben.
+
+ 		\topic{Afspraken \& Planning}
+
+			\begin{itemize}
+			   \item Reviews koppellen aan database. Tim doet dit. En fixt ook iets met zijn functie om een specifieke kolom van een database op te vragen.
+			   \item Uitgebreid database diagram uitwerken. Best een andere site hiervoor gebruiken. Sam doet dit.
+			   \item Uitgebreid rapport maken. Arno doet dit. Yaaay *kuch kuch*
+			   \item Live data generatie script personaliseren. Sien doet dit.
+			   \item Settings kunnen niets meer opslaan. Sam doet dit.
+			   \item Achtergrondmuziekje (radio [PlaceHolder]). Arno doet dit.
+			   \item Vertalingen minder brak Nederlands maken. Arno doet dit.
+			   \item Maps op de site weer fixen. Tim fixt dit.
+			   \item Sien fixt reviews layout nog.
+			   \item Sien fixt ook nogt de API music preferences.
+			\end{itemize}
+
+
+		\topic{Varia}
+			\emph{Eventuele varia punten. Hierbij vragen we ook aan alle aanwezigen of zij nog iets te zeggen hebben.}
+				\subtopic{Sien}
+				    Is het oke dat ik ga douchen?
+				\subtopic{Sam}
+				    Nee, deze keer niet.
+				\subtopic{Tim}
+				    Prettig Pasen iedereen.
+				\subtopic{Arno}
+				    As always, probeer alles tegen volgende week af te hebben, dan hebben we nog genoeg tijd om te debuggen.
+
+
+		\blfootnote{
+			\href{%
+				mailto:joey.depauw@uantwerpen.be%
+				?subject=PPDB 2019-2020: Wekelijks Verslag Team \arabic{team}%
+				&body=Liefste Joey\%0D\%0A%
+				\%0D\%0A%
+				Gelieve ons wekelijks verslag terug te vinden in de bijlage.\%0D\%0A%
+				\%0D\%0A%
+				Groetjes\%0D\%0A%
+				Team \arabic{team}\%0D\%0A%
+			}{Klik hier} om mij op te sturen.
+		}
+
+
+	\end{Minutes}
+\end{document}
