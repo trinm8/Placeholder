@@ -1,6 +1,6 @@
 from app import db
 from app.users import bp
-from app.models import User, MusicPref
+from app.models import User, MusicPref, Review
 from app.users.forms import Settings
 
 from flask import render_template, flash, redirect, url_for
@@ -118,3 +118,10 @@ def delete(id):
     else:
         flash(_("You can only delete your own account"))
     return redirect(url_for("main.index"))
+
+
+@bp.route('/accounts/<id>/review_page')
+@login_required
+def review_page(id):
+    user = User.query.get_or_404(id)
+    return render_template('users/reviews.html', title=_('Review'), user=user)

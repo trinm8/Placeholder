@@ -64,7 +64,7 @@
 
                 </div>
 
-                <div class="column is-8 mapElementWhole">
+                <div class="column is-8 mapElementWhole" style="display: flex; flex-direction: column">
                     <div style="height: 20%">
                         {% if future_routes[0] is none %}
                             <h1 class="title">
@@ -80,7 +80,7 @@
                             </h2>
                         {% endif %}
                     </div>
-                    <div class="mapElementElement">
+                    <div class="mapElementElement" style="height: 100%">
                         {{ map.map() }}
                         <script>loadMarkersRoute({{ future_routes[0].departure_location_lat }}, {{ future_routes[0].departure_location_long }}, {{ future_routes[0].arrival_location_lat }}, {{ future_routes[0].arrival_location_long }})</script>
                     </div>
