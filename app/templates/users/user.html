@@ -68,7 +68,7 @@
       </table>
     </div>
   </div>
-  <div class="tile is-parent">
+  <div class="tile is-6 is-vertical is-parent">
     <div class="tile is-child box">
       <p class="title">Car</p>
       <!--figure class="image is-250x250">
@@ -90,6 +90,22 @@
             </tr>
             </tbody>
       </table>
+    </div>
+    <div class="tile is-child box">
+        <p class="title">{{ _("Reviews") }}</p>
+        <table class="table">
+            <tbody>
+            <tr>
+                <td>{{ user.firstname + _("'s review score:")}}</td>
+                <td>{{ user.get_review_score() }}</td>
+            </tr>
+            <tr>
+                <td>
+                    <a class="button" href="{{ url_for('users.review_page', id=user.id) }}"> {{ _("All reviews")}}</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
   </div>
 </div>

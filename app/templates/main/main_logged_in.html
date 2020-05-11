@@ -14,7 +14,9 @@
 
     #mapid {
     height: 100%;
+    min-height: 300px;
     }
+
     .full-height {
     height: 100%;
     }
@@ -28,7 +30,7 @@
     .mapElementElement {
         width: 100%;
         background-color: green;
-        flex:1;
+        flex:1 1 auto;
         display:flex;
         flex-direction:column;
     }
@@ -38,9 +40,9 @@
 
 {% block body %}
     <!--<section class="section">-->
-    <div id="div" class="full-height">
+    <div id="div" style="height: 100%">
         <section class="section full-height">
-            <div class="columns full-height">
+            <div class="columns" style="height: 100%">
                 <div class="column is-2">
                     {{ card(_("Add a new trip"), link=url_for("routes_drive.addRoute")) }}
 
@@ -65,7 +67,7 @@
                 </div>
 
                 <div class="column is-8 mapElementWhole">
-                    <div style="height: 20%">
+                    <div style="flex: 0 1 auto; height: min-content">
                         {% if future_routes[0] is none %}
                             <h1 class="title">
                                 {{ _("No routes planned")}}
@@ -85,7 +87,7 @@
                         <script>loadMarkersRoute({{ future_routes[0].departure_location_lat }}, {{ future_routes[0].departure_location_long }}, {{ future_routes[0].arrival_location_lat }}, {{ future_routes[0].arrival_location_long }})</script>
                     </div>
                 </div>
-                <div class="column is-2">
+                <div class="column is-2" style="display: flex; flex-direction: column">
                     {% if future_routes[0] %}
                         <div class="card">
                             <div class="card-content">
@@ -109,19 +111,19 @@
                         <p>{{ _("Here is the playlist that was added to the route.")}}</p><br>
                         <iframe src="https://open.spotify.com/embed/playlist/{{ future_routes[0].playlist }}"
                                 width="100%"
-                                height="80%" frameborder="10" allowtransparency="true"
+                                height="100%" frameborder="10" allowtransparency="true"
                                 allow="encrypted-media"></iframe>
                     {% elif range(0, 10) | random %}
                         <p>{{ _("No playlist added to this route.")}} </p>
                         <p>{{ _("Here is some other music to cheer you up.")}}</p><br>
                         <iframe src="https://open.spotify.com/embed/playlist/2MClsgoo2g1jaWfshyduRL?"
-                                uri="theme=white" width="100%" height="80%" frameborder="10" allowtransparency="true"
+                                uri="theme=white" width="100%" height="100%" frameborder="10" allowtransparency="true"
                                 allow="encrypted-media"></iframe>
                     {% else %}
                         <p>{{ _("No playlist added to this route.")}} </p>
                         <p>{{ _("Here is some other music, hehe.")}}</p><br>
                         <iframe src="https://open.spotify.com/embed/album/6N9PS4QXF1D0OWPk0Sxtb4" width="100%"
-                                height="80%" frameborder="10" allowtransparency="true"
+                                height="100%" frameborder="10" allowtransparency="true"
                                 allow="encrypted-media"></iframe>
                     {% endif %}
 

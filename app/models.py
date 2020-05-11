@@ -235,8 +235,11 @@ class User(UserMixin, db.Model):
         return Review.query.filter_by(reviewer_id=self.id).all()
 
     def get_review_score(self):
-        scores = Review.query(Review.score).filter_by(reviewer_id=self.id).all()
-        return sum(scores)/len(scores)
+        scores = Review.query.filter_by(reviewer_id=self.id).with_entities(Review.score).all()
+        if scores:
+            return sum(scores)/len(scores)
+        else:
+            return None
 
 
 class Review(db.Model):
