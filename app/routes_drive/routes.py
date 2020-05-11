@@ -246,8 +246,8 @@ def passenger_request(drive_id, user_id):
 # Returns a score based on music preference of user u and v
 def compareMusicPrefs(u_id: int, v_id: int) -> int:
     # Get the users
-    u = User.query.get(id=u_id)
-    v = User.query.get(id=v_id)
+    u = User.query.get(u_id)
+    v = User.query.get(v_id)
 
     # Calculate score where two likes = +1, 1 like and 1 dislike = -1, and otherwise = 0
     def score(x, y) -> int: return 1 if x.likes and y.likes else -1 if x.likes != y.likes else 0
