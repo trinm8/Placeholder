@@ -271,7 +271,7 @@
     </div>
 </nav>
 
-<main class="Site-content">
+<main class="Site-content" style="height: 100%">
 
     {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -285,9 +285,12 @@
     {% endwith %}
 
     {% block body %}{% endblock %}
+
+
+
 </main>
 
-<footer class="footer">
+<footer class="footer" style="position: relative; bottom: 0; width: 100%; height: min-content;padding: 3rem 1.5rem 3rem">
     <div class="contW.I.P.ent has-text-centered">
         <p>
             <strong>[PlaceHolder]</strong> {{ _("by") }} Arno Deceuninck, Sam Peeters, Sien Nuyens {{ _("and") }} Tim

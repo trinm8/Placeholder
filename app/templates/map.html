@@ -70,7 +70,7 @@
         console.log("test3");
         L.marker(LatLongs2).addTo(mymap);
 
-        mymap.flyToBounds(L.latLngBounds(LatLongs1, LatLongs2));
+        mymap.flyToBounds(L.latLngBounds(LatLongs1, LatLongs2), {padding: [20, 20]});
 
     }
 
@@ -86,7 +86,7 @@
             latLngs = [L.latLng(marker.getLatLng().lat, marker.getLatLng().lng)];
             markerBounds = L.latLngBounds(latLngs);
         }
-        map.flyToBounds(markerBounds);
+        map.flyToBounds(markerBounds, {padding: [20, 20]});
     }
 
     function addStop(lat, long, name) {
