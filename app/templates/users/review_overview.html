@@ -11,7 +11,7 @@
                 <th>{{ _("Reviews of me") }}</th>
             </tr>
             </thead>
-            {% for review_of_me in user.reviews_of_me %}
+            {% for review_of_me in user.get_reviews_of_me() %}
                 {% if review_of_me %}
                 <tr>
                     <td>{{ review_of_me }}</td>
@@ -26,7 +26,7 @@
                 <th>{{ _("Reviews by me") }}</th>
             </tr>
             </thead>
-            {% for review_by_me in user.reviews_by_me %}
+            {% for review_by_me in user.get_reviews_by_me() %}
                 {% if review_by_me %}
                 <tr>
                     <td>{{ review_by_me }}</td>

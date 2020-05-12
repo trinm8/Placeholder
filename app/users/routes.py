@@ -137,12 +137,18 @@ def add_review(id):
     user = User.query.get_or_404(id)
 
     if form.validate_on_submit():
-
         if form.submit_review.data:
+            review = Review.query.get({"reviewer_id": current_user.id, "reviewee_id": user.id})
             # check score
-            if form.score.data > 10:
-                flash(_("Review score larger than 10"))
+            if form.score.data > 5 or form.score.data < 0:
+                flash(_("Review score larger than 5 or smaller then 0"))
                 return render_template('users/add_review.html', title=_('Add Review'), user=user, form=form)
+            elif review:
+                review.score = form.score.data
+                review.review_text = form.review_text.data
+                db.session.commit()
+                flash(_("Review edited"))
+                return redirect(url_for('main.index'))
             else:
                 review = Review(reviewer_id=current_user.id,
                                 reviewee_id=user.id,
