@@ -127,7 +127,10 @@ def delete(id):
 @login_required
 def review_overview(id):
     user = User.query.get_or_404(id)
-    return render_template('users/review_overview.html', title=_('Review Overview'), user=user)
+    reviews_of_me = user.get_reviews_of_me()
+    reviews_by_me = user.get_reviews_by_me()
+    return render_template('users/review_overview.html', title=_('Review Overview'), user=user,
+                           reviews_of_me=reviews_of_me, reviews_by_me=reviews_by_me)
 
 
 @bp.route('/accounts/<id>/add_review', methods=['GET', 'POST'])

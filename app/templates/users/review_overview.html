@@ -3,37 +3,37 @@
 {% block body %}
 
     <section class="section">
-        <h1 class="title">{{ _("Reviews") }}</h1>
-        <h2 class="subtitle">{{ _("All the reviews of and by") + user.firstname}}</h2>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>{{ _("Reviews of me") }}</th>
-            </tr>
-            </thead>
-            {% for review_of_me in user.get_reviews_of_me() %}
-                {% if review_of_me %}
-                <tr>
-                    <td>{{ review_of_me }}</td>
-                </tr>
-                {% endif %}
-            {% endfor %}
-        </table>
+        <h1 class="title">{{ _("Reviews")}}</h1>
+        <h2 class="subtitle">{{ _("All reviews of and by you")}}</h2>
 
-        <table class="table">
-            <thead>
-            <tr>
-                <th>{{ _("Reviews by me") }}</th>
-            </tr>
-            </thead>
-            {% for review_by_me in user.get_reviews_by_me() %}
-                {% if review_by_me %}
-                <tr>
-                    <td>{{ review_by_me }}</td>
-                </tr>
-                {% endif %}
+        <div class="columns is-multiline">
+            {% for review_of_me in reviews_of_me %}
+                <div class="column is-4">
+                    <p class="title">{{ _("Review of you") }}</p>
+                    <div class="message
+                     {% if review_of_me.score < 5 %}
+                        is-danger
+                     {% else %}
+                        is-primary
+                     {% endif %}">
+                        <div class="message-body">
+                            {% if review_of_me.score > 5 %}
+                                <p class="tag is-success"><strong>{{ _("score:")}} </strong></p>
+                            {% elif review_of_me.score < 5 %}
+                                <p class="tag is-danger"><strong>{{ _("score:")}} </strong></p>
+                            {% else %}
+                                <p class="tag is-primary"><strong>{{ _("score:")}} </strong></p>
+                            {% endif %}
+                             {{ review_of_me.score }}<br>
+                            {% if review_of_me.review_text %}
+                            {{ review_of_me.review_text }}<br>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
-        </table>
+
+        </div>
 
     </section>
 
