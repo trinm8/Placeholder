@@ -94,12 +94,14 @@ class UserAuthentication(db.Model):
     def user(self):
         return User.query.get(self.id)
 
+
 class Car(db.Model):
     # Car properties
     color = db.Column(db.String(64), index=True)
     brand = db.Column(db.String(64), index=True)
     plate = db.Column(db.String(32), index=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True) # Each user can have max 1 car
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -253,7 +255,7 @@ class User(UserMixin, db.Model):
         return Review.query.filter_by(reviewer_id=self.id).all()
 
     def get_review_score(self):
-        scores = [r[0] for r in Review.query.filter_by(reviewer_id=self.id).with_entities(Review.score).all()]
+        scores = [r[0] for r in Review.query.filter_by(reviewee_id=self.id).with_entities(Review.score).all()]
         if scores:
             return sum(scores)/len(scores)
         else:
