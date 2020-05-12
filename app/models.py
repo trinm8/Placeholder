@@ -127,6 +127,15 @@ class User(UserMixin, db.Model):
             car_color = car_entity.color
             car_brand = car_entity.brand
             car_plate = car_entity.plate
+########
+        liked_genres = []
+        disliked_genres = []
+        for music in self.musicpref:
+            if music.likes:
+                liked_genres.append(music.genre)
+            else:
+                disliked_genres.append(music.genre)
+########
         data = {
             "id": self.id,
             "firstname": self.firstname,
@@ -135,7 +144,10 @@ class User(UserMixin, db.Model):
             "email": self.email,
             "car_color": _(car_color),
             "car_plate": car_plate,
-            "car_brand": car_brand
+            "car_brand": car_brand,
+
+            "liked_genres": liked_genres,
+            "disliked_genres": disliked_genres
         }
         return data
 
@@ -148,6 +160,14 @@ class User(UserMixin, db.Model):
             self.lastname = data["lastname"]
         if "email" in data:
             self.email = data["email"]
+######
+        if "liked_genres" in data:
+            for liked_genre in data["liked_genres"]:
+                self.musicpref += MusicPref(user=self.id, genre=liked_genre, likes=True)
+        if "disliked_genres" in data:
+            for disliked_genre in data["disliked_genres"]:
+                self.musicpref += MusicPref(user=self.id, genre=disliked_genre, likes=False)
+######
         if "car_color" in data:
             self.car().color = data["car_color"]
         if "car_plate" in data:

@@ -434,6 +434,32 @@ class UserTests(BaseCase):
                                       headers={"Content-Type": "application/json", "Authorization": authorization})
         self.assertEqual(None, User.query.get(id))
 
+    def test_update_musicPref(self):
+        response = self.help_register("TEST_MarkP", "Mark", "Peeters", "MarkIsCool420")
+        id = response.json.get("id")
+        response = self.help_login("TEST_MarkP", "MarkIsCool420")
+        authorization = "Bearer {token}".format(token=response.json.get("token"))
+
+        payload = json.dumps({
+            "liked_genres": ["R&B", "Jazz"],
+            "disliked_genres": ["Pop"]
+        })
+
+        response = self.client.get('/api/user/{id}'.format(id=id),
+                                   headers={"Content-Type": "application/json", "Authorization": authorization})
+
+        self.assertEqual([], response.json.get("liked_genres"))
+        self.assertEqual([], response.json.get("disliked_genres"))
+        self.assertEqual("TEST_MarkP", response.json.get("username"))
+
+        response = self.client.put('/api/user',
+                                   headers={"Content-Type": "application/json", "Authorization": authorization},
+                                   data=payload)
+        self.assertEqual(["R&B", "Jazz"], response.json.get("liked_genres"))
+        self.assertEqual(["Pop"], response.json.get("disliked_genres"))
+
+        self.assertEqual(201, response.status_code)
+
 
 class ReviewTests(BaseCase):
     def test_create_review(self):

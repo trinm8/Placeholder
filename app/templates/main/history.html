@@ -20,6 +20,7 @@
                     <td>{{ route.text_from() }}</td>
                     <td>{{ route.text_to() }}</td>
                     <td>{{ route.departure_time }}</td>
+                    <td><a class="button" href="{{ url_for('routes_drive.drive',  drive_id=route.id) }}">{{ _("More info")}}</a></td>
                 </tr>
                 {% endif %}
             {% endfor %}

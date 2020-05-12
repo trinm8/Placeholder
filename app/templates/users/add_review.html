@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <section class="section">
+        <div class="container">
+            <h1 class="title is-medium">{{ "Review " + user.firstname + " " + user.lastname}}</h1>
+            <hr class="hr">
+        </div>
+    </section>
+
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <section class="section">
+            <div class="container box">
+
+                <div class="columns">
+                    <div class="column is-2">
+                        <p>{{ _("Score:")}}</p>
+                    </div>
+                    <div class="column is-5">
+                        {{ form.score(type="number", class="input", placeholder="Score") }}
+                    </div>
+                </div>
+
+                <div class="columns">
+                    <div class="column is-2">
+                        <p>{{ _("Write your review:")}}</p>
+                    </div>
+                    <div class="column is-5">
+                        {{ form.review_text(type="text", class="input", placeholder="Review text") }}
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    {{ form.submit_review(class="button is-primary") }}
+                </div>
+            </div>
+        </section>
+    </form>
+
+{% endblock %}

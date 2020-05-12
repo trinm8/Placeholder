@@ -81,7 +81,7 @@ def addRoute():
     # flash("Warning: this page won't submit anything to the database yet. We're working on it.")
     form = AddRouteForm()
     if form.submit.data:
-        geolocator = Nominatim(user_agent="[PlaceHolder]")
+        geolocator = Nominatim(user_agent="[PlaceHolder]", scheme='http')
         try:
             departure_location = geolocator.geocode(form.start.data)
             sleep(1.1)
@@ -183,7 +183,7 @@ def drive(drive_id):
             if not trip.places_left():
                 flash(_("There aren't any places left in the car"))
                 return redirect(url_for("main.index"))
-            geolocator = Nominatim(user_agent="[PlaceHolder]")
+            geolocator = Nominatim(user_agent="[PlaceHolder]", scheme='http')
             try:
                 pickup = geolocator.geocode(form.pickupPoint.data)
                 sleep(1.1)
@@ -262,7 +262,7 @@ def overview():
     form = RouteSearchForm(request.form)
 
     if form.submit.data:
-        geolocator = Nominatim(user_agent="[PlaceHolder]")
+        geolocator = Nominatim(user_agent="[PlaceHolder]", scheme='http')
         departure_location = geolocator.geocode(form.start.data)
         sleep(1.1)
         if departure_location is None:
@@ -416,7 +416,7 @@ def editRoute(id):
         departure_location = None
         arrival_location = None
         time = None
-        geolocator = Nominatim(user_agent="[PlaceHolder]")
+        geolocator = Nominatim(user_agent="[PlaceHolder]", scheme='http')
         if form.start.data and form.start.data != "":
             if len(form.start.data) > 256:
                 flash(_("Start data exceeds character limit"))

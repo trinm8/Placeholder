@@ -93,19 +93,21 @@
     </div>
     <div class="tile is-child box">
         <p class="title">{{ _("Reviews") }}</p>
-        <table class="table">
-            <tbody>
-            <tr>
-                <td>{{ user.firstname + _("'s review score:")}}</td>
-                <td>{{ user.get_review_score() }}</td>
-            </tr>
-            <tr>
-                <td>
-                    <a class="button" href="{{ url_for('users.review_page', id=user.id) }}"> {{ _("All reviews")}}</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="card" style="padding: 10px">
+            {% if user.get_review_score() == None %}
+            {{ user.firstname + _(" has not been reviewed yet.") }} <br>
+            {% else %}
+            <strong>{{ user.firstname + _("'s score: ") }} </strong>{{ user.get_review_score() }} <br>
+            {% endif %}
+        </div>
+
+        <div class="card" style="padding: 10px">
+            <a class="button" href="{{ url_for('users.review_overview', id=user.id) }}"> {{ _("All reviews")}}</a>
+        </div>
+        <div class="card" style="padding: 10px">
+            <a class="button" href="{{ url_for('users.add_review', id=user.id) }}"> {{ _("Add review")}}</a>
+        </div>
+    </div>
     </div>
   </div>
 </div>

@@ -1,7 +1,7 @@
 from app import db
 from app.users import bp
 from app.models import User, MusicPref, Review, Car
-from app.users.forms import Settings
+from app.users.forms import Settings, ReviewForm
 
 from flask import render_template, flash, redirect, url_for
 from flask_login import login_required, current_user, logout_user
@@ -123,8 +123,37 @@ def delete(id):
     return redirect(url_for("main.index"))
 
 
-@bp.route('/accounts/<id>/review_page')
+@bp.route('/accounts/<id>/review_overview')
 @login_required
-def review_page(id):
+def review_overview(id):
     user = User.query.get_or_404(id)
-    return render_template('users/reviews.html', title=_('Review'), user=user)
+    return render_template('users/review_overview.html', title=_('Review Overview'), user=user)
+
+
+@bp.route('/accounts/<id>/add_review', methods=['GET', 'POST'])
+@login_required
+def add_review(id):
+    form = ReviewForm()
+    user = User.query.get_or_404(id)
+
+    if form.validate_on_submit():
+
+        if form.submit_review.data:
+            # check score
+            if form.score.data > 10:
+                flash(_("Review score larger than 10"))
+                return render_template('users/add_review.html', title=_('Add Review'), user=user, form=form)
+            else:
+                review = Review(reviewer_id=current_user.id,
+                                reviewee_id=user.id,
+                                score=form.score.data,
+                                review_text=form.review_text.data)
+                db.session.add(review)
+                db.session.commit()
+
+                flash(_('New review added'))
+                #return redirect(url_for('/users/<id>', id=current_user.id))
+                return redirect(url_for('main.index'))
+
+    return render_template('users/add_review.html', title=_('Add Review'), user=user, form=form)
+

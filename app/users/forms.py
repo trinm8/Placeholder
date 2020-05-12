@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, FloatField
 from wtforms.validators import DataRequired
 
 from flask_babel import lazy_gettext as _l
@@ -24,3 +24,9 @@ class Settings(FlaskForm):
     brand = StringField(_l('Brand'), validators=[DataRequired()])
     plate = StringField(_l('License plate'), validators=[DataRequired()])
     submit_car = SubmitField(_l("Update Car"))
+
+
+class ReviewForm(FlaskForm):
+    score = FloatField(_l('Score'))
+    review_text = StringField(_l('Review text'))
+    submit_review = SubmitField(_l("Submit"))
