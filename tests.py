@@ -57,6 +57,19 @@ class BaseCase(TestCase):
 
         return self.client.post('/api/users/auth', headers={"Content-Type": "application/json"}, data=payload)
 
+    def help_add_MusicPref(self, user_id, genre, likes, authorization):
+        music = json.dumps({
+            "user": user_id,
+            "genre": genre,
+            "likes": likes
+        })
+        data = json.dumps({
+            "musicpref": music
+        })
+        return self.client.put('/api/user',
+                                headers={"Content-Type": "application/json", "Authorization": authorization},
+                                data=data)
+
     def help_add_route(self, from_coords, to_coords, passenger_places, arrive_by, authorization):
         payload = json.dumps({
             "from": from_coords,
@@ -439,12 +452,6 @@ class UserTests(BaseCase):
         id = response.json.get("id")
         response = self.help_login("TEST_MarkP", "MarkIsCool420")
         authorization = "Bearer {token}".format(token=response.json.get("token"))
-
-        payload = json.dumps({
-            "liked_genres": ["R&B", "Jazz"],
-            "disliked_genres": ["Pop"]
-        })
-
         response = self.client.get('/api/user/{id}'.format(id=id),
                                    headers={"Content-Type": "application/json", "Authorization": authorization})
 
@@ -452,9 +459,15 @@ class UserTests(BaseCase):
         self.assertEqual([], response.json.get("disliked_genres"))
         self.assertEqual("TEST_MarkP", response.json.get("username"))
 
+        payload = json.dumps({
+            "liked_genres": ["R&B", "Jazz"],
+            "disliked_genres": ["Pop"]
+        })
+
         response = self.client.put('/api/user',
                                    headers={"Content-Type": "application/json", "Authorization": authorization},
                                    data=payload)
+
         self.assertEqual(["R&B", "Jazz"], response.json.get("liked_genres"))
         self.assertEqual(["Pop"], response.json.get("disliked_genres"))
 

@@ -127,7 +127,6 @@ class User(UserMixin, db.Model):
             car_color = car_entity.color
             car_brand = car_entity.brand
             car_plate = car_entity.plate
-########
         liked_genres = []
         disliked_genres = []
         for music in self.musicpref:
@@ -135,7 +134,6 @@ class User(UserMixin, db.Model):
                 liked_genres.append(music.genre)
             else:
                 disliked_genres.append(music.genre)
-########
         data = {
             "id": self.id,
             "firstname": self.firstname,
@@ -160,14 +158,14 @@ class User(UserMixin, db.Model):
             self.lastname = data["lastname"]
         if "email" in data:
             self.email = data["email"]
-######
         if "liked_genres" in data:
             for liked_genre in data["liked_genres"]:
-                self.musicpref += MusicPref(user=self.id, genre=liked_genre, likes=True)
+                pref = MusicPref(user=self.id, genre=liked_genre, likes=True)
+                db.session.add(pref)
         if "disliked_genres" in data:
             for disliked_genre in data["disliked_genres"]:
-                self.musicpref += MusicPref(user=self.id, genre=disliked_genre, likes=False)
-######
+                pref = MusicPref(user=self.id, genre=disliked_genre, likes=False)
+                db.session.add(pref)
         if "car_color" in data:
             self.car().color = data["car_color"]
         if "car_plate" in data:
@@ -260,7 +258,6 @@ class User(UserMixin, db.Model):
             return sum(scores)/len(scores)
         else:
             return None
-
 
 class Review(db.Model):
     reviewer_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True)
