@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  PlaceHolder\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-05-11 12:24+0200\n"
+"POT-Creation-Date: 2020-05-11 14:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -439,7 +439,9 @@ msgstr "Fout 405: methode niet toegestaan"
 msgid ""
 "You are not allowed to use the requested method on this page. (e.g. using"
 " a GET request for one of the pages of the API which only supports POST)"
-msgstr "Je hebt geen toestemming om de gebruikte methode op deze pagina te gebruiken"
+msgstr ""
+"Je hebt geen toestemming om de gebruikte methode op deze pagina te "
+"gebruiken"
 
 #: app/templates/errors/500.html:25
 msgid "Error 500: Internal server error"
@@ -475,7 +477,10 @@ msgid ""
 "website for our final project for the course \"Programming Project "
 "Databases\". In this course we have learned the practical side of using "
 "databases."
-msgstr "Als informaticastudenten aan de UAntwerpen, hebben we deze site moeten maken voor het vak \"Programming Project Databases \". In dit vak leerden we de databases toepassen."
+msgstr ""
+"Als informaticastudenten aan de UAntwerpen, hebben we deze site moeten "
+"maken voor het vak \"Programming Project Databases \". In dit vak leerden"
+" we de databases toepassen."
 
 #: app/templates/main/about.html:26
 msgid ""
@@ -483,7 +488,12 @@ msgid ""
 " to stand our from other already existing webapplications. We came up "
 "with the idea to not only select availeble options from the route but "
 "also from peoples music taste. PLACEHOLDER is the result of our work."
-msgstr "De opdracht was om een webapp te maken om te carpoolen waarbij we ons uniek moesten maken van reeds bestaande webapps. Wij zijn met het idee gekomen om niet alleen te selecteren op basis van de vrije plaatsen, maar ook op basis van mensen hun muziekkeuzes. PLACEHOLDER is het resultaat van ons werk."
+msgstr ""
+"De opdracht was om een webapp te maken om te carpoolen waarbij we ons "
+"uniek moesten maken van reeds bestaande webapps. Wij zijn met het idee "
+"gekomen om niet alleen te selecteren op basis van de vrije plaatsen, maar"
+" ook op basis van mensen hun muziekkeuzes. PLACEHOLDER is het resultaat "
+"van ons werk."
 
 #: app/templates/main/about.html:27
 msgid "By"
@@ -507,7 +517,16 @@ msgid ""
 "easy was to be social with other people and with PLACEHOLDER you will "
 "already know you have a common thing: your music-style. You might be "
 "wondering what we've already achieved."
-msgstr "Dit is niet gewoon een andere carpooling site. Het is een snelle en makkelijke manier om de rit te viden die perfect bij jou past. PLACEHOLDER laat je niet gewoon iemand vinden die je van plaats A naar plaats B brengt. Nee, het houdt ook rekening met de muziekinteresse die zowel jij, als de bestuurder hebben. Carpoolen brengt mensen altijd dichter bij elkaar. Het is makkelijk om snel sociaal te kunnen doen met andere mensen, zeker met PLACEHOLDER, want daar heb je al een gemeenschappelijk ding: Jullie muziekkeuze. Je vraagt je misschien af wat we al bereikt hebben."
+msgstr ""
+"Dit is niet gewoon een andere carpooling site. Het is een snelle en "
+"makkelijke manier om de rit te viden die perfect bij jou past. "
+"PLACEHOLDER laat je niet gewoon iemand vinden die je van plaats A naar "
+"plaats B brengt. Nee, het houdt ook rekening met de muziekinteresse die "
+"zowel jij, als de bestuurder hebben. Carpoolen brengt mensen altijd "
+"dichter bij elkaar. Het is makkelijk om snel sociaal te kunnen doen met "
+"andere mensen, zeker met PLACEHOLDER, want daar heb je al een "
+"gemeenschappelijk ding: Jullie muziekkeuze. Je vraagt je misschien af wat"
+" we al bereikt hebben."
 
 #: app/templates/main/about.html:37
 msgid "That's a lot, to be exact "
@@ -546,7 +565,11 @@ msgid ""
 "You probably know the feeling: You want to save the environment, so you "
 "decide to go carpooling, but then, from the moment you enter the car, you"
 " only hear Jazz music, the music you hated most of all."
-msgstr "Je kent vast het gevoel: Je wilt eens goed zijn voor het milieu, dus je beslist om te gaan carpoolen, maar dan, vanaf je de wagen instapt, begin je Jazz muziek te horen, nu net de muziek waar je het meest een hekel aan hebt."
+msgstr ""
+"Je kent vast het gevoel: Je wilt eens goed zijn voor het milieu, dus je "
+"beslist om te gaan carpoolen, maar dan, vanaf je de wagen instapt, begin "
+"je Jazz muziek te horen, nu net de muziek waar je het meest een hekel aan"
+" hebt."
 
 #: app/templates/main/home.html:26
 msgid ""
@@ -554,7 +577,12 @@ msgid ""
 "hold a place in someones car with the music you like. Yes, you read that "
 "right: [PlaceHolder] is a carpooling app which selects your optimal trip "
 "by taking the music preferences of the passengers into account."
-msgstr "Wij hebben een oplossing voor jou, want met [PlaceHolder] kan je een plaats in iemands auto vrijhouden met de muziek die je zelf leuk vind. Yup, dat heb je goed gelezen: [PlaceHolder] is een caarpooling app die de optimale trip selecteerd door rekening te houden met mensen hun muziekkeuzes."
+msgstr ""
+"Wij hebben een oplossing voor jou, want met [PlaceHolder] kan je een "
+"plaats in iemands auto vrijhouden met de muziek die je zelf leuk vind. "
+"Yup, dat heb je goed gelezen: [PlaceHolder] is een caarpooling app die de"
+" optimale trip selecteerd door rekening te houden met mensen hun "
+"muziekkeuzes."
 
 #: app/templates/main/home.html:43
 msgid "Go in style"
@@ -566,13 +594,19 @@ msgid ""
 "it). Once signed in, your greeted with our minimal design for optimal "
 "functionality. I can keep talking about it, but it's best you're going to"
 " find it all out by yourself."
-msgstr "Je kan registreren en je eerste rit toevoegen in minder dan een minuut (we hebben het getest). Eens je bent ingelogd word je begroet met ons minimale design voor optimale functionaliteit. Ik kan erover blijven praten, maar het beste is dat je het allemaal zelf kan ontdekken."
+msgstr ""
+"Je kan registreren en je eerste rit toevoegen in minder dan een minuut "
+"(we hebben het getest). Eens je bent ingelogd word je begroet met ons "
+"minimale design voor optimale functionaliteit. Ik kan erover blijven "
+"praten, maar het beste is dat je het allemaal zelf kan ontdekken."
 
 #: app/templates/main/home.html:45
 msgid ""
 "So why are you still reading this? Let's select your groove, while you "
 "move."
-msgstr "Dus, waarom ben je dit nog aan het lezen? Kies snel een rit met de juiste muziek, want dat maakt ons uniek."
+msgstr ""
+"Dus, waarom ben je dit nog aan het lezen? Kies snel een rit met de juiste"
+" muziek, want dat maakt ons uniek."
 
 #: app/templates/main/main_logged_in.html:45
 msgid "Add a new trip"
@@ -816,6 +850,22 @@ msgstr "Gebruiker informatie"
 msgid "Distance (km):"
 msgstr "Afstand (km):"
 
+#: app/templates/users/reviews.html:6 app/templates/users/user.html:95
+msgid "Reviews"
+msgstr ""
+
+#: app/templates/users/reviews.html:7
+msgid "All the reviews of and by"
+msgstr ""
+
+#: app/templates/users/reviews.html:11
+msgid "Reviews of me"
+msgstr ""
+
+#: app/templates/users/reviews.html:26
+msgid "Reviews by me"
+msgstr ""
+
 #: app/templates/users/settings.html:6
 msgid "Settings"
 msgstr "Instellingen"
@@ -900,6 +950,14 @@ msgstr "Genre(s) die je niet leuk vindt:"
 msgid "Licence Plate:"
 msgstr "Kentekenplaat:"
 
+#: app/templates/users/user.html:99
+msgid "'s review score:"
+msgstr ""
+
+#: app/templates/users/user.html:104
+msgid "All reviews"
+msgstr ""
+
 #: app/users/forms.py:14
 msgid "Update Profile"
 msgstr "Profiel bijwerken"
@@ -975,6 +1033,10 @@ msgstr "Uw account is succesvol verwijderd"
 #: app/users/routes.py:119
 msgid "You can only delete your own account"
 msgstr "Je kunt alleen je eigen account verwijderen"
+
+#: app/users/routes.py:127
+msgid "Review"
+msgstr ""
 
 #~ msgid ""
 #~ "That's a lot, to be exact\n"
