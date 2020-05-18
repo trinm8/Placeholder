@@ -49,8 +49,8 @@
                     {{ card(_("Add a new trip"), link=url_for("routes_drive.addRoute")) }}
 
                     {% if future_routes is none or future_routes[0] is none %}
-                        <div class="card">
-                            {{ _("No routes planned")}}
+                        <div class="card" style="padding-left: 20px">
+                               {{ _("No routes planned")}}
                         </div>
                     {% else %}
                         {% for trip in future_routes %}

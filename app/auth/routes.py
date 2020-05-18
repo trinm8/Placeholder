@@ -68,10 +68,11 @@ def register():
         return redirect(url_for('main.index'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        register_user_func(username=form.username.data, firstname=form.firstname.data, lastname=form.lastname.data,
+        id = register_user_func(username=form.username.data, firstname=form.firstname.data, lastname=form.lastname.data,
                            password=form.password.data)
         flash(_('Congratulations, you are now a registered user!')) # TODO: Auto login after registering
-        return redirect(url_for('auth.login'))
+        login_user(User.query.get_or_404(id))
+        return redirect(url_for('main.index'))
     return render_template('auth/register.html', title='Register', form=form)
 
 
