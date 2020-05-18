@@ -237,7 +237,7 @@ def passenger_request(drive_id, user_id):
             db.session.commit()
             flash(_("The route request was successfully accepted."))
         elif form.reject.data:
-            request.status = RequestStatus.rejected
+            RouteRequest.query.filter_by(route_id=drive_id, user_id=user_id).delete()
             db.session.commit()
             flash(_("The route request was successfully rejected."))
         return redirect(url_for("main.index"))
