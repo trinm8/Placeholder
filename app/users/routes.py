@@ -109,9 +109,9 @@ def remove_genre(id):
     return redirect(url_for('users.account_settings'))
 
 
-@bp.route('/accounts/<id>/delete', methods=['GET'])
+@bp.route('/accounts/<int:id>/delete', methods=['GET'])
 @login_required
-def delete(id):
+def delete(id: int):
     # TODO: check cascade, not yet tested
     if current_user.id == id:
         logout_user()
@@ -161,7 +161,7 @@ def add_review(id):
                 db.session.commit()
 
                 flash(_('New review added'))
-                #return redirect(url_for('/users/<id>', id=current_user.id))
+                #return redirect(url_for('/users/<id>', id=user.id))
                 return redirect(url_for('main.index'))
 
     return render_template('users/add_review.html', title=_('Add Review'), user=user, form=form)

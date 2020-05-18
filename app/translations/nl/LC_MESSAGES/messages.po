@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  PlaceHolder\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-05-11 14:12+0200\n"
+"POT-Creation-Date: 2020-05-18 15:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -83,7 +83,7 @@ msgstr "Ongeldige gebruikersnaam of wachtwoord"
 msgid "Congratulations, you are now a registered user!"
 msgstr "Gefeliciteerd, je bent nu een geregistreerde gebruiker!"
 
-#: app/auth/routes.py:88
+#: app/auth/routes.py:89
 msgid ""
 "Check your email for the instructions to reset your password. Check your "
 "junk mail too when you didn't receive anything"
@@ -92,11 +92,11 @@ msgstr ""
 "stellen. Controleer ook uw ongewenste e-mail wanneer u niets heeft "
 "ontvangen"
 
-#: app/auth/routes.py:91
+#: app/auth/routes.py:92
 msgid "No user found with the given name."
 msgstr "Geen gebruiker gevonden met de opgegeven naam."
 
-#: app/auth/routes.py:108
+#: app/auth/routes.py:109
 msgid "Your password has been reset."
 msgstr "Je wachtwoord is gereset."
 
@@ -112,15 +112,15 @@ msgstr "Methode niet toegestaan"
 msgid "Internal error"
 msgstr "Interne fout"
 
-#: app/main/routes.py:59
+#: app/main/routes.py:47
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: app/main/routes.py:60
+#: app/main/routes.py:48
 msgid "Welcome"
 msgstr "Welkom"
 
-#: app/main/routes.py:67
+#: app/main/routes.py:55
 msgid "over 9000"
 msgstr "meer dan 9000"
 
@@ -233,7 +233,7 @@ msgstr "De playlist data is langer dan de karakter limiet."
 
 #: app/routes_drive/routes.py:120
 msgid "Passenger places must be a number!"
-msgstr ""
+msgstr "Passagiersplaatsen moet een nummer zijn!"
 
 #: app/routes_drive/routes.py:123
 msgid "New route added"
@@ -343,11 +343,11 @@ msgstr "Volgende route:"
 msgid "Logout"
 msgstr "Uitloggen"
 
-#: app/templates/base.html:293
+#: app/templates/base.html:296
 msgid "by"
 msgstr "door"
 
-#: app/templates/base.html:293
+#: app/templates/base.html:296
 msgid "and"
 msgstr "en"
 
@@ -536,7 +536,7 @@ msgstr "Dat is veel, om exact te zijn"
 msgid " people that have been rickrolled."
 msgstr " mensen die we al gerickrolled hebben"
 
-#: app/templates/main/history.html:6 app/templates/main/main_logged_in.html:62
+#: app/templates/main/history.html:6 app/templates/main/main_logged_in.html:66
 msgid "History"
 msgstr "Geschiedenis"
 
@@ -555,6 +555,12 @@ msgstr "Naar"
 #: app/templates/main/history.html:13
 msgid "Time"
 msgstr "Tijd"
+
+#: app/templates/main/history.html:23 app/templates/main/main_logged_in.html:62
+#: app/templates/routes/request_route.html:64
+#: app/templates/routes/request_route.html:89
+msgid "More info"
+msgstr "Meer informatie"
 
 #: app/templates/main/home.html:23
 msgid "Choose your music"
@@ -608,49 +614,43 @@ msgstr ""
 "Dus, waarom ben je dit nog aan het lezen? Kies snel een rit met de juiste"
 " muziek, want dat maakt ons uniek."
 
-#: app/templates/main/main_logged_in.html:45
+#: app/templates/main/main_logged_in.html:49
 msgid "Add a new trip"
 msgstr "Nieuwe route toevoegen"
 
-#: app/templates/main/main_logged_in.html:49
-#: app/templates/main/main_logged_in.html:71
+#: app/templates/main/main_logged_in.html:53
+#: app/templates/main/main_logged_in.html:75
 msgid "No routes planned"
 msgstr "Geen routes gepland"
 
-#: app/templates/main/main_logged_in.html:54
-#: app/templates/main/main_logged_in.html:75
+#: app/templates/main/main_logged_in.html:58
+#: app/templates/main/main_logged_in.html:79
 #: app/templates/routes/request_route.html:36
 #: app/templates/routes/route_request.html:37
 msgid "From:"
 msgstr "Van:"
 
-#: app/templates/main/main_logged_in.html:55
-#: app/templates/main/main_logged_in.html:76
+#: app/templates/main/main_logged_in.html:59
+#: app/templates/main/main_logged_in.html:80
 #: app/templates/routes/request_route.html:37
 #: app/templates/routes/route_request.html:38
 msgid "To:"
 msgstr "Naar:"
 
-#: app/templates/main/main_logged_in.html:58
-#: app/templates/routes/request_route.html:64
-#: app/templates/routes/request_route.html:89
-msgid "More info"
-msgstr "Meer informatie"
-
-#: app/templates/main/main_logged_in.html:95
+#: app/templates/main/main_logged_in.html:99
 #: app/templates/routes/request_route.html:93
 #: app/templates/routes/request_route.html:109
 msgid "No passengers"
 msgstr "Geen passagiers"
 
-#: app/templates/main/main_logged_in.html:109
+#: app/templates/main/main_logged_in.html:113
 #: app/templates/routes/request_route.html:41
 #: app/templates/routes/route_request.html:43
 msgid "Here is the playlist that was added to the route."
 msgstr "Hier is de afspeellijst die aan de route is toegevoegd."
 
-#: app/templates/main/main_logged_in.html:115
-#: app/templates/main/main_logged_in.html:121
+#: app/templates/main/main_logged_in.html:119
+#: app/templates/main/main_logged_in.html:125
 #: app/templates/routes/request_route.html:44
 #: app/templates/routes/request_route.html:48
 #: app/templates/routes/route_request.html:46
@@ -658,13 +658,13 @@ msgstr "Hier is de afspeellijst die aan de route is toegevoegd."
 msgid "No playlist added to this route."
 msgstr "Geen playlist toegevoegd aan deze route."
 
-#: app/templates/main/main_logged_in.html:116
+#: app/templates/main/main_logged_in.html:120
 #: app/templates/routes/request_route.html:45
 #: app/templates/routes/route_request.html:47
 msgid "Here is some other music to cheer you up."
 msgstr "Hier is wat andere muziek om je op te vrolijken."
 
-#: app/templates/main/main_logged_in.html:122
+#: app/templates/main/main_logged_in.html:126
 #: app/templates/routes/request_route.html:49
 msgid "Here is some other music, hehe."
 msgstr "Hier is wat andere muziek, hehe."
@@ -850,21 +850,35 @@ msgstr "Gebruiker informatie"
 msgid "Distance (km):"
 msgstr "Afstand (km):"
 
-#: app/templates/users/reviews.html:6 app/templates/users/user.html:95
+#: app/templates/users/add_review.html:6
+msgid "Review"
+msgstr "Beoordeel"
+
+#: app/templates/users/add_review.html:18
+msgid "Score:"
+msgstr "Score:"
+
+#: app/templates/users/add_review.html:27
+msgid "Write your review:"
+msgstr "Schrijf je beoordeling:"
+
+#: app/templates/users/review_overview.html:6 app/templates/users/user.html:95
 msgid "Reviews"
-msgstr ""
+msgstr "Beoordelingen"
 
-#: app/templates/users/reviews.html:7
-msgid "All the reviews of and by"
-msgstr ""
+#: app/templates/users/review_overview.html:7
+msgid "All reviews of and by you"
+msgstr "Alle beoordelingen over en door jou"
 
-#: app/templates/users/reviews.html:11
-msgid "Reviews of me"
-msgstr ""
+#: app/templates/users/review_overview.html:12
+msgid "Review of you"
+msgstr "Beoordelingen over jou"
 
-#: app/templates/users/reviews.html:26
-msgid "Reviews by me"
-msgstr ""
+#: app/templates/users/review_overview.html:21
+#: app/templates/users/review_overview.html:23
+#: app/templates/users/review_overview.html:25
+msgid "score:"
+msgstr "score"
 
 #: app/templates/users/settings.html:6
 msgid "Settings"
@@ -950,13 +964,21 @@ msgstr "Genre(s) die je niet leuk vindt:"
 msgid "Licence Plate:"
 msgstr "Kentekenplaat:"
 
-#: app/templates/users/user.html:99
-msgid "'s review score:"
-msgstr ""
+#: app/templates/users/user.html:98
+msgid " has not been reviewed yet."
+msgstr " heeft nog geen beoordelingen"
 
-#: app/templates/users/user.html:104
+#: app/templates/users/user.html:100
+msgid "'s score: "
+msgstr "'s score"
+
+#: app/templates/users/user.html:105
 msgid "All reviews"
-msgstr ""
+msgstr "Alle beoordelingen"
+
+#: app/templates/users/user.html:108
+msgid "Add review"
+msgstr "Beoordeling toevoegen"
 
 #: app/users/forms.py:14
 msgid "Update Profile"
@@ -990,53 +1012,81 @@ msgstr "Nummerplaat"
 msgid "Update Car"
 msgstr "Auto bijwerken"
 
+#: app/users/forms.py:30
+msgid "Score"
+msgstr "Score"
+
+#: app/users/forms.py:31
+msgid "Review text"
+msgstr "Beoordeling tekst"
+
+#: app/users/forms.py:32
+msgid "Submit"
+msgstr "Verzenden"
+
 #: app/users/routes.py:16
 msgid "Account"
 msgstr "Account"
 
-#: app/users/routes.py:45
+#: app/users/routes.py:43
 msgid "User data field exceeds character limit"
 msgstr "Gebruiker data veld zit over da karakter limiet."
 
-#: app/users/routes.py:56
+#: app/users/routes.py:54
 msgid "Profile settings updated!"
 msgstr "Profielinstellingen bijgewerkt!"
 
-#: app/users/routes.py:61 app/users/routes.py:72
+#: app/users/routes.py:59 app/users/routes.py:70
 msgid "Genre exceeds character limit"
 msgstr "Het genre heeft meer karakters dan toegestaan."
 
-#: app/users/routes.py:67
+#: app/users/routes.py:65
 msgid "Liked genre added!"
 msgstr "Geliefd genre toegevoegd!"
 
-#: app/users/routes.py:78
+#: app/users/routes.py:76
 msgid "Disliked genre added!"
 msgstr "Niet leuk genre toegevoegd!"
 
-#: app/users/routes.py:85
+#: app/users/routes.py:83
 msgid "Car data field exceeds character limit"
 msgstr "De data voor de wagen zit over de karakter limiet"
 
-#: app/users/routes.py:93
+#: app/users/routes.py:96
 msgid "Car settings updated!"
 msgstr "Auto-instellingen bijgewerkt!"
 
-#: app/users/routes.py:105
+#: app/users/routes.py:108
 msgid "Genre removed!"
 msgstr "Genre verwijderd!"
 
-#: app/users/routes.py:117
+#: app/users/routes.py:120
 msgid "Your account has been deleted successfully"
 msgstr "Uw account is succesvol verwijderd"
 
-#: app/users/routes.py:119
+#: app/users/routes.py:122
 msgid "You can only delete your own account"
 msgstr "Je kunt alleen je eigen account verwijderen"
 
-#: app/users/routes.py:127
-msgid "Review"
-msgstr ""
+#: app/users/routes.py:132
+msgid "Review Overview"
+msgstr "Overzicht van beoordelingen"
+
+#: app/users/routes.py:147
+msgid "Review score larger than 5 or smaller then 0"
+msgstr "De score van de beoordeling moet tussen 0 en 5 liggen"
+
+#: app/users/routes.py:148 app/users/routes.py:167
+msgid "Add Review"
+msgstr "Beoordeling toevoegen"
+
+#: app/users/routes.py:153
+msgid "Review edited"
+msgstr "Beoordeling bewerkt"
+
+#: app/users/routes.py:163
+msgid "New review added"
+msgstr "Nieuwe beoordeling toegevoegd"
 
 #~ msgid ""
 #~ "That's a lot, to be exact\n"
@@ -1218,4 +1268,19 @@ msgstr ""
 
 #~ msgid "Your account"
 #~ msgstr "Jouw rekening"
+
+#~ msgid "All the reviews of and by"
+#~ msgstr ""
+
+#~ msgid "Reviews of me"
+#~ msgstr ""
+
+#~ msgid "Reviews by me"
+#~ msgstr ""
+
+#~ msgid "'s review score:"
+#~ msgstr ""
+
+#~ msgid "Review"
+#~ msgstr ""
 

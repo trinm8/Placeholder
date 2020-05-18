@@ -180,7 +180,11 @@ class User(UserMixin, db.Model):
         return '<User {} {}>'.format(self.firstname, self.lastname)
 
     def avatar(self, size):
-        digest = md5(self.username().lower().encode('utf-8')).hexdigest()
+        key = self.email
+        if not key:
+            key = self.username()
+
+        digest = md5(key.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=robohash&s={}'.format(
             digest, size)
 
@@ -245,7 +249,7 @@ class User(UserMixin, db.Model):
             notifications.append("No routes planned in the future")
 
         for request in requests:
-            notifications.append(request)
+            notifications.append(str(request))
 
         return notifications
 
@@ -447,6 +451,9 @@ class RouteRequest(db.Model):
         self.user_id = user_id
         self.time_created = datetime.utcnow()
         #TODO: initializen op vertrekpunt route
+
+    def __str__(self):
+        return "Route request from {}".format(self.user().firstname)
 
     def route(self):
         return Route.query.get(self.route_id)
