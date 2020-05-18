@@ -179,7 +179,11 @@ class User(UserMixin, db.Model):
         return '<User {} {}>'.format(self.firstname, self.lastname)
 
     def avatar(self, size):
-        digest = md5(self.username().lower().encode('utf-8')).hexdigest()
+        key = self.email
+        if not key:
+            key = self.username()
+
+        digest = md5(key.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=robohash&s={}'.format(
             digest, size)
 
