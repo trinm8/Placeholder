@@ -49,8 +49,8 @@
                     {{ card(_("Add a new trip"), link=url_for("routes_drive.addRoute")) }}
 
                     {% if future_routes is none or future_routes[0] is none %}
-                        <div class="card">
-                            {{ _("No routes planned")}}
+                        <div class="card" style="padding-left: 20px">
+                               {{ _("No routes planned")}}
                         </div>
                     {% else %}
                         {% for trip in future_routes %}
@@ -70,7 +70,7 @@
 
                 <div class="column is-8 mapElementWhole">
                     <div style="flex: 0 1 auto; height: min-content">
-                        {% if future_routes[0] is none %}
+                        {% if not future_routes or future_routes[0] is none %}
                             <h1 class="title">
                                 {{ _("No routes planned")}}
                             </h1>
@@ -86,7 +86,9 @@
                     </div>
                     <div class="mapElementElement">
                         {{ map.map() }}
+                        {% if future_routes and not future_routes[0] is none %}
                         <script>loadMarkersRoute({{ future_routes[0].departure_location_lat }}, {{ future_routes[0].departure_location_long }}, {{ future_routes[0].arrival_location_lat }}, {{ future_routes[0].arrival_location_long }})</script>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="column is-2" style="display: flex; flex-direction: column">

@@ -186,10 +186,17 @@ def drive(drive_id):
             geolocator = Nominatim(user_agent="[PlaceHolder]", scheme='http')
             try:
                 pickup = geolocator.geocode(form.pickupPoint.data)
+                if pickup is None:
+                    flash(_("Pickup address not found"))
+                    return redirect(url_for("routes_drive.drive", drive_id=drive_id))
                 sleep(1.1)
             except GeocoderTimedOut:
                 flash(_("The geolocator is timing out! please try again"))
                 return render_template('routes/addRoute.html', title='New Route', form=form)
+            requested = bool(RouteRequest.query.filter_by(route_id=drive_id, user_id=current_user.id).first())
+            if requested:
+                flash(_("You've already sent a request for this route"))
+                return redirect(url_for("routes_drive.drive", drive_id=drive_id))
             request = RouteRequest(route_id=drive_id, user_id=current_user.id)
             request.set_PickupPoint(pickup.latitude, pickup.longitude, form.pickupPoint.data)
             db.session.add(request)
@@ -234,7 +241,7 @@ def passenger_request(drive_id, user_id):
             db.session.commit()
             flash(_("The route request was successfully accepted."))
         elif form.reject.data:
-            request.status = RequestStatus.rejected
+            RouteRequest.query.filter_by(route_id=drive_id, user_id=user_id).delete()
             db.session.commit()
             flash(_("The route request was successfully rejected."))
         return redirect(url_for("main.index"))

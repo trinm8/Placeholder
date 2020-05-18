@@ -1,0 +1,157 @@
+\documentclass{article}
+
+
+\usepackage[urlcolor=blue, linkcolor=black, colorlinks=true]{hyperref}
+\usepackage[dutch]{babel}
+\usepackage{minutes}
+\usepackage{pdfpages}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\makeatletter
+\addto\extrasdutch{%
+    \def\min@textTask{Taak}%
+}
+\makeatother%
+\makeatletter
+\def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+
+
+
+\newcounter{team}
+
+% TODO: Enter team number here:
+\setcounter{team}{6}
+
+
+\begin{document}
+%	\tableofcontents
+
+    \begin{Minutes}{Programming Project Databases \\ Wekelijks Verslag Team \arabic{team}}
+        \moderation{Arno Deceuninck}
+        \minutetaker{Arno Deceuninck}
+        \participant{Arno Deceuninck, Sam Peeters, Sien Nuyens en Tim Sanders}
+        \missingNoExcuse{/}
+        \missingExcused{/}
+%		\guest{\ldots}
+        \minutesdate{13 Mei 2020}
+        \starttime{11u00}
+        \endtime{12u00}
+
+        \maketitle
+
+        \topic{Coordinator Vergadering}
+        \begin{itemize}
+            \item Feedback Compilers in HS: Gisteren verbeterd, wordt vandaag online gezet
+            \begin{itemize}
+                \item Mano (team 1): Afwezig
+                \item Arno (team 6): Niet veel veranderd, stillaan project aan het afronden
+                \item Ewout (team 2): Hadden maandag discussie gehad, maar alles komt waarschijnlijk nog goed daar.
+                \item Jana (team 3): Nog niet API ander team geintegreerd, wel al gezorgd dat anderen die van hen konden gebruiken. Beginnen binnenkort met integreren API andere team.
+                \item Maxim (team 5): Alles super, hebben extra chat feature. Apiary online en ook apiary van het andere team (6) gekregen. Dating concept.
+                \item Morgane (team 4): Komt wel goed. Periodische ritten is al af.
+            \end{itemize}
+            \item Data generatie script op Mac: Zou bij Arno (Troch) werken, dus eventueel daar eens horen, anders eens samen met Joey bekijken.
+        \end{itemize}
+
+        \topic{Status}
+
+        \subtopic{Overzicht Taken}
+        \task*[] {Music preferences API test}
+        \task*[]{Team 3 in search results}
+        \task*[]{Reviews koppelen aan database}
+        \task*[]{Database diagram}
+        \task*[]{Rapport}
+        \task*[]{Datageneratie script}
+        \task*[]{Fix settings}
+        \task*[]{Achtergrondmuziekje}
+        \task*[]{Minder brak Nederlands}
+        \task*[]{Maps op site fixen}
+        \task*[]{Betere layout reviews}
+
+
+        \topic{Besproken Onderwerpen}
+
+        \subtopic{Team 3 in search results}
+    Team 3 heeft ondertussen hun API doorgestuurd. Op zich hebben we hier niet veel van nodig, aangezien we ze gewoon tussen de zoekresultaten moeten kunnen laten zien en dan laten doorlinken naar hun site. Sam licht toe. Gisteren of eergisteren getest, maar kon geen routes toevoegen. Hiervoor moeten we team 3 eens aanspreken. Nog problemen met zoekfunctie in onze HTML. Hiernaar moet zeker eens gekeken worden.
+
+        \subtopic{Reviews}
+        Tim licht toe. Kan nu ook via de GUI toegevoegd worden. Je kan ook duidelijk zien op een user page wat die zijn score is. Je kan jezelf een review geven, maar dat kan je ook op routes.
+
+        \subtopic{Database Diagram}
+        Er is al een goede beschrijving hoe, bij sommige dingen moet er wel nog bijkomen waarom we het zo gedaan hebben. Welk programma heb je gemaakt om het Diagram te maken? LucidChart Online. Sam licht toe. Playlist ook vergeten bij Route.
+
+        \subtopic{Rapport}
+        Arno licht toe. Is af, het database diagram heeft Sam er ook al ingezet. Best tegen volgende week allemaal nalezen. Om het jullie makkelijk te maken, heb ik het achteraan dit verslag geplakt. Als je iets wil toevoegen en twijfelt waar je da het best zet, vraag het dan aub, want ik heb gezien dat er vorige keer sommige dingen echt compleet bij het foute puntje stonden. % Achteraan verslag zetten?
+
+        \subtopic{Live data generatie script}
+        Ik heb het ook al op mijn computer getest en dat werkte goed, duidelijke readme en leesbare code, good job, Joey! Sien ging dit scriptje nog wat personaliseren, zodat het onze uitgebreidere versie van de API kan gebruiken, maar er was een probleem waardoor ze het niet kon runnen. Best Arno Troch eens contacteren, die heeft ook een mac en anders eens aan Joey vragen. Sien licht toe. Ze heeft Arno ondertussen gecontacteerd, al vanalles geprobeerd, bij Arno werkte het wel out of the box, enige verschil is dat Sien Python 3.6 gebruikt en Arno 3.7. We gaan dan geen gepersonaliseerde versie van het scriptje gebruiken, omdat we anders nog te dicht bij de examens veel problemen daarmee kunnen hebben.
+
+        \subtopic{Settings kunnen niets meer opslaan}
+        Sam licht toe. Is gefixt door form.submit.value te doen. De check voor de forms gebeurt pas hierna.
+
+        \subtopic{Achtergrondmuziekje}
+        Zoals Tim vorige week op Messenger stuurde, vinden mensen achtergrondmuziekjes die automatisch afspelen enorm irritant. Google Chrome zorgt er dan ook voor dat er geen muziek kan afspelen zonder user interactie. Ik had manieren gevonden om dit te omzeilen, maar ik kan wel meegaan in het idee dat mensen dat irritant vinden, dus kan je nu gewoon per pagina op het muzieknoot icoontje drukken om de muziek te starten of pauzeren (het start dus niet automatisch, en stopt ook als je naar een andere pagina gaat)
+
+        \subtopic{Vertalingen minder brak Nederlands maken}
+        Is gebeurd. Laat best iets weten als je nieuwe dingen toevoegt die vertaald moeten worden of toch nog ergens slecht vertaalde zinnen tegenkomt. Reviews zijn net toegevoegd, dus de vertalingen daarvan werken niet.
+
+        \subtopic{Maps op site fixen}
+        Tim licht toe. Normaalgezien is het nu gefixt (dat heeft hij al 5 keer gezegd). Mainpage zelf was het grootste probleem. Pagina gaat nu zo ver naar beneden als nodig. Map neemt een bepaald percentage van de viewport in. Niet zeker of dat problemen geeft voor andere screen dimensions (e.g. Mobile). Kolom links was wel niet gesorteerd dacht Tim.
+
+        \subtopic{Betere layout reviews}
+        Sien licht toe. Yup, is gebasseerd op dat van Sam.
+
+        \subtopic{API music preferences}
+        Sien licht toe. Testen hiervoor zijn geschreven en werken.
+
+        \subtopic{GCP prijs}
+        Momenteel verbruiken we 0.21 Dollar per dag. Sam heeft nog 8.17 Dollar. Dan kunnen we nog 38 dagen verder op Sam zijn rekening. We halen het examen dus makkelijk, maar best het weekend voor het examen even checken, dat het niet ineens de ochtend van het examen iets onverwachts is ofzo.
+
+
+        \topic{Afspraken \& Planning}
+
+        \begin{itemize}
+            \item Iedereen leest het rapport nog na. (bij de database ook toevoegen waarom)
+            \item 2 personen die (samen) alles van de site nog eens overlopen, testen of het werkt, en ook fixen waar nodig. Ook op mobile testen. Arno en Sam doen dit. Bij echt grote problemen die niet snel op te lossen zijn roepen zij de hulp in van iemand anders. Test ook data generatie voor Team 3.
+            \item Zoekfunctie nakijken. Kan ook aan sorteerfunctie liggen of aan Tim zijn Wiskunde. Deze persoon checkt ook de sorteerfunctie op de homepage. Tim doet dit.
+            \item Arno zorgt nog voor automatisch inloggen na registreren.
+            \item Sien fixt dat het data generatie script bij haar werkt.
+            \item Sien maakt de slides voor de presentatie.
+            \item Arno zorgt tegen het einde van de week dat de laatste versie op GCP komt.
+
+        \end{itemize}
+
+
+        \topic{Varia}
+        \emph{Eventuele varia punten. Hierbij vragen we ook aan alle aanwezigen of zij nog iets te zeggen hebben.}
+        \subtopic{Sien}
+        Nee.
+        \subtopic{Sam}
+        Ik vind dat we het goed hebben gedaan.
+        \subtopic{Tim}
+        Ik denk dat dit het project is waarvoor ik het meest op tijd ben geweest. Gelukkige Nationale Feestdag!
+        \subtopic{Arno}
+        We zijn nog niet helemaal klaar, zorg dat de laatste dingen ook tegen volgende week echt afgeraken.
+
+        \blfootnote{
+            \href{%
+                mailto:joey.depauw@uantwerpen.be%
+                ?subject=PPDB 2019-2020: Wekelijks Verslag Team \arabic{team}%
+                &body=Liefste Joey\%0D\%0A%
+                \%0D\%0A%
+                Gelieve ons wekelijks verslag terug te vinden in de bijlage.\%0D\%0A%
+                \%0D\%0A%
+                Groetjes\%0D\%0A%
+                Team \arabic{team}\%0D\%0A%
+            }{Klik hier} om mij op te sturen.
+        }
+
+
+    \end{Minutes}
+
+    \includepdf[pages=-]{Rapport.pdf}
+\end{document}
