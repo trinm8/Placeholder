@@ -186,6 +186,9 @@ def drive(drive_id):
             geolocator = Nominatim(user_agent="[PlaceHolder]", scheme='http')
             try:
                 pickup = geolocator.geocode(form.pickupPoint.data)
+                if pickup is None:
+                    flash(_("Pickup address not found"))
+                    return redirect(url_for("routes_drive.drive", drive_id=drive_id))
                 sleep(1.1)
             except GeocoderTimedOut:
                 flash(_("The geolocator is timing out! please try again"))
