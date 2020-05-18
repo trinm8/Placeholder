@@ -5,6 +5,7 @@ from app import db, login
 
 from flask import current_app, url_for
 from flask_login import UserMixin
+from sqlalchemy.ext.hybrid import hybrid_property, hybrid_method
 
 from flask_babel import _
 
@@ -313,6 +314,14 @@ class Route(db.Model):
     def __repr__(self):
         return '<Route from {}, {} to {}, {}>'.format(self.departure_location_lat, self.departure_location_long,
                                                       self.arrival_location_lat, self.arrival_location_long)
+
+    @hybrid_method
+    def arrival_distance(self, location, allowed):
+        return distance((self.arrival_location_lat, self.arrival_location_long), location).km <= allowed
+
+    @arrival_distance.expression
+    def arrival_distance(cls, location, allowed):
+        return distance((cls.arrival_location_lat, cls.arrival_location_long), location).km <= allowed
 
     def to_dict(self):
         data = {

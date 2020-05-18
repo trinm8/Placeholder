@@ -1,18 +1,18 @@
 from flask_wtf import FlaskForm
 from wtforms import RadioField, StringField, DateTimeField, SubmitField, ValidationError, IntegerField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, InputRequired
 from wtforms.fields.html5 import DecimalRangeField
 
 from flask_babel import lazy_gettext as _l
 
 
 class AddRouteForm(FlaskForm):
-    type = RadioField(_l('type'), choices=[('Driver', _l('Driver')), ('Passenger', _l('Passenger'))]) # TODO: wich one to translate?
-    start = StringField(_l('start'))
+    type = RadioField(_l('type'), choices=[('Driver', _l('Driver')), ('Passenger', _l('Passenger'))], validators=[DataRequired()]) # TODO: wich one to translate?
+    start = StringField(_l('start'), validators=[DataRequired()])
     places = IntegerField(_l('Passenger places'), validators=[])
     playlist = StringField(_l('Spotify playlist ID'))
-    destination = StringField(_l('destination'))
-    date = DateTimeField(_l('date'), format='%d/%m/%Y %H:%M')
+    destination = StringField(_l('destination'), validators=[DataRequired()])
+    date = DateTimeField(_l('date'), format='%d/%m/%Y %H:%M', validators=[InputRequired()])
     submit = SubmitField(_l('Confirm'))
 
     def validate_playlist(self, playlist):
