@@ -3,7 +3,7 @@ from ..emails import send_email
 from flask_babel import _
 
 def send_password_reset_email(user, email):
-    token = user.get_reset_password_token()
+    token = user.user().get_reset_password_token()
     send_email(_('[PlaceHolder] Reset Your Password'),
                sender=current_app.config['ADMINS'][0],
                recipients=[email],
