@@ -248,7 +248,7 @@ class User(UserMixin, db.Model):
             notifications.append("No routes planned in the future")
 
         for request in requests:
-            notifications.append(request)
+            notifications.append(str(request))
 
         return notifications
 
@@ -442,6 +442,9 @@ class RouteRequest(db.Model):
         self.user_id = user_id
         self.time_created = datetime.utcnow()
         #TODO: initializen op vertrekpunt route
+
+    def __str__(self):
+        return "Route request from {}".format(self.user().firstname)
 
     def route(self):
         return Route.query.get(self.route_id)

@@ -193,6 +193,10 @@ def drive(drive_id):
             except GeocoderTimedOut:
                 flash(_("The geolocator is timing out! please try again"))
                 return render_template('routes/addRoute.html', title='New Route', form=form)
+            requested = bool(RouteRequest.query.filter_by(route_id=drive_id, user_id=current_user.id).first())
+            if requested:
+                flash(_("You've already sent a request for this route"))
+                return redirect(url_for("routes_drive.drive", drive_id=drive_id))
             request = RouteRequest(route_id=drive_id, user_id=current_user.id)
             request.set_PickupPoint(pickup.latitude, pickup.longitude, form.pickupPoint.data)
             db.session.add(request)
