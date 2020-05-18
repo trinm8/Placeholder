@@ -161,7 +161,7 @@ def add_review(id):
                 db.session.commit()
 
                 flash(_('New review added'))
-                #return redirect(url_for('/users/<id>', id=current_user.id))
+                #return redirect(url_for('/users/<id>', id=user.id))
                 return redirect(url_for('main.index'))
 
     return render_template('users/add_review.html', title=_('Add Review'), user=user, form=form)
