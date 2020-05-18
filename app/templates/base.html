@@ -32,24 +32,24 @@
     }
 
     function language_cookie(language) {
-            document.cookie = "language=" + language + ";path=/";
-            location.reload();
-        }
+        document.cookie = "language=" + language + ";path=/";
+        location.reload();
+    }
 
-        function sound_cookie_on() {
-            document.cookie = "language=" + language + ";path=/";
-            location.reload();
-        }
+    function sound_cookie_on() {
+        document.cookie = "language=" + language + ";path=/";
+        location.reload();
+    }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
-                $notification = $delete.parentNode;
+    document.addEventListener('DOMContentLoaded', () => {
+        (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+            $notification = $delete.parentNode;
 
-                $delete.addEventListener('click', () => {
-                    $notification.parentNode.removeChild($notification);
-                });
+            $delete.addEventListener('click', () => {
+                $notification.parentNode.removeChild($notification);
             });
         });
+    });
     </script>
 
     <!--    Javascript for the burger menu-->
@@ -150,124 +150,109 @@
         </div>
 
         <div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
-                    <div title="Click to play background music" class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-item" onclick="playMusic()">
-                           <span class="icon">
+            <div title="Click to play background music" class="navbar-item">
+                <a class="navbar-item" onclick="playMusic()">
+                           <span class="icon" style="margin: 5px">
                                <i class="fas fa-music"></i>
 {#                               <i class="fas fa-volume-off"></i>#}
-                           </span>
-                        </a>
-                    </div>
-                    {% if current_user.is_anonymous %}
-                        <div class="navbar-item has-dropdown is-hoverable">
+                           </span>Music
+                </a>
+            </div>
+
+            <div class="navbar-item has-dropdown is-hoverable">
 
 
-                            <a class="navbar-item">
-                           <span class="icon">
+                <a class="navbar-item">
+                            <span class="icon" style="margin: 5px">
                                <i class="fas fa-globe-americas"></i>
-                           </span>
+                           </span>Language
 
-                            </a>
+                </a>
 
-                            <div class="navbar-dropdown is-boxed">
-                                {% for language in config['LANGUAGES'] %}
-                                    {% if language == config['LANGUAGES'][0] %}
-                                        <a class="navbar-item"
-                                           onclick="language_cookie('{{ language }}');"> {{ language }} </a>
-                                    {% else %}
-                                        <a class="navbar-item"
-                                           onclick="language_cookie('{{ language }}');"> {{ language }} </a>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <a class="button is-primary" href="{{ url_for('auth.register') }}">
-                            <strong>{{ _("Sign up") }}</strong>
-                        </a>
-                        <a class="button is-light" href="{{ url_for('auth.login') }}">
-                            {{ _("Login") }}
-                        </a>
-                    {% else %}
-                        <!--a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
+                <div class="navbar-dropdown is-boxed">
+                    {% for language in config['LANGUAGES'] %}
+                        {% if language == config['LANGUAGES'][0] %}
+                            <a class="navbar-item"
+                               onclick="language_cookie('{{ language }}');"> {{ language }} </a>
+                        {% else %}
+                            <a class="navbar-item"
+                               onclick="language_cookie('{{ language }}');"> {{ language }} </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        {% if current_user.is_anonymous %}
+
+            <div class="navbar-item">
+                <a class="button is-primary" href="{{ url_for('auth.register') }}">
+                    <strong>{{ _("Sign up") }}</strong>
+                </a>
+            </div>
+
+            <div class="navbar-item">
+                <a class="button is-light" href="{{ url_for('auth.login') }}">
+                    {{ _("Login") }}
+                </a>
+            </div>
+        {% else %}
+            <!--a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
                         <span>Notifications</span>
                         <span class="icon">
                             <i class="far fa-bell"></i>
                         </span>
                     </a-->
 
-                        <div class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
                            <span class="icon">
                                <i class="far fa-bell"></i>
                            </span>
 
-                                <span class="tag is-info is-light">{{ current_user.getNotifications()|length -1 }}</span>
+                    <span class="tag is-info is-light">{{ current_user.getNotifications()|length -1 }}</span>
 
-                            </a>
-                            <div class="navbar-dropdown is-boxed">
-                                {% for notification in current_user.getNotifications() %}
-                                    {% if notification == _("No routes planned in the future") %}
-                                        <a class="navbar-item">
-                                            {{ notification }}
-                                        </a>
-                                    {% else %}
-                                        {% if notification == current_user.getNotifications()[0] %}
-                                            <a class="navbar-item"
-                                               href="{{ url_for('routes_drive.drive',  drive_id=notification.id) }}">
-                                                {{ _("Next route:") }} {{ notification.departure_time }}
-                                                <!-- .isoformat() }} TODO: when is a date stored as a string? -->
-                                            </a>
-                                        {% else %}
-                                            <a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
-                                                {{ notification }}
-                                            </a>
-                                        {% endif %}
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-
-                        <div class="navbar-item has-dropdown is-hoverable">
+                </a>
+                <div class="navbar-dropdown is-boxed">
+                    {% for notification in current_user.getNotifications() %}
+                        {% if notification == _("No routes planned in the future") %}
                             <a class="navbar-item">
-                           <span class="icon">
-                               <i class="fas fa-globe-americas"></i>
-                           </span>
-
+                                {{ notification }}
                             </a>
-
-                            <div class="navbar-dropdown is-boxed">
-                                {% for language in config['LANGUAGES'] %}
-                                    {% if language == config['LANGUAGES'][0] %}
-                                        <a class="navbar-item"
-                                           onclick="language_cookie('{{ language }}');"> {{ language }} </a>
-                                    {% else %}
-                                        <a class="navbar-item"
-                                           onclick="language_cookie('{{ language }}');"> {{ language }} </a>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-
-                        <a class="navbar-item" href="{{ url_for('users.account_settings') }}">
-                            {#                            {{ _("Settings") }}#}
-                            <span class="icon">
-                               <i class="fas fa-cog"></i>
-                           </span>
-                        </a>
-
-                        <a class="navbar-item" href="{{ url_for('users.user_page', id=current_user.id) }}">
-                            {{ current_user.firstname }} {{ current_user.lastname }}
-                            <img hspace="10" src="{{ current_user.avatar(128) }}">
-                        </a>
-                        <a class="button is-light" href="{{ url_for('auth.logout') }}">
-                            {{ _("Logout") }}
-                        </a>
-                    {% endif %}
+                        {% else %}
+                            {% if notification == current_user.getNotifications()[0] %}
+                                <a class="navbar-item"
+                                   href="{{ url_for('routes_drive.drive',  drive_id=notification.id) }}">
+                                    {{ _("Next route:") }} {{ notification.departure_time }}
+                                    <!-- .isoformat() }} TODO: when is a date stored as a string? -->
+                                </a>
+                            {% else %}
+                                <a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
+                                    {{ notification }}
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </div>
             </div>
-        </div>
+
+            <a class="navbar-item" href="{{ url_for('users.account_settings') }}">
+                {#                            {{ _("Settings") }}#}
+                <span class="icon">
+                               <i class="fas fa-cog"></i>
+                           </span>
+            </a>
+
+            <a class="navbar-item" href="{{ url_for('users.user_page', id=current_user.id) }}">
+                {{ current_user.firstname }} {{ current_user.lastname }}
+                <img hspace="10" src="{{ current_user.avatar(128) }}">
+            </a>
+            <a class="button is-light" href="{{ url_for('auth.logout') }}">
+                {{ _("Logout") }}
+            </a>
+        {% endif %}
+    </div>
+    </div>
     </div>
 </nav>
 
@@ -287,10 +272,10 @@
     {% block body %}{% endblock %}
 
 
-
 </main>
 
-<footer class="footer" style="position: relative; bottom: 0; width: 100%; height: min-content;padding: 3rem 1.5rem 3rem">
+<footer class="footer"
+        style="position: relative; bottom: 0; width: 100%; height: min-content;padding: 3rem 1.5rem 3rem">
     <div class="contW.I.P.ent has-text-centered">
         <p>
             <strong>[PlaceHolder]</strong> {{ _("by") }} Arno Deceuninck, Sam Peeters, Sien Nuyens {{ _("and") }} Tim
