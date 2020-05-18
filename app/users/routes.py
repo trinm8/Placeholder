@@ -129,8 +129,12 @@ def review_overview(id):
     user = User.query.get_or_404(id)
     reviews_of_me = user.get_reviews_of_me()
     reviews_by_me = user.get_reviews_by_me()
+    reviewers = []
+    for review_of_me in reviews_of_me:
+        reviewer = User.query.filter_by(id=review_of_me.reviewer_id).all()
+        reviewers.append(reviewer[0]) #TODO: vrij brakke opl
     return render_template('users/review_overview.html', title=_('Review Overview'), user=user,
-                           reviews_of_me=reviews_of_me, reviews_by_me=reviews_by_me)
+                           reviews_of_me=reviews_of_me, reviews_by_me=reviews_by_me, reviewers=reviewers)
 
 
 @bp.route('/accounts/<id>/add_review', methods=['GET', 'POST'])
@@ -151,7 +155,7 @@ def add_review(id):
                 review.review_text = form.review_text.data
                 db.session.commit()
                 flash(_("Review edited"))
-                return redirect(url_for('main.index'))
+                return redirect(url_for('users.user_page', id=user.id))
             else:
                 review = Review(reviewer_id=current_user.id,
                                 reviewee_id=user.id,
@@ -161,8 +165,7 @@ def add_review(id):
                 db.session.commit()
 
                 flash(_('New review added'))
-                #return redirect(url_for('/users/<id>', id=user.id))
-                return redirect(url_for('main.index'))
+                return redirect(url_for('users.user_page', id=user.id))
 
     return render_template('users/add_review.html', title=_('Add Review'), user=user, form=form)
 

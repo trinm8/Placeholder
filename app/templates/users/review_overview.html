@@ -27,8 +27,9 @@
                             {% endif %}
                              {{ review_of_me.score }}<br>
                             {% if review_of_me.review_text %}
-                            {{ review_of_me.review_text }}<br>
-
+                            {{ review_of_me.review_text }}<br><br>
+                            {{_("Reviewer: ")}}<br>
+                            {{ reviewers[loop.index0].firstname + " " +  reviewers[loop.index0].lastname}}<br>
                             {% endif %}
                         </div>
                     </div><br>
