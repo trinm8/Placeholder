@@ -33,20 +33,8 @@ def index():
         routes_driver = Route.query.filter_by(driver_id=current_user.id)
         routes_passenger = Route.query.filter(RouteRequest.query.filter_by(user_id=current_user.id, route_id=Route.id).exists())
         routes = routes_driver.union(routes_passenger)
-        future_routes_unsort = routes.filter(Route.departure_time >= current_time)
-        #order by
-        future_routes = []
-        if future_routes_unsort:
-            future_routes.append(future_routes_unsort.first())
-        for unsort_route in future_routes_unsort:
-            temp_routes = []
-            for route in future_routes:
-                if route.departure_time > unsort_route.departure_time:
-                    temp_routes.append(unsort_route)
-
-                temp_routes.append(route)
-            future_routes = temp_routes
-
+        future_routes = routes.filter(Route.departure_time >= current_time).all()
+        future_routes.sort(key=lambda x: x.departure_time)
         passengerIds = []
         if len(future_routes) > 0 and future_routes[0]:
             passengerIds = future_routes[0].passengers()
