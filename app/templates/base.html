@@ -181,77 +181,79 @@
                     {% endfor %}
                 </div>
             </div>
-        </div>
 
-        {% if current_user.is_anonymous %}
+            {% if current_user.is_anonymous %}
 
-            <div class="navbar-item">
-                <a class="button is-primary" href="{{ url_for('auth.register') }}">
-                    <strong>{{ _("Sign up") }}</strong>
-                </a>
-            </div>
+                <div class="navbar-item">
+                    <a class="button is-primary" href="{{ url_for('auth.register') }}">
+                        <strong>{{ _("Sign up") }}</strong>
+                    </a>
+                </div>
 
-            <div class="navbar-item">
-                <a class="button is-light" href="{{ url_for('auth.login') }}">
-                    {{ _("Login") }}
-                </a>
-            </div>
-        {% else %}
-            <!--a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
+                <div class="navbar-item">
+                    <a class="button is-light" href="{{ url_for('auth.login') }}">
+                        {{ _("Login") }}
+                    </a>
+                </div>
+            {% else %}
+                <!--a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
                         <span>Notifications</span>
                         <span class="icon">
                             <i class="far fa-bell"></i>
                         </span>
                     </a-->
 
-            <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
                            <span class="icon">
                                <i class="far fa-bell"></i>
                            </span>
 
-                    <span class="tag is-info is-light">{{ current_user.getNotifications()|length -1 }}</span>
+                        <span class="tag is-info is-light">{{ current_user.getNotifications()|length -1 }}</span>
 
-                </a>
-                <div class="navbar-dropdown is-boxed">
-                    {% for notification in current_user.getNotifications() %}
-                        {% if notification == _("No routes planned in the future") %}
-                            <a class="navbar-item">
-                                {{ notification }}
-                            </a>
-                        {% else %}
-                            {% if notification == current_user.getNotifications()[0] %}
-                                <a class="navbar-item"
-                                   href="{{ url_for('routes_drive.drive',  drive_id=notification.id) }}">
-                                    {{ _("Next route:") }} {{ notification.departure_time }}
-                                    <!-- .isoformat() }} TODO: when is a date stored as a string? -->
-                                </a>
-                            {% else %}
-                                <a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
+                    </a>
+                    <div class="navbar-dropdown is-boxed">
+                        {% for notification in current_user.getNotifications() %}
+                            {% if notification == _("No routes planned in the future") %}
+                                <a class="navbar-item">
                                     {{ notification }}
                                 </a>
+                            {% else %}
+                                {% if notification == current_user.getNotifications()[0] %}
+                                    <a class="navbar-item"
+                                       href="{{ url_for('routes_drive.drive',  drive_id=notification.id) }}">
+                                        {{ _("Next route:") }} {{ notification.departure_time }}
+                                        <!-- .isoformat() }} TODO: when is a date stored as a string? -->
+                                    </a>
+                                {% else %}
+                                    <a class="navbar-item" href="{{ url_for('routes_drive.getRequests') }}">
+                                        {{ notification }}
+                                    </a>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
 
-            <a class="navbar-item" href="{{ url_for('users.account_settings') }}">
-                {#                            {{ _("Settings") }}#}
-                <span class="icon">
+                <a class="navbar-item" href="{{ url_for('users.account_settings') }}">
+                    {#                            {{ _("Settings") }}#}
+                    <span class="icon">
                                <i class="fas fa-cog"></i>
                            </span>
-            </a>
+                </a>
 
-            <a class="navbar-item" href="{{ url_for('users.user_page', id=current_user.id) }}">
-                {{ current_user.firstname }} {{ current_user.lastname }}
-                <img hspace="10" src="{{ current_user.avatar(128) }}">
-            </a>
-            <a class="button is-light" href="{{ url_for('auth.logout') }}">
-                {{ _("Logout") }}
-            </a>
-        {% endif %}
-    </div>
+                <a class="navbar-item" href="{{ url_for('users.user_page', id=current_user.id) }}">
+                    {{ current_user.firstname }} {{ current_user.lastname }}
+                    <img hspace="10" src="{{ current_user.avatar(128) }}">
+                </a>
+
+                <div class="navbar-item">
+                    <a class="button is-light" href="{{ url_for('auth.logout') }}">
+                        {{ _("Logout") }}
+                    </a>
+                </div>
+            {% endif %}
+        </div>
     </div>
     </div>
 </nav>
