@@ -43,21 +43,13 @@
             <tr>
                 <td>{{ _("Liked genre(s):")}}</td>
                 <td>
-                    {% for genre in user.musicpref %}
-                        {% if genre.likes %}
-                            {{ _(genre.genre) }}
-                        {% endif %}
-                    {% endfor %}
+                    {{ liked_genres }}
                 </td>
             </tr>
             <tr>
                 <td>{{ _("Disliked genre(s):")}}</td>
                 <td>
-                    {% for genre in user.musicpref %}
-                        {% if not genre.likes %}
-                            {{ _(genre.genre) }}
-                        {% endif %}
-                    {% endfor %}
+                    {{ disliked_genres }}
                 </td>
             </tr>
             </tbody>

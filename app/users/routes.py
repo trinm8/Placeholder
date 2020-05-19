@@ -13,7 +13,10 @@ from flask_babel import _
 @login_required
 def user_page(id):
     user = User.query.get_or_404(id)
-    return render_template('users/user.html', title=_('Account'), user=user)
+    liked_genres = ', '.join([g.genre for g in user.musicpref if g.likes])
+    disliked_genres = ', '.join([g.genre for g in user.musicpref if not g.likes])
+    return render_template('users/user.html', title=_('Account'), user=user,
+                           liked_genres=liked_genres, disliked_genres=disliked_genres)
 
 
 def get_suggested_genres():
