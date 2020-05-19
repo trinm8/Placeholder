@@ -116,6 +116,34 @@
                     </div>
                 {% endfor %}
 
+                {% for route in other_routes %}
+                    <div class='column is-6-tablet is-12-mobile'>
+                        <div class='card'>
+                            <div class='card-content'>
+                                <div class='content'>
+                                    <div class="columns is-mobile">
+                                        <div class='column is-4'>
+                                            <figure class="image"
+                                                    style="margin: auto;width: 100%">
+                                            </figure>
+                                        </div>
+                                        <div class='column name'>
+                                            <strong>{{ _("FROM:")}}</strong> {{ route.get("from")[0] }}, {{ route.get("from")[1] }}<br>
+                                            <strong>{{ _("TO:")}}</strong> {{ route.get("to")[0] }}, {{ route.get("to")[1] }}<br>
+                                            <strong>{{ _("TIME:")}}</strong> {{ route.get("arrive-by") }}
+                                            <br><br>
+                                            <a style="margin-top: auto;" class="button"
+                                               href="https://team3.ppdb.me">{{ _("View") }}</a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                {% endfor %}
+
             </div>
         </div>
     </div>
