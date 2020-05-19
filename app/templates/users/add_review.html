@@ -18,7 +18,7 @@
                         <p>{{ _("Score:")}}</p>
                     </div>
                     <div class="column is-5">
-                        {{ form.score(type="number", class="input", placeholder="Score", max="5", min="0") }}
+                        {{ form.score(type="number", class="input", placeholder="Score", max="5", min="0", value=review.score) }}
                     </div>
                 </div>
 
@@ -27,14 +27,23 @@
                         <p>{{ _("Write your review:")}}</p>
                     </div>
                     <div class="column is-5">
-                        {{ form.review_text(type="text", class="input", placeholder="Review text") }}
+                        {% if review.review_text %}
+                            {{ form.review_text(type="text", class="input", placeholder="Review text", value=review.review_text) }}
+                        {% else %}
+                            {{ form.review_text(type="text", class="input", placeholder="Review text") }}
+                        {% endif %}
                     </div>
                 </div>
 
                 <div class="buttons">
                     {{ form.submit_review(class="button is-primary") }}
+
+                    <a class="button is-danger" href="{{ url_for('users.remove_review', id=user.id) }}">{{ _("Delete") }}</a>
+
                 </div>
+
             </div>
+
         </section>
     </form>
 

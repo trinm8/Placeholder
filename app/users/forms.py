@@ -27,6 +27,6 @@ class Settings(FlaskForm):
 
 
 class ReviewForm(FlaskForm):
-    score = FloatField(_l('Score'))
-    review_text = StringField(_l('Review text'))
+    score = FloatField(_l('Score'), validators=[DataRequired()])
+    review_text = StringField(_l('Review text'), validators=[DataRequired()])
     submit_review = SubmitField(_l("Submit"))

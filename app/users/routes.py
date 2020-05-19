@@ -153,7 +153,9 @@ def review_overview(id):
 def add_review(id):
     form = ReviewForm()
     user = User.query.get_or_404(id)
-
+    review = Review.query.get({"reviewer_id": current_user.id, "reviewee_id": user.id})
+    if not review:
+        review = Review()
     if form.validate_on_submit():
         if form.submit_review.data:
             review = Review.query.get({"reviewer_id": current_user.id, "reviewee_id": user.id})
@@ -178,5 +180,15 @@ def add_review(id):
                 flash(_('New review added'))
                 return redirect(url_for('users.user_page', id=user.id))
 
-    return render_template('users/add_review.html', title=_('Add Review'), user=user, form=form)
+    return render_template('users/add_review.html', title=_('Add Review'), user=user, form=form, review=review)
 
+
+@bp.route('/accounts/<id>/remove_review', methods=['GET', 'POST'])
+@login_required
+def remove_review(id):
+    user = User.query.get_or_404(id)
+    Review.query.filter_by(reviewer_id=current_user.id, reviewee_id=user.id).delete()
+    db.session.commit()
+
+    flash(_("Review removed!"))
+    return redirect(url_for('users.user_page', id=user.id))
