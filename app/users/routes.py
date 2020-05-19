@@ -49,7 +49,10 @@ def account_settings():
         else:
             usr.firstname = form.firstname.data
             usr.lastname = form.lastname.data
-            usr.email = form.email.data
+            if len(form.email.data) == 0:
+                usr.email = None
+            else:
+                usr.email = form.email.data
 
             if len(form.password.data) > 0:
                 usr.authentication().set_password(form.password.data)

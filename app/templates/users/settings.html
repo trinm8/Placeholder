@@ -40,7 +40,9 @@
                     <div class="column is-5">
                         <div class="field">
                             <p class="control has-icons-left has-icons-right">
-                                {{ form.email(type="text", class="input", placeholder="Email", value=current_user.email) }}
+
+                                {{ form.email(type="text", class="input", placeholder="Email",
+                                value=current_user.email if current_user.email != none else '') }}
                                 <span class="icon is-small is-left">
                                      <i class="fas fa-envelope"></i>
                                 </span>
