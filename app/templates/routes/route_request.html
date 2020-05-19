@@ -21,8 +21,8 @@
 
 {% block body %}
     <section class="section full-height">
-        <div class="columns full-height">
-            <div class="column is-half full-height" id="mapParent" >
+        <div class="columns">
+            <div class="column is-half is-hidden-mobile" id="mapParent" >
                 {{ map.map() }}
                 <script>loadMarkersRoute({{ trip.departure_location_lat }}, {{ trip.departure_location_long }}, {{ trip.arrival_location_lat }}, {{ trip.arrival_location_long }})</script>
                 <script>addStop({{pickup.departure_location_lat}}, {{pickup.departure_location_long}}, "{{pickup.pickup_text()}}")</script>
