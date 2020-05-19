@@ -317,7 +317,7 @@ def overview():
         long_to = request.args.get('long_to')
 
         time = request.args.get('time')  # Should only be the date
-        time = datetime.strptime(time, '%Y-%m-%d %H:%M:%S')
+        time = datetime.strptime(time, '%Y-%m-%d %H:%M:%S') if time else None
 
         allowed_distance = request.args.get('distance')
         if not allowed_distance:
@@ -335,7 +335,7 @@ def overview():
     try:
         other_routes = requests.get("http://team3.ppdb.me/api/drives/search?from={0}%2C{1}&to={2}%2C{3}&arrive_by={4}"
                                     .format(lat_from, long_from, lat_to, long_to, time.isoformat() + '.00')).content
-    finally:
+    except:
         other_routes = []
         print('Something went wrong with GET to team 3')
 
@@ -344,6 +344,10 @@ def overview():
 
 
 def filter_routes(allowed_distance, arrival_location, departure_location, time, limit=20):
+
+    if not time:
+        return []
+
     # dist.distance(Route.arrival_coordinates, arrival_location).km <= allowed_distance
     # and
     same_day_routes = Route.query.filter(func.DATE(Route.departure_time) == time.date()).limit(limit).all()  # https://gist.github.com/Tukki/3953990
