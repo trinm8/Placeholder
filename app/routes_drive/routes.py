@@ -8,7 +8,7 @@ from flask_login import current_user, login_required
 
 from sqlalchemy import Date, cast, func
 
-from geopy import Nominatim
+from geopy import Nominatim, Location
 from geopy import distance as dist
 from geopy.exc import GeocoderTimedOut
 from sympy.geometry import *
@@ -53,15 +53,23 @@ def edit_route(id, departurelocation, arrivallocation, time, passenger_places=No
 
     if departurelocation:
         try:
-            trip.departure_location_lat = departurelocation[0]
-            trip.departure_location_long = departurelocation[1]
+            if isinstance(departurelocation, Location):
+                trip.departure_location_lat = departurelocation.latitude
+                trip.departure_location_long = departurelocation.longitude
+            else:
+                trip.departure_location_lat = departurelocation[0]
+                trip.departure_location_long = departurelocation[1]
         except:
             trip.departure_location_lat = departurelocation.latitude
             trip.departure_location_long = departurelocation.longitude
     if arrivallocation:
         try:
-            trip.arrival_location_lat = arrivallocation[0]
-            trip.arrival_location_long = arrivallocation[1]
+            if isinstance(departurelocation, Location):
+                trip.arrival_location_lat = departurelocation.latitude
+                trip.arrival_location_long = departurelocation.longitude
+            else:
+                trip.arrival_location_lat = departurelocation[0]
+                trip.arrival_location_long = departurelocation[1]
         except:
             trip.arrival_location_lat = arrivallocation.latitude
             trip.arrival_location_long = arrivallocation.longitude
