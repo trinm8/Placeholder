@@ -51,7 +51,8 @@ def account_settings():
                 usr.authentication().set_password(form.password.data)
             db.session.commit()
 
-        flash(_("Profile settings updated!"))
+            flash(_("Profile settings updated!"))
+
 
     # Add liked genre
     if form.submit_liked.data:
@@ -93,7 +94,7 @@ def account_settings():
                 car.plate = form.plate.data
             db.session.commit()
 
-        flash(_("Car settings updated!"))
+            flash(_("Car settings updated!"))
 
     return render_template('users/settings.html', title='Account Settings', form=form,
                            suggested_genres=get_suggested_genres())
