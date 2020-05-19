@@ -13,7 +13,10 @@ from flask_babel import _
 @login_required
 def user_page(id):
     user = User.query.get_or_404(id)
-    return render_template('users/user.html', title=_('Account'), user=user)
+    liked_genres = ', '.join([g.genre for g in user.musicpref if g.likes])
+    disliked_genres = ', '.join([g.genre for g in user.musicpref if not g.likes])
+    return render_template('users/user.html', title=_('Account'), user=user,
+                           liked_genres=liked_genres, disliked_genres=disliked_genres)
 
 
 def get_suggested_genres():
@@ -42,16 +45,24 @@ def account_settings():
                 or len(form.email.data) > 120):
             flash(_("User data field exceeds character limit"))
 
+        elif (len(form.firstname.data) == 0
+                or len(form.lastname.data) == 0):
+            flash(_("First and lastname cannot be empty"))
+
         else:
             usr.firstname = form.firstname.data
             usr.lastname = form.lastname.data
-            usr.email = form.email.data
+            if len(form.email.data) == 0:
+                usr.email = None
+            else:
+                usr.email = form.email.data
 
             if len(form.password.data) > 0:
                 usr.authentication().set_password(form.password.data)
             db.session.commit()
 
-        flash(_("Profile settings updated!"))
+            flash(_("Profile settings updated!"))
+
 
     # Add liked genre
     if form.submit_liked.data:
@@ -93,7 +104,7 @@ def account_settings():
                 car.plate = form.plate.data
             db.session.commit()
 
-        flash(_("Car settings updated!"))
+            flash(_("Car settings updated!"))
 
     return render_template('users/settings.html', title='Account Settings', form=form,
                            suggested_genres=get_suggested_genres())

@@ -282,6 +282,9 @@ class RouteTest(BaseCase):
         data = {"from": "{lat}, {long}".format(lat=51.13731, long=4.60960),
                 "to": "{lat}, {long}".format(lat=51.18852, long=4.42173), "arrive-by": "2021-02-12T10:00:00.00",
                 "limit": 3}
+        data = {"from": "{lat}, {long}".format(lat=51.008930, long=4.645653),
+                "to": "{lat}, {long}".format(lat=51.18852, long=4.42173), "arrive-by": "2021-02-12T10:00:00.00",
+                "limit": 3}
         response = self.client.get('/api/drives/search'.format(id=id),
                                    headers={"Content-Type": "application/json", "Authorization": authorization},
                                    query_string=data)

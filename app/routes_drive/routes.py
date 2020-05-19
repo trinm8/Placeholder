@@ -6,13 +6,15 @@ from app.routes_drive.forms import RequestForm, SendRequestForm, AddRouteForm, R
 from flask import flash, render_template, url_for, redirect, request
 from flask_login import current_user, login_required
 
-from sqlalchemy import Date, cast
+from sqlalchemy import Date, cast, func
 
 from geopy import Nominatim
 from geopy import distance as dist
 from geopy.exc import GeocoderTimedOut
 from sympy.geometry import *
 from math import cos, sin
+import pyproj
+
 from datetime import datetime  # Todo: Datetime
 from time import sleep
 from datetime import datetime, date  # Todo: Datetime
@@ -80,7 +82,7 @@ def edit_route(id, departurelocation, arrivallocation, time, passenger_places=No
 def addRoute():
     # flash("Warning: this page won't submit anything to the database yet. We're working on it.")
     form = AddRouteForm()
-    if form.submit.data:
+    if form.validate_on_submit():
         geolocator = Nominatim(user_agent="[PlaceHolder]", scheme='http')
         try:
             departure_location = geolocator.geocode(form.start.data)
@@ -98,13 +100,14 @@ def addRoute():
         if arrival_location is None:
             flash(_("The destination address is invalid"))
             return render_template('routes/addRoute.html', title='New Route', form=form)
+
         if form.type.data == 'Passenger':  # TODO: does this work with translation
             return redirect(
                 url_for("routes_drive.overview", lat_from=departure_location.latitude,
                         long_from=departure_location.longitude,
                         lat_to=arrival_location.latitude, long_to=arrival_location.longitude, time=form.date.data))
 
-        if form.date.data < datetime.now():  # TODO datetime
+        if form.date.data is None or form.date.data < datetime.now():
             flash(_("Date is invalid"))
             return render_template('routes/addRoute.html', title='New Route', form=form)
         if len(form.start.data) > 256:
@@ -333,29 +336,31 @@ def overview():
 
 
 def filter_routes(allowed_distance, arrival_location, departure_location, time, limit=20):
-    same_day_routes = Route.query.filter(
-        cast(Route.departure_time, Date) == time.date() and
-        dist.distance((Route.arrival_location_lat, Route.arrival_location_long), arrival_location).km
-        <= allowed_distance).limit(limit).all()  # https://gist.github.com/Tukki/3953990
+    # dist.distance(Route.arrival_coordinates, arrival_location).km <= allowed_distance
+    # and
+    same_day_routes = Route.query.filter(func.DATE(Route.departure_time) == time.date()).limit(limit).all()  # https://gist.github.com/Tukki/3953990
     routes = []
     from geopy import distance  # No idea why this include won't work when placed outside this function
     # allowed_distance = 2
     # * zorgt ervoor dat de elementen uit de locatie afzonderlijk woorden doorgegeven
-    pickupPoint = Point(toCartesian(*departure_location))
-    dropoffPoint = Point(toCartesian(*arrival_location))
+
+    transformer = pyproj.Transformer.from_crs("epsg:4326", "epsg:5643")
+
+    pickupPoint = transformer.transform(*departure_location)
+    dropoffPoint = transformer.transform(*arrival_location)
 
     for route in same_day_routes:
         route_dep = (route.departure_location_lat, route.departure_location_long)
         route_arr = (route.arrival_location_lat, route.arrival_location_long)
 
-        routeLineSegment = Line(Point(toCartesian(*route_dep)), Point(toCartesian(*route_arr)))
+        routeLineSegment = Segment(Point(transformer.transform(*route_dep)), Point(transformer.transform(*route_arr)))
 
         if route.maximum_deviation is None:
             route.maximum_deviation = 15
 
         # @trinm: ik (Arno) heb hier de * 100 op de twee regels hieronder weggedaan, anders faalde de test.
-        if routeLineSegment.distance(pickupPoint) < route.maximum_deviation and \
-                routeLineSegment.distance(dropoffPoint) < allowed_distance:
+        if routeLineSegment.distance(pickupPoint)/1000 < route.maximum_deviation and \
+                routeLineSegment.distance(dropoffPoint)/1000 < allowed_distance:
             routes.append(route)
 
         # if distance.distance(route_dep, departure_location).km <= allowed_distance and \
@@ -433,30 +438,32 @@ def editRoute(id):
                 flash(_("The Start address is invalid"))
                 return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
             trip = Route.query.get_or_404(id)
-            trip.arrival_location_string = form.start.data
+            trip.departure_location_string = form.start.data
             db.session.commit()
         if form.destination.data and form.destination.data != "":
             if len(form.destination.data) > 256:
                 flash(_("Destination data exceeds character limit"))
                 return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
             arrival_location = geolocator.geocode(form.destination.data)
-            trip = Route.query.get_or_404(id)
-            trip.arrival_location_string = form.destination.data
-            db.session.commit()
             if arrival_location is None:
                 flash(_("The destination address is invalid"))
                 return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
+            trip = Route.query.get_or_404(id)
+            trip.arrival_location_string = form.destination.data
+            db.session.commit()
         if form.date.data:
             if form.date.data < datetime.now():  # TODO datetime
                 flash("Date is invalid")
                 return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
             time = form.date.data
-        if not form.places.data.isdigit():
-            flash(_("Passenger places must be a number"))
-            return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
         if len(form.playlist.data) > 32:
             flash(_("Playlist data exceeds character limit"))
             return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
+        if form.places.data:
+            trip = Route.query.get_or_404(id)
+            if form.places.data < trip.passenger_places - trip.places_left():
+                flash(_("Not enough passenger places"))
+                return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
         edit_route(id, departure_location, arrival_location, time, form.places.data, form.playlist.data)
         flash(_('Your changes have been updated'))
         return redirect(url_for('routes_drive.drive', drive_id=id))

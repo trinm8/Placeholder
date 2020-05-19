@@ -47,6 +47,7 @@
             <div class="columns" style="max-height: 90vh;">
                 <div class="column is-2" style="display: flex; flex-direction: column; overflow: auto">
                     {{ card(_("Add a new trip"), link=url_for("routes_drive.addRoute")) }}
+                    {{ card(_("Search for trip"), link=url_for("routes_drive.overview")) }}
 
                     {% if future_routes is none or future_routes[0] is none %}
                         <div class="card" style="padding-left: 20px">
