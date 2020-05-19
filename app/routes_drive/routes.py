@@ -438,27 +438,24 @@ def editRoute(id):
                 flash(_("The Start address is invalid"))
                 return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
             trip = Route.query.get_or_404(id)
-            trip.arrival_location_string = form.start.data
+            trip.departure_location_string = form.start.data
             db.session.commit()
         if form.destination.data and form.destination.data != "":
             if len(form.destination.data) > 256:
                 flash(_("Destination data exceeds character limit"))
                 return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
             arrival_location = geolocator.geocode(form.destination.data)
-            trip = Route.query.get_or_404(id)
-            trip.arrival_location_string = form.destination.data
-            db.session.commit()
             if arrival_location is None:
                 flash(_("The destination address is invalid"))
                 return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
+            trip = Route.query.get_or_404(id)
+            trip.arrival_location_string = form.destination.data
+            db.session.commit()
         if form.date.data:
             if form.date.data < datetime.now():  # TODO datetime
                 flash("Date is invalid")
                 return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
             time = form.date.data
-        if not form.places.data.isdigit():
-            flash(_("Passenger places must be a number"))
-            return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
         if len(form.playlist.data) > 32:
             flash(_("Playlist data exceeds character limit"))
             return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
