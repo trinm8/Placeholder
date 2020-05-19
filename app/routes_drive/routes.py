@@ -459,6 +459,11 @@ def editRoute(id):
         if len(form.playlist.data) > 32:
             flash(_("Playlist data exceeds character limit"))
             return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
+        if form.places.data:
+            trip = Route.query.get_or_404(id)
+            if form.places.data < trip.passenger_places - trip.places_left():
+                flash(_("Not enough passenger places"))
+                return render_template('routes/editRoute.html', title=_('Edit Route'), form=form)
         edit_route(id, departure_location, arrival_location, time, form.places.data, form.playlist.data)
         flash(_('Your changes have been updated'))
         return redirect(url_for('routes_drive.drive', drive_id=id))
