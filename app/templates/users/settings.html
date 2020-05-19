@@ -187,7 +187,11 @@
 
             </div>
         </section>
+        <section class="section">
+            <div class="container">
+                <a class="button is-danger" href="{{ url_for('users.delete', id=current_user.id) }}">{{ _("Delete account") }}</a>
+            </div>
+        </section>
     </form>
     <br>
-    <a class="button is-danger" href="{{ url_for('users.delete', id=current_user.id) }}">{{ _("Delete account") }}</a>
 {% endblock %}
