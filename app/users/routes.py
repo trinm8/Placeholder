@@ -42,6 +42,10 @@ def account_settings():
                 or len(form.email.data) > 120):
             flash(_("User data field exceeds character limit"))
 
+        elif (len(form.firstname.data) == 0
+                or len(form.lastname.data) == 0):
+            flash(_("First and lastname cannot be empty"))
+
         else:
             usr.firstname = form.firstname.data
             usr.lastname = form.lastname.data
