@@ -354,7 +354,7 @@ def overview():
                     break
             if add:
                 other_routes.append(route)
-    except:
+    except GeocoderTimedOut:
         other_routes = []
         print('Something went wrong with GET to team 3')
 
