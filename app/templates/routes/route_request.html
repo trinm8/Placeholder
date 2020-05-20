@@ -20,6 +20,16 @@
 {% endblock %}
 
 {% block body %}
+    {% if form.errors %}
+        <div class="notification is-danger">
+        <button class="delete"></button>
+        {% for field, error in form.errors.items() %}
+            {% for err in error %}
+                {{ err }} <br>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+
     <section class="section full-height">
         <div class="columns">
             <div class="column is-half is-hidden-mobile" id="mapParent" >

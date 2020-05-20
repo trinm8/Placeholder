@@ -23,7 +23,20 @@
 
 {% endblock %}
 
+
 {% block body %}
+
+    {% if form.errors %}
+        <div class="notification is-danger">
+        <button class="delete"></button>
+        {% for field, error in form.errors.items() %}
+            {% for err in error %}
+                {{ err }} <br>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+</div>
+
     <section class="section full-height">
         <div class="columns full-height">
             <div class="column is-three-fifths" style="display: flex; flex-direction: column">
@@ -32,10 +45,10 @@
             <form class="column" action="" method="POST" novalidate>
                 <div class="tile is-vertical">
                     {{ form.hidden_tag() }}
-                    <p class="title">{{ _("Add Route")}}</p>
+                    <p class="title">{{ _("Add Route") }}</p>
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">{{ _("Role:")}}</label>
+                            <label class="label">{{ _("Role:") }}</label>
                         </div>
 
                         <div class="field-body">
@@ -53,7 +66,7 @@
                     <br>
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">{{ _("Start:")}}</label>
+                            <label class="label">{{ _("Start:") }}</label>
                         </div>
                         <div class="field-body">
                             {{ form.start(class='input', type='text', onchange='addmarker("start")') }}
@@ -61,7 +74,7 @@
                     </div>
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">{{ _("Destination:")}}</label>
+                            <label class="label">{{ _("Destination:") }}</label>
                         </div>
                         <div class="field-body">
                             {{ form.destination(class='input', type='text', onchange='addmarker("destination")') }}
@@ -70,7 +83,7 @@
                     <br>
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">{{ _("Date:")}}</label>
+                            <label class="label">{{ _("Date:") }}</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
@@ -83,15 +96,15 @@
                     </div>
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">{{ _("Passenger places:")}}</label>
+                            <label class="label">{{ _("Passenger places:") }}</label>
                         </div>
                         <div class="field-body">
-                            {{ form.places(class='input', type='number') }}
+                            {{ form.places(class='input', type='number', value='0') }}
                         </div>
                     </div>
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">{{ _("Spotify playlist ID:")}}</label>
+                            <label class="label">{{ _("Spotify playlist ID:") }}</label>
                         </div>
                         <div class="field-body">
                             {{ form.playlist(class='input', type='text') }}

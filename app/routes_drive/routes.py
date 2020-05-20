@@ -8,12 +8,12 @@ from flask_login import current_user, login_required
 
 from sqlalchemy import Date, cast, func
 
-from geopy import Nominatim
+from geopy import Nominatim, Location
 from geopy import distance as dist
 from geopy.exc import GeocoderTimedOut
 from sympy.geometry import *
 from math import cos, sin
-import pyproj
+import pyproj, json
 
 from datetime import datetime  # Todo: Datetime
 from time import sleep
@@ -53,15 +53,23 @@ def edit_route(id, departurelocation, arrivallocation, time, passenger_places=No
 
     if departurelocation:
         try:
-            trip.departure_location_lat = departurelocation[0]
-            trip.departure_location_long = departurelocation[1]
+            if isinstance(departurelocation, Location):
+                trip.departure_location_lat = departurelocation.latitude
+                trip.departure_location_long = departurelocation.longitude
+            else:
+                trip.departure_location_lat = departurelocation[0]
+                trip.departure_location_long = departurelocation[1]
         except:
             trip.departure_location_lat = departurelocation.latitude
             trip.departure_location_long = departurelocation.longitude
     if arrivallocation:
         try:
-            trip.arrival_location_lat = arrivallocation[0]
-            trip.arrival_location_long = arrivallocation[1]
+            if isinstance(departurelocation, Location):
+                trip.arrival_location_lat = departurelocation.latitude
+                trip.arrival_location_long = departurelocation.longitude
+            else:
+                trip.arrival_location_lat = departurelocation[0]
+                trip.arrival_location_long = departurelocation[1]
         except:
             trip.arrival_location_lat = arrivallocation.latitude
             trip.arrival_location_long = arrivallocation.longitude
@@ -309,7 +317,7 @@ def overview():
         long_to = request.args.get('long_to')
 
         time = request.args.get('time')  # Should only be the date
-        time = datetime.strptime(time, '%Y-%m-%d %H:%M:%S')
+        time = datetime.strptime(time, '%Y-%m-%d %H:%M:%S') if time else None
 
         allowed_distance = request.args.get('distance')
         if not allowed_distance:
@@ -325,9 +333,24 @@ def overview():
 
     # Try to get some routes from team3
     try:
-        other_routes = requests.get("http://team3.ppdb.me/api/drives/search?from={0}%2C{1}&to={2}%2C{3}&arrive_by={4}"
-                                    .format(lat_from, long_from, lat_to, long_to, time.isoformat() + '.00')).content
-    finally:
+        data = {"from": "{lat}, {long}".format(lat=lat_from, long=long_from),
+                "to": "{lat}, {long}".format(lat=lat_to, long=long_to), "arrive-by": str(time.isoformat()) + ".00",
+                "limit": 3}
+        response = requests.get("https://team3.ppdb.me/api/drives/search",
+                                   headers={"Content-Type": "application/json"},
+                                   params=data)
+        routes_ = json.loads(response.content)
+        other_routes = []
+        for route in routes_:
+            add = True
+            required_elements = ["arrive-by", "from", "to", "id"]
+            for element in required_elements:
+                if element not in route:
+                    add = False
+                    break
+            if add:
+                other_routes.append(route)
+    except:
         other_routes = []
         print('Something went wrong with GET to team 3')
 
@@ -336,6 +359,10 @@ def overview():
 
 
 def filter_routes(allowed_distance, arrival_location, departure_location, time, limit=20):
+
+    if not time:
+        return []
+
     # dist.distance(Route.arrival_coordinates, arrival_location).km <= allowed_distance
     # and
     same_day_routes = Route.query.filter(func.DATE(Route.departure_time) == time.date()).limit(limit).all()  # https://gist.github.com/Tukki/3953990

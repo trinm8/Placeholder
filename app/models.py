@@ -36,6 +36,8 @@ def get_from_dict(dictionary, *args):
 def addr(lat, long):
     geolocator = Nominatim(user_agent="[PlaceHolder]")
     # print("query")
+    if not lat or not long:
+        return ""
     try:
         sleep(1.1)
         location = geolocator.reverse(str(lat) + ", " + str(long))
