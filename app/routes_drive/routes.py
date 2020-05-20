@@ -377,7 +377,8 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
     pickupPoint = transformer.transform(*departure_location)
     dropoffPoint = transformer.transform(*arrival_location)
 
-    print("Sameday", same_day_routes, file=sys.stderr)
+    for i in same_day_routes:
+        print("Sameday", i.departure_time,file=sys.stderr)
 
     for route in same_day_routes:
         route_dep = (route.departure_location_lat, route.departure_location_long)
