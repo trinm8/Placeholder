@@ -358,14 +358,14 @@ def overview():
                            dest=addr(lat_to, long_to), form=form, other_routes=other_routes)
 
 
-def filter_routes(allowed_distance, arrival_location, departure_location, time, limit=20):
+def filter_routes(allowed_distance, arrival_location, departure_location, time, limit=100):
     if not time:
         print("No time")
         return []
 
     # dist.distance(Route.arrival_coordinates, arrival_location).km <= allowed_distance
     # and
-    same_day_routes = Route.query.filter(func.DATE(Route.departure_time) == time.date()).limit(limit).all()  # https://gist.github.com/Tukki/3953990
+    same_day_routes = Route.query.filter(func.DATE(Route.departure_time) == time.date()).all()  # https://gist.github.com/Tukki/3953990
     routes = []
     from geopy import distance  # No idea why this include won't work when placed outside this function
     import sys
@@ -378,7 +378,7 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
     dropoffPoint = transformer.transform(*arrival_location)
 
     for i in same_day_routes:
-        print("Sameday", i.departure_time,file=sys.stderr)
+        print("Sameday", i.departure_time ,file=sys.stderr)
 
     for route in same_day_routes:
         route_dep = (route.departure_location_lat, route.departure_location_long)
