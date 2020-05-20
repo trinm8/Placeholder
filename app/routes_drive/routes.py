@@ -386,14 +386,14 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
         if route.maximum_deviation is None:
             route.maximum_deviation = 15
 
-        print(routes)
+        print("1", routes)
 
         # @trinm: ik (Arno) heb hier de * 100 op de twee regels hieronder weggedaan, anders faalde de test.
         if routeLineSegment.distance(pickupPoint)/1000 < route.maximum_deviation and \
                 distance.distance(route_arr, arrival_location).km <= allowed_distance:
             routes.append(route)
 
-        print(routes)
+        print("2", routes)
 
         # if distance.distance(route_dep, departure_location).km <= allowed_distance and \
         #         distance.distance(route_arr, arrival_location).km <= allowed_distance:
