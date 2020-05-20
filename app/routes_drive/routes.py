@@ -389,6 +389,9 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
 
         print("1", routes, file=sys.stderr)
 
+        print("Distance pickup", routeLineSegment.distance(pickupPoint), routeLineSegment.distance(pickupPoint)/100, file=sys.stderr)
+        print("Arrival", distance.distance(route_arr, arrival_location).km, file=sys.stderr)
+
         # @trinm: ik (Arno) heb hier de * 100 op de twee regels hieronder weggedaan, anders faalde de test.
         if routeLineSegment.distance(pickupPoint)/1000 < route.maximum_deviation and \
                 distance.distance(route_arr, arrival_location).km <= allowed_distance:
