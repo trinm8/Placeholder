@@ -359,7 +359,6 @@ def overview():
 
 
 def filter_routes(allowed_distance, arrival_location, departure_location, time, limit=20):
-
     if not time:
         return []
 
@@ -376,6 +375,8 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
     pickupPoint = transformer.transform(*departure_location)
     dropoffPoint = transformer.transform(*arrival_location)
 
+    print("Sameday", same_day_routes)
+
     for route in same_day_routes:
         route_dep = (route.departure_location_lat, route.departure_location_long)
         route_arr = (route.arrival_location_lat, route.arrival_location_long)
@@ -385,10 +386,14 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
         if route.maximum_deviation is None:
             route.maximum_deviation = 15
 
+        print(routes)
+
         # @trinm: ik (Arno) heb hier de * 100 op de twee regels hieronder weggedaan, anders faalde de test.
         if routeLineSegment.distance(pickupPoint)/1000 < route.maximum_deviation and \
-                routeLineSegment.distance(dropoffPoint)/1000 < allowed_distance:
+                distance.distance(route_arr, arrival_location).km <= allowed_distance:
             routes.append(route)
+
+        print(routes)
 
         # if distance.distance(route_dep, departure_location).km <= allowed_distance and \
         #         distance.distance(route_arr, arrival_location).km <= allowed_distance:
