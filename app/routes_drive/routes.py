@@ -341,7 +341,7 @@ def overview():
                                    headers={"Content-Type": "application/json"},
                                    params=data)
         print("2", response.content)
-        routes_ = json.loads(response.content)
+        routes_ = json.loads(response.content.decode("utf-8"))
         print("3")
         other_routes = []
         print("4")
