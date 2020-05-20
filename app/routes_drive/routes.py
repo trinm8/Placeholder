@@ -336,11 +336,15 @@ def overview():
         data = {"from": "{lat}, {long}".format(lat=lat_from, long=long_from),
                 "to": "{lat}, {long}".format(lat=lat_to, long=long_to), "arrive-by": str(time.isoformat()) + ".00",
                 "limit": 3}
+        print("1")
         response = requests.get("https://team3.ppdb.me/api/drives/search",
                                    headers={"Content-Type": "application/json"},
                                    params=data)
+        print("2", response.content)
         routes_ = json.loads(response.content)
+        print("3")
         other_routes = []
+        print("4")
         for route in routes_:
             add = True
             required_elements = ["arrive-by", "from", "to", "id"]
@@ -360,7 +364,6 @@ def overview():
 
 def filter_routes(allowed_distance, arrival_location, departure_location, time, limit=100):
     if not time:
-        print("No time")
         return []
 
     # dist.distance(Route.arrival_coordinates, arrival_location).km <= allowed_distance
@@ -368,7 +371,6 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
     same_day_routes = Route.query.filter(func.DATE(Route.departure_time) == time.date()).all()  # https://gist.github.com/Tukki/3953990
     routes = []
     from geopy import distance  # No idea why this include won't work when placed outside this function
-    import sys
     # allowed_distance = 2
     # * zorgt ervoor dat de elementen uit de locatie afzonderlijk woorden doorgegeven
 
@@ -377,8 +379,6 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
     pickupPoint = transformer.transform(*departure_location)
     dropoffPoint = transformer.transform(*arrival_location)
 
-    for i in same_day_routes:
-        print("Sameday", i.departure_time ,file=sys.stderr)
 
     for route in same_day_routes:
         route_dep = (route.departure_location_lat, route.departure_location_long)
@@ -389,17 +389,10 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
         if route.maximum_deviation is None:
             route.maximum_deviation = 15
 
-        print("1", routes, file=sys.stderr)
-
-        print("Distance pickup", routeLineSegment.distance(pickupPoint), routeLineSegment.distance(pickupPoint)/1000, file=sys.stderr)
-        print("Arrival", distance.distance(route_arr, arrival_location).km, file=sys.stderr)
-
         # @trinm: ik (Arno) heb hier de * 100 op de twee regels hieronder weggedaan, anders faalde de test.
         if routeLineSegment.distance(pickupPoint)/1000 < route.maximum_deviation and \
                 distance.distance(route_arr, arrival_location).km <= allowed_distance:
             routes.append(route)
-
-        print("2", routes, file=sys.stderr)
 
         # if distance.distance(route_dep, departure_location).km <= allowed_distance and \
         #         distance.distance(route_arr, arrival_location).km <= allowed_distance:
