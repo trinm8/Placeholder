@@ -360,6 +360,7 @@ def overview():
 
 def filter_routes(allowed_distance, arrival_location, departure_location, time, limit=20):
     if not time:
+        print("No time")
         return []
 
     # dist.distance(Route.arrival_coordinates, arrival_location).km <= allowed_distance
