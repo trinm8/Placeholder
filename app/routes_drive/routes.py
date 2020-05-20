@@ -336,15 +336,11 @@ def overview():
         data = {"from": "{lat}, {long}".format(lat=lat_from, long=long_from),
                 "to": "{lat}, {long}".format(lat=lat_to, long=long_to), "arrive-by": str(time.isoformat()) + ".00",
                 "limit": 3}
-        print("1")
         response = requests.get("https://team3.ppdb.me/api/drives/search",
                                    headers={"Content-Type": "application/json"},
                                    params=data)
-        print("2", response.content)
         routes_ = json.loads(response.content.decode("utf-8"))
-        print("3")
         other_routes = []
-        print("4")
         for route in routes_:
             add = True
             required_elements = ["arrive-by", "from", "to", "id"]
@@ -354,7 +350,7 @@ def overview():
                     break
             if add:
                 other_routes.append(route)
-    except GeocoderTimedOut:
+    except:
         other_routes = []
         print('Something went wrong with GET to team 3')
 
