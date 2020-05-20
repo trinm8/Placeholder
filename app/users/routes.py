@@ -142,8 +142,8 @@ def review_overview(id):
     reviews_by_me = user.get_reviews_by_me()
     reviewers = []
     for review_of_me in reviews_of_me:
-        reviewer = User.query.filter_by(id=review_of_me.reviewer_id).all()
-        reviewers.append(reviewer[0]) #TODO: vrij brakke opl
+        reviewer = User.query.filter_by(id=review_of_me.reviewer_id).first()
+        reviewers.append(reviewer)
     return render_template('users/review_overview.html', title=_('Review Overview'), user=user,
                            reviews_of_me=reviews_of_me, reviews_by_me=reviews_by_me, reviewers=reviewers)
 
