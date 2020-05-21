@@ -155,10 +155,13 @@ def change_request_status(drive_id, user_id):
 
 @bp.route("/drives/search", methods=["GET"])
 def search():
-    from_location = request.args.get("from").split(',')
-    from_location = [float(from_location[0]), float(from_location[1])]
-    to_location = request.args.get("to").split(',')
-    to_location = [float(to_location[0]), float(to_location[1])]
+    try:
+        from_location_txt = request.args.get("from").split(',')
+        from_location = [float(from_location_txt[0]), float(from_location_txt[1])]
+        to_location_txt = request.args.get("to").split(',')
+        to_location = [float(to_location_txt[0]), float(to_location_txt[1])]
+    except IndexError:
+        print("Error with route: from {} to {}".format(from_location_txt, to_location_txt))
     time = request.args.get("arrive-by")
     try:
         time = datetime.strptime(time, '%Y-%m-%dT%H:%M:%S')
