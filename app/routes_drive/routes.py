@@ -12,7 +12,7 @@ from geopy import Nominatim, Location
 from geopy import distance as dist
 from geopy.exc import GeocoderTimedOut
 from sympy.geometry import *
-from math import cos, sin
+from math import cos, sin, radians
 import pyproj, json
 
 from datetime import datetime  # Todo: Datetime
@@ -357,6 +357,12 @@ def overview():
     return render_template('routes/search_results.html', routes=routes, title="Search", src=addr(lat_from, long_from),
                            dest=addr(lat_to, long_to), form=form, other_routes=other_routes)
 
+def calc_distance(lat1, lon1, lat2, lon2):
+    Earth_radius_km = 6371.009
+    km_per_deg_lat = 2 * 3.14159265 * Earth_radius_km / 360.0
+    km_per_deg_lon = km_per_deg_lat * func.cos(func.radians(lat1))
+    distance = func.sqrt(func.pow((km_per_deg_lat * (lat1 - lat2)), 2) + func.pow((km_per_deg_lon * (lon1 - lon2)), 2))
+    return distance
 
 def filter_routes(allowed_distance, arrival_location, departure_location, time, limit=100):
     if not time:
@@ -364,7 +370,15 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
 
     # dist.distance(Route.arrival_coordinates, arrival_location).km <= allowed_distance
     # and
-    same_day_routes = Route.query.filter(func.DATE(Route.departure_time) == time.date()).all()  # https://gist.github.com/Tukki/3953990
+
+
+    lat = arrival_location[0]
+    long = arrival_location[1]
+
+    # https://stackoverflow.com/questions/2002024/how-to-use-mathematic-equations-as-filters-in-sqlalchemy
+    # https://stackoverflow.com/questions/5206786/sqlalchemy-sqlite-distance-calculation/5263134
+    # First .filter is for the same date, second is for destination in a radius of the allowed distance
+    filtered_routes = Route.query.filter(func.DATE(Route.departure_time) == time.date()).filter(calc_distance(Route.arrival_location_lat, Route.arrival_location_long, lat, long) < allowed_distance).all()  # https://gist.github.com/Tukki/3953990
     routes = []
     from geopy import distance  # No idea why this include won't work when placed outside this function
     # allowed_distance = 2
@@ -376,7 +390,7 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
     dropoffPoint = transformer.transform(*arrival_location)
 
 
-    for route in same_day_routes:
+    for route in filtered_routes:
         route_dep = (route.departure_location_lat, route.departure_location_long)
         route_arr = (route.arrival_location_lat, route.arrival_location_long)
 
