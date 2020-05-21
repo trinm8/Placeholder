@@ -378,7 +378,8 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
     # https://stackoverflow.com/questions/2002024/how-to-use-mathematic-equations-as-filters-in-sqlalchemy
     # https://stackoverflow.com/questions/5206786/sqlalchemy-sqlite-distance-calculation/5263134
     # First .filter is for the same date, second is for destination in a radius of the allowed distance
-    filtered_routes = Route.query.filter(func.DATE(Route.departure_time) == time.date()).filter(calc_distance(Route.arrival_location_lat, Route.arrival_location_long, lat, long) < allowed_distance).all()  # https://gist.github.com/Tukki/3953990
+    filtered_routes = Route.query.filter(func.DATE(Route.departure_time) == time.date())\
+        .filter(calc_distance(Route.arrival_location_lat, Route.arrival_location_long, lat, long) < allowed_distance).order_by().all()  # https://gist.github.com/Tukki/3953990
     routes = []
     from geopy import distance  # No idea why this include won't work when placed outside this function
     # allowed_distance = 2

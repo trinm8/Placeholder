@@ -28,7 +28,7 @@
                     <form class="column" action="" method="POST" novalidate>
                         <div class="field is-horizontal">
                             <div class="field-label">
-                                <label class="label">{{ _("Start:")}}</label>
+                                <label class="label">{{ _("Start:") }}</label>
                             </div>
                             <div class="field-body">
                                 {{ form.start(class='input', type='text', onchange='addmarker("start")', value=src) }}
@@ -36,7 +36,7 @@
                         </div>
                         <div class="field is-horizontal">
                             <div class="field-label">
-                                <label class="label">{{ _("Destination:")}}</label>
+                                <label class="label">{{ _("Destination:") }}</label>
                             </div>
                             <div class="field-body">
                                 {{ form.destination(class='input', type='text', onchange='addmarker("destination")', value=dest) }}
@@ -44,7 +44,7 @@
                         </div>
                         <div class="field is-horizontal">
                             <div class="field-label">
-                                <label class="label">{{ _("Date:")}}</label>
+                                <label class="label">{{ _("Date:") }}</label>
                             </div>
                             <div class="field-body">
                                 <div class="field">
@@ -57,7 +57,7 @@
                         </div>
                         <div class="field is-horizontal">
                             <div class="field-label">
-                                <label class="label">{{ _("Distance (km):")}}</label>
+                                <label class="label">{{ _("Distance (km):") }}</label>
                             </div>
                             <script>
                                 function outputUpdate(distance) {
@@ -100,9 +100,9 @@
                                             {#                                            </span>#}
                                         </div>
                                         <div class='column name'>
-                                            <strong>{{ _("FROM:")}}</strong> {{ route.text_from() }}<br>
-                                            <strong>{{ _("TO:")}}</strong> {{ route.text_to() }}<br>
-                                            <strong>{{ _("TIME:")}}</strong> {{ route.departure_time.isoformat() }}
+                                            <strong>{{ _("FROM:") }}</strong> {{ route.text_from() }}<br>
+                                            <strong>{{ _("TO:") }}</strong> {{ route.text_to() }}<br>
+                                            <strong>{{ _("TIME:") }}</strong> {{ route.departure_time.isoformat() }}
                                             <br><br>
                                             <a style="margin-top: auto;" class="button is-primary"
                                                href="{{ url_for('routes_drive.drive', drive_id=route.id) }}">{{ _("View") }}</a>
@@ -116,6 +116,34 @@
                     </div>
                 {% endfor %}
 
+                <script>
+                    {#https://www.w3schools.com/js/js_cookies.asp#}
+                    function getCookie(cname) {
+                        var name = cname + "=";
+                        var decodedCookie = decodeURIComponent(document.cookie);
+                        var ca = decodedCookie.split(';');
+                        for (var i = 0; i < ca.length; i++) {
+                            var c = ca[i];
+                            while (c.charAt(0) == ' ') {
+                                c = c.substring(1);
+                            }
+                            if (c.indexOf(name) == 0) {
+                                return c.substring(name.length, c.length);
+                            }
+                        }
+                        return "";
+                    }
+
+                    function team3(id) {
+                        var language = getCookie("language");
+                        if (!language) {
+                            language = "en"
+                        }
+                        var url = "https://team3.ppdb.me/" + language + "/view_ride=" + id
+                        window.open(url, '_blank');
+                    }
+                </script>
+
                 {% for route in other_routes %}
                     <div class='column is-6-tablet is-12-mobile'>
                         <div class='card'>
@@ -128,12 +156,12 @@
                                             </figure>
                                         </div>
                                         <div class='column name'>
-                                            <strong>{{ _("FROM:")}}</strong> {{ route.get("from")[0] }}, {{ route.get("from")[1] }}<br>
-                                            <strong>{{ _("TO:")}}</strong> {{ route.get("to")[0] }}, {{ route.get("to")[1] }}<br>
-                                            <strong>{{ _("TIME:")}}</strong> {{ route.get("arrive-by") }}
+                                            <strong>{{ _("FROM:") }}</strong> {{ route.get("from")[0] }}, {{ route.get("from")[1] }}<br>
+                                            <strong>{{ _("TO:") }}</strong> {{ route.get("to")[0] }}, {{ route.get("to")[1] }}<br>
+                                            <strong>{{ _("TIME:") }}</strong> {{ route.get("arrive-by") }}
                                             <br><br>
                                             <a style="margin-top: auto;" class="button"
-                                               href="https://team3.ppdb.me">{{ _("View") }}</a>
+                                               onclick="team3({{ route.get('id') }})">{{ _("View") }}</a>
 
                                         </div>
                                     </div>
