@@ -55,7 +55,12 @@ def account_settings():
             if len(form.email.data) == 0:
                 usr.email = None
             else:
-                usr.email = form.email.data
+                # Check if email is available (not used or used by this user)
+                emails = User.query.filter_by(email=form.email.data)
+                if len(emails.all()) == 0 or emails.first().id == current_user.id:
+                    usr.email = form.email.data
+                else:
+                    flash(_("That email is not available"))
 
             if len(form.password.data) > 0:
                 usr.authentication().set_password(form.password.data)
