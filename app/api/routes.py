@@ -152,9 +152,16 @@ def change_request_status(drive_id, user_id):
     response.headers['Location'] = url_for('api.get_passenger_request', drive_id=drive_id, user_id=user_id)
     return response
 
+def checkRequired(required):
+    for el in required:
+        if el not in request.args:
+            return False
 
 @bp.route("/drives/search", methods=["GET"])
 def search():
+    if not checkRequired(["from", "to", "arrive-by"]):
+        return bad_request("Not all atrributes where given.")
+
     from_location_txt = None
     to_location_txt = None
     try:
@@ -168,6 +175,8 @@ def search():
         if not to_location_txt:
             to_location_txt
         print("Error with route: from {} to {}".format(from_location_txt, to_location_txt))
+        return bad_request("What do you even want???")
+
     time = request.args.get("arrive-by")
     try:
         time = datetime.strptime(time, '%Y-%m-%dT%H:%M:%S')

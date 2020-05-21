@@ -48,6 +48,8 @@ def auth():
     if "username" not in data or "password" not in data:
         return bad_request("Must include username and password")
     user = UserAuthentication.query.filter_by(username=data["username"]).first()
+    if user is None:
+        return bad_request("Who are you? I have never seen you before, please register first.")
     if not user.check_password(data["password"]):
         response = jsonify()
         response.status_code = 401
