@@ -171,9 +171,9 @@ def search():
         to_location = [float(to_location_txt[0]), float(to_location_txt[1])]
     except IndexError:
         if not from_location_txt:
-            from_location_txt = ""
+            from_location_txt = "[No location provided]"
         if not to_location_txt:
-            to_location_txt
+            to_location_txt = "[No location provided]"
         print("Error with route: from {} to {}".format(from_location_txt, to_location_txt))
         return bad_request("What do you even want???")
 
