@@ -6,7 +6,7 @@ from app.routes_drive.forms import RequestForm, SendRequestForm, AddRouteForm, R
 from flask import flash, render_template, url_for, redirect, request
 from flask_login import current_user, login_required
 
-from sqlalchemy import Date, cast, func
+from sqlalchemy import Date, cast, func, asc
 
 from geopy import Nominatim, Location
 from geopy import distance as dist
@@ -338,8 +338,8 @@ def overview():
                 "limit": 5}
         print(data)
         response = requests.get("https://team3.ppdb.me/api/drives/search",
-                                   headers={"Content-Type": "application/json"},
-                                   params=data)
+                                headers={"Content-Type": "application/json"},
+                                params=data)
         routes_ = json.loads(response.content.decode("utf-8"))
         other_routes = []
         for route in routes_:
@@ -358,12 +358,14 @@ def overview():
     return render_template('routes/search_results.html', routes=routes, title="Search", src=addr(lat_from, long_from),
                            dest=addr(lat_to, long_to), form=form, other_routes=other_routes)
 
+
 def calc_distance(lat1, lon1, lat2, lon2):
     Earth_radius_km = 6371.009
     km_per_deg_lat = 2 * 3.14159265 * Earth_radius_km / 360.0
     km_per_deg_lon = km_per_deg_lat * func.cos(func.radians(lat1))
     distance = func.sqrt(func.pow((km_per_deg_lat * (lat1 - lat2)), 2) + func.pow((km_per_deg_lon * (lon1 - lon2)), 2))
     return distance
+
 
 def filter_routes(allowed_distance, arrival_location, departure_location, time, limit=100):
     if not time:
@@ -372,16 +374,19 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
     # dist.distance(Route.arrival_coordinates, arrival_location).km <= allowed_distance
     # and
 
-
     lat = arrival_location[0]
     long = arrival_location[1]
 
     # https://stackoverflow.com/questions/2002024/how-to-use-mathematic-equations-as-filters-in-sqlalchemy
     # https://stackoverflow.com/questions/5206786/sqlalchemy-sqlite-distance-calculation/5263134
     # First .filter is for the same date, second is for destination in a radius of the allowed distance
-    filtered_routes = Route.query.filter(func.DATE(Route.departure_time) == time.date())\
-        .filter(calc_distance(Route.arrival_location_lat, Route.arrival_location_long, lat, long) < allowed_distance)\
-        .filter(Route.departure_time > func.now()).all()  # https://gist.github.com/Tukki/3953990
+    filtered_routes = Route.query.filter(func.DATE(Route.departure_time) == time.date()) \
+        .filter(calc_distance(Route.arrival_location_lat, Route.arrival_location_long, lat, long) < allowed_distance) \
+        .filter(Route.departure_time > func.now()) \
+        .order_by(
+        asc(calc_distance(Route.arrival_location_lat, Route.arrival_location_long, lat, long) +
+            calc_distance(Route.departure_location_lat, Route.departure_location_long, departure_location[0], departure_location[1]))) \
+        .all()  # https://gist.github.com/Tukki/3953990
     routes = []
     print("{} routes found".format(len(filtered_routes)))
     if len(filtered_routes) > 100:
@@ -391,9 +396,13 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
         filtered_routes = Route.query.filter(func.DATE(Route.departure_time) == time.date()) \
             .filter(
             calc_distance(Route.arrival_location_lat, Route.arrival_location_long, lat, long) < allowed_distance) \
-            .filter(Route.departure_time > func.now())\
+            .filter(Route.departure_time > func.now()) \
             .filter(
-            calc_distance(Route.departure_location_lat, Route.departure_location_long, departure_location[0], departure_location[1]) < allowed_distance).limit(50).all()
+            calc_distance(Route.departure_location_lat, Route.departure_location_long, departure_location[0],
+                          departure_location[1]) < allowed_distance).order_by(
+            asc(calc_distance(Route.arrival_location_lat, Route.arrival_location_long, lat, long) +
+                calc_distance(Route.departure_location_lat, Route.departure_location_long, departure_location[0],
+                departure_location[1]))).limit(50).all()
         print("{} routes left after stronger filters".format(len(filtered_routes)))
     from geopy import distance  # No idea why this include won't work when placed outside this function
     # allowed_distance = 2
@@ -403,7 +412,6 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
 
     pickupPoint = transformer.transform(*departure_location)
     dropoffPoint = transformer.transform(*arrival_location)
-
 
     for route in filtered_routes:
         route_dep = (route.departure_location_lat, route.departure_location_long)
@@ -415,7 +423,7 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
             route.maximum_deviation = 15
 
         # @trinm: ik (Arno) heb hier de * 100 op de twee regels hieronder weggedaan, anders faalde de test.
-        if routeLineSegment.distance(pickupPoint)/1000 < route.maximum_deviation and \
+        if routeLineSegment.distance(pickupPoint) / 1000 < route.maximum_deviation and \
                 distance.distance(route_arr, arrival_location).km <= allowed_distance:
             routes.append(route)
 
