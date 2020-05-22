@@ -384,7 +384,7 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
         .filter(Route.departure_time > func.now()).all()  # https://gist.github.com/Tukki/3953990
     routes = []
     print("{} routes found".format(len(filtered_routes)))
-    if len(routes) > 100:
+    if len(filtered_routes) > 100:
         print("Filtering more")
         if allowed_distance > 20:
             allowed_distance = 20
