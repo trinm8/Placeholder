@@ -46,7 +46,10 @@ def addr(lat, long):
         # print("Geocoder timed out")
         return _("Geocoder timed out")
     except GeocoderQueryError:
-        return "Geocoder errored on query"
+        return _("Geocoder errored on query")
+    except:
+        return _("Geocoder currently unavailable")
+
     # print("succesfull")
 
     addr_dict = location.raw["address"]

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  PlaceHolder\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-05-21 11:58+0200\n"
+"POT-Creation-Date: 2020-05-22 10:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -21,6 +21,14 @@ msgstr "Log in om toegang te krijgen tot deze pagina."
 #: app/models.py:47
 msgid "Geocoder timed out"
 msgstr "Geocoder timed out"
+
+#: app/models.py:49
+msgid "Geocoder errored on query"
+msgstr "Geocoder query error"
+
+#: app/models.py:51
+msgid "Geocoder currently unavailable"
+msgstr "Geocoder momenteel niet bereikbaar"
 
 #: app/auth/emails.py:7
 msgid "[PlaceHolder] Reset Your Password"
@@ -212,12 +220,12 @@ msgid "The geolocator is timing out! please try again"
 msgstr "De geolocator heeft een time-out! probeer het opnieuw"
 
 #: app/routes_drive/routes.py:105 app/routes_drive/routes.py:287
-#: app/routes_drive/routes.py:474
+#: app/routes_drive/routes.py:484
 msgid "The Start address is invalid"
 msgstr "Het startadres is ongeldig"
 
 #: app/routes_drive/routes.py:109 app/routes_drive/routes.py:292
-#: app/routes_drive/routes.py:485
+#: app/routes_drive/routes.py:495
 msgid "The destination address is invalid"
 msgstr "Het bestemmingsadres is ongeldig"
 
@@ -225,15 +233,15 @@ msgstr "Het bestemmingsadres is ongeldig"
 msgid "Date is invalid"
 msgstr "Datum is ongeldig"
 
-#: app/routes_drive/routes.py:122 app/routes_drive/routes.py:470
+#: app/routes_drive/routes.py:122 app/routes_drive/routes.py:480
 msgid "Start data exceeds character limit"
 msgstr "De start data is langer dan de karakter limiet"
 
-#: app/routes_drive/routes.py:125 app/routes_drive/routes.py:481
+#: app/routes_drive/routes.py:125 app/routes_drive/routes.py:491
 msgid "Destination data exceeds character limit"
 msgstr "De bestemming data is langer dan de karakter limiet"
 
-#: app/routes_drive/routes.py:128 app/routes_drive/routes.py:496
+#: app/routes_drive/routes.py:128 app/routes_drive/routes.py:506
 msgid "Playlist data exceeds character limit"
 msgstr "De playlist data is langer dan de karakter limiet."
 
@@ -293,35 +301,35 @@ msgstr "Het routeverzoek is afgewezen."
 msgid "New Route"
 msgstr "Nieuwe route"
 
-#: app/routes_drive/routes.py:438
+#: app/routes_drive/routes.py:448
 msgid "Notifications"
 msgstr "Meldingen"
 
-#: app/routes_drive/routes.py:448
+#: app/routes_drive/routes.py:458
 msgid "The route has been deleted successfully"
 msgstr "De route is succesvol verwijderd"
 
-#: app/routes_drive/routes.py:450
+#: app/routes_drive/routes.py:460
 msgid "You have to be the driver of the route in order to remove it"
 msgstr "Je moet de bestuurder van de route zijn om deze te verwijderen"
 
-#: app/routes_drive/routes.py:459
+#: app/routes_drive/routes.py:469
 msgid "You have to be the driver of the route in order to edit it"
 msgstr "Je moet de bestuurder van de route zijn om deze te kunnen bewerken"
 
-#: app/routes_drive/routes.py:471 app/routes_drive/routes.py:475
-#: app/routes_drive/routes.py:482 app/routes_drive/routes.py:486
-#: app/routes_drive/routes.py:493 app/routes_drive/routes.py:497
-#: app/routes_drive/routes.py:502 app/routes_drive/routes.py:506
+#: app/routes_drive/routes.py:481 app/routes_drive/routes.py:485
+#: app/routes_drive/routes.py:492 app/routes_drive/routes.py:496
+#: app/routes_drive/routes.py:503 app/routes_drive/routes.py:507
+#: app/routes_drive/routes.py:512 app/routes_drive/routes.py:516
 #: app/templates/routes/editRoute.html:37
 msgid "Edit Route"
 msgstr "Route bewerken"
 
-#: app/routes_drive/routes.py:501
+#: app/routes_drive/routes.py:511
 msgid "Not enough passenger places"
 msgstr "Niet genoeg plaatsen"
 
-#: app/routes_drive/routes.py:504
+#: app/routes_drive/routes.py:514
 msgid "Your changes have been updated"
 msgstr "Uw wijzigingen zijn bijgewerkt"
 
@@ -826,14 +834,14 @@ msgstr "wil rijden!"
 #: app/templates/routes/requests.html:29
 #: app/templates/routes/route_overview.html:14
 #: app/templates/routes/search_results.html:103
-#: app/templates/routes/search_results.html:131
+#: app/templates/routes/search_results.html:159
 msgid "FROM:"
 msgstr "VAN:"
 
 #: app/templates/routes/requests.html:30
 #: app/templates/routes/route_overview.html:15
 #: app/templates/routes/search_results.html:104
-#: app/templates/routes/search_results.html:132
+#: app/templates/routes/search_results.html:160
 msgid "TO:"
 msgstr "NAAR:"
 
@@ -844,13 +852,13 @@ msgstr "Tussenstop:"
 #: app/templates/routes/requests.html:32
 #: app/templates/routes/route_overview.html:16
 #: app/templates/routes/search_results.html:105
-#: app/templates/routes/search_results.html:133
+#: app/templates/routes/search_results.html:161
 msgid "TIME:"
 msgstr "TIJD:"
 
 #: app/templates/routes/requests.html:35
 #: app/templates/routes/search_results.html:108
-#: app/templates/routes/search_results.html:136
+#: app/templates/routes/search_results.html:164
 msgid "View"
 msgstr "Bekijken"
 
@@ -1071,63 +1079,67 @@ msgstr "Gebruiker data veld zit over da karakter limiet."
 msgid "First and lastname cannot be empty"
 msgstr "Voor- en achternaam kunnen niet leeg zijn"
 
-#: app/users/routes.py:64
+#: app/users/routes.py:63
+msgid "That email is not available"
+msgstr "Email is niet beschikbaar"
+
+#: app/users/routes.py:69
 msgid "Profile settings updated!"
 msgstr "Profielinstellingen bijgewerkt!"
 
-#: app/users/routes.py:70 app/users/routes.py:81
+#: app/users/routes.py:75 app/users/routes.py:86
 msgid "Genre exceeds character limit"
 msgstr "Het genre heeft meer karakters dan toegestaan."
 
-#: app/users/routes.py:76
+#: app/users/routes.py:81
 msgid "Liked genre added!"
 msgstr "Geliefd genre toegevoegd!"
 
-#: app/users/routes.py:87
+#: app/users/routes.py:92
 msgid "Disliked genre added!"
 msgstr "Niet leuk genre toegevoegd!"
 
-#: app/users/routes.py:94
+#: app/users/routes.py:99
 msgid "Car data field exceeds character limit"
 msgstr "De data voor de wagen zit over de karakter limiet"
 
-#: app/users/routes.py:107
+#: app/users/routes.py:112
 msgid "Car settings updated!"
 msgstr "Auto-instellingen bijgewerkt!"
 
-#: app/users/routes.py:119
+#: app/users/routes.py:124
 msgid "Genre removed!"
 msgstr "Genre verwijderd!"
 
-#: app/users/routes.py:131
+#: app/users/routes.py:136
 msgid "Your account has been deleted successfully"
 msgstr "Uw account is succesvol verwijderd"
 
-#: app/users/routes.py:133
+#: app/users/routes.py:138
 msgid "You can only delete your own account"
 msgstr "Je kunt alleen je eigen account verwijderen"
 
-#: app/users/routes.py:147
+#: app/users/routes.py:152
 msgid "Review Overview"
 msgstr "Overzicht van beoordelingen"
 
-#: app/users/routes.py:164
+#: app/users/routes.py:169
 msgid "Review score larger than 5 or smaller then 0"
 msgstr "De score van de beoordeling moet tussen 0 en 5 liggen"
 
-#: app/users/routes.py:165 app/users/routes.py:183
+#: app/users/routes.py:170 app/users/routes.py:188
 msgid "Add Review"
 msgstr "Beoordeling toevoegen"
 
-#: app/users/routes.py:170
+#: app/users/routes.py:175
 msgid "Review edited"
 msgstr "Beoordeling bewerkt"
 
-#: app/users/routes.py:180
+#: app/users/routes.py:185
 msgid "New review added"
 msgstr "Nieuwe beoordeling toegevoegd"
 
-#: app/users/routes.py:193
+#: app/users/routes.py:198
 msgid "Review removed!"
 msgstr "Beoordeling verwijderd"
 
