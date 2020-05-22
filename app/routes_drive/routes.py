@@ -394,7 +394,7 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
             .filter(Route.departure_time > func.now())\
             .filter(
             calc_distance(Route.departure_location_lat, Route.departure_location_long, departure_location[0], departure_location[1]) < allowed_distance).limit(50).all()
-        print("{} routes left after stronger filters")
+        print("{} routes left after stronger filters".format(len(filtered_routes)))
     from geopy import distance  # No idea why this include won't work when placed outside this function
     # allowed_distance = 2
     # * zorgt ervoor dat de elementen uit de locatie afzonderlijk woorden doorgegeven
