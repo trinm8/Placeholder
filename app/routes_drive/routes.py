@@ -384,6 +384,16 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
         .filter(Route.departure_time > func.now()).all()  # https://gist.github.com/Tukki/3953990
     routes = []
     print("{} routes found".format(len(filtered_routes)))
+    if len(routes) > 100:
+        if allowed_distance > 20:
+            allowed_distance = 20
+        filtered_routes = Route.query.filter(func.DATE(Route.departure_time) == time.date()) \
+            .filter(
+            calc_distance(Route.arrival_location_lat, Route.arrival_location_long, lat, long) < allowed_distance) \
+            .filter(Route.departure_time > func.now())\
+            .filter(
+            calc_distance(Route.departure_location_lat, Route.departure_location_long, departure_location[0], departure_location[1]) < allowed_distance).limit(100).all()
+        print("{} routes left after stronger filters")
     from geopy import distance  # No idea why this include won't work when placed outside this function
     # allowed_distance = 2
     # * zorgt ervoor dat de elementen uit de locatie afzonderlijk woorden doorgegeven
