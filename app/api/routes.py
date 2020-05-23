@@ -159,7 +159,7 @@ def checkRequired(required):
 
 @bp.route("/drives/search", methods=["GET"])
 def search():
-    if not checkRequired(["from", "to", "arrive-by"]):
+    if not checkRequired(["from", "to", "arrive-by"]): # TODO: arrive_by?
         return bad_request("Not all atrributes where given.")
 
     from_location_txt = None
@@ -204,7 +204,6 @@ def search():
     # limit = 10
     # if "limit" in data:
     #     limit = data.get("limit")
-
 
     try:
         routes = filter_routes(5, to_location, from_location, time, limit=limit)
