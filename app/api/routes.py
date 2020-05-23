@@ -159,7 +159,7 @@ def checkRequired(required):
 
 @bp.route("/drives/search", methods=["GET"])
 def search():
-    if not checkRequired(["from", "to", "arrive-by"]): # TODO: arrive_by?
+    if not checkRequired(["from", "to", "arrive_by"]): # TODO: arrive_by?
         return bad_request("Not all atrributes where given.")
 
     from_location_txt = None
@@ -177,7 +177,7 @@ def search():
         print("Error with route: from {} to {}".format(from_location_txt, to_location_txt))
         return bad_request("What do you even want???")
 
-    time = request.args.get("arrive-by")
+    time = request.args.get("arrive_by")
     try:
         time = datetime.strptime(time, '%Y-%m-%dT%H:%M:%S')
     except ValueError:
