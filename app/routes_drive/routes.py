@@ -23,6 +23,8 @@ from flask_babel import _
 
 import requests
 
+from urllib.parse import urlencode
+
 
 def createRoute(form, departurelocation, arrivallocation):
     creator = User.query.filter_by(id=current_user.get_id()).first()
@@ -336,7 +338,7 @@ def overview():
         data = {"from": "{lat}, {long}".format(lat=lat_from, long=long_from),
                 "to": "{lat}, {long}".format(lat=lat_to, long=long_to), "arrive_by": str(time.isoformat()) + ".00",
                 "limit": 5}
-        print(data)
+        print("https://team3.ppdb.me/api/drives/search?{}".format(urlencode(data)))
         response = requests.get("https://team3.ppdb.me/api/drives/search",
                                 headers={"Content-Type": "application/json"},
                                 params=data)
