@@ -212,6 +212,6 @@ def search():
         response.status_code = 200
         return response
     except:
-        return bad_request("Must include from, to and time")
+        return bad_request("Must include from, to and arrive_by")
 
 

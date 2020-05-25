@@ -369,7 +369,7 @@ def calc_distance(lat1, lon1, lat2, lon2):
     return distance
 
 
-def filter_routes(allowed_distance, arrival_location, departure_location, time, limit=100):
+def filter_routes(allowed_distance, arrival_location, departure_location, time, limit=101):
     if not time:
         return []
 
@@ -387,11 +387,13 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
         .filter(Route.departure_time > func.now()) \
         .order_by(
         asc(calc_distance(Route.arrival_location_lat, Route.arrival_location_long, lat, long) +
-            calc_distance(Route.departure_location_lat, Route.departure_location_long, departure_location[0], departure_location[1]))) \
+            calc_distance(Route.departure_location_lat, Route.departure_location_long, departure_location[0], departure_location[1]))).limit(limit) \
         .all()  # https://gist.github.com/Tukki/3953990
     routes = []
     print("{} routes found".format(len(filtered_routes)))
     if len(filtered_routes) > 100:
+        if limit > 100:
+            limit = 50
         print("Filtering more")
         if allowed_distance > 20:
             allowed_distance = 20
@@ -404,7 +406,7 @@ def filter_routes(allowed_distance, arrival_location, departure_location, time, 
                           departure_location[1]) < allowed_distance).order_by(
             asc(calc_distance(Route.arrival_location_lat, Route.arrival_location_long, lat, long) +
                 calc_distance(Route.departure_location_lat, Route.departure_location_long, departure_location[0],
-                departure_location[1]))).limit(50).all()
+                departure_location[1]))).limit(limit).all()
         print("{} routes left after stronger filters".format(len(filtered_routes)))
     from geopy import distance  # No idea why this include won't work when placed outside this function
     # allowed_distance = 2
