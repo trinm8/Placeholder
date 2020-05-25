@@ -156,6 +156,7 @@ def checkRequired(required):
     for el in required:
         if el not in request.args:
             return False
+    return True
 
 @bp.route("/drives/search", methods=["GET"])
 def search():
