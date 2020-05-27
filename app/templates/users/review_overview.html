@@ -11,7 +11,7 @@
                 <p class="title">{{ _("Review of ") + user.firstname }}</p><br>
                 <div class="columns is-multiline">
                     {% for review_of_me in reviews_of_me %}
-                        <div class="column is-3">
+                        <div class="column is-4">
                             <div class="message
                      {% if review_of_me.score < 2.5 %}
                         is-danger
@@ -45,7 +45,7 @@
                 <p class="title">{{ _("Review by ") + user.firstname }}</p><br>
                 <div class="columns is-multiline">
                     {% for review_by_me in reviews_by_me %}
-                        <div class="column is-3">
+                        <div class="column is-4">
                             <div class="message
                      {% if review_by_me.score < 2.5 %}
                         is-danger
