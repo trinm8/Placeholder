@@ -582,11 +582,3 @@ class ReviewTests(BaseCase):
 
         response = self.help_read_review(reviewee_id, reviewer_id, authorization)
         self.assertEqual(None, response.json)
-
-
-class Team3Tests(BaseCase):
-
-    def test_get_search(self):
-        response = requests.get(
-            "http://team3.ppdb.me/api/drives/search?from=51.130215%2C4.571509&to=51.18417%2C4.41931&arrive_by=2020-02-12T10%3A00%3A00.00").content
-        print(response)

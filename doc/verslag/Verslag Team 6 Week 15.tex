@@ -1,0 +1,168 @@
+\documentclass{article}
+
+
+\usepackage[urlcolor=blue, linkcolor=black, colorlinks=true]{hyperref}
+\usepackage[dutch]{babel}
+\usepackage{minutes}
+\usepackage{pdfpages}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\makeatletter
+\addto\extrasdutch{%
+    \def\min@textTask{Taak}%
+}
+\makeatother%
+\makeatletter
+\def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+
+
+
+\newcounter{team}
+
+% TODO: Enter team number here:
+\setcounter{team}{6}
+
+
+\begin{document}
+%	\tableofcontents
+
+    \begin{Minutes}{Programming Project Databases \\ Wekelijks Verslag Team \arabic{team}}
+        \moderation{Arno Deceuninck}
+        \minutetaker{Arno Deceuninck}
+        \participant{Arno Deceuninck, Sam Peeters, Sien Nuyens en Tim Sanders}
+        \missingNoExcuse{/}
+        \missingExcused{/}
+%		\guest{\ldots}
+        \minutesdate{20 Mei 2020}
+        \starttime{11u00}
+        \endtime{12u00}
+
+        \maketitle
+
+        \topic{Coordinator Vergadering}
+        \begin{itemize}
+            \item Team 1 afwezig, geen probleem aangezien niet verplicht
+            \item Niet veel tijd meer voor eindevaluatie.
+            \item Deadline rapport is op volgende week donderdag.
+            \item Jitsi omdat ze ons ook willen zien en niet weer naar een ander platform willen switchen.
+            \item Git repo moet in orde zijn. Code moet wat ordelijk zijn, maar je moet er niet te ver in zijn.
+            \item Opname voor demo is zeker aangeraden.
+            \item Presentatie is voor de klant, daar moet je het echt verkopen aan ons.
+            \item Presentatie moet een geheel zijn, dus niet stilstaan bij inloggen en registreren, eerder een verhaal dat je uitlegt.
+            \item 15 minuten door jullie in te vullen: Als jullie een video hebben dat alles uitlegt, dan is het goed
+            \item 10 minuten interactie daarnaa waarop zij ook dingen testen op de server. Zorgen dus dat de juiste versie werkt.
+            \begin{itemize}
+                \item Team 6: Video (customer journey) + Slides.
+                \item Team 2 (Ewout): Feautures afwerken, focussen eerst op verslag (aan de presentatie kan je na die donderdag ook nog verder werken)
+                \item Team 3 (John): Bespreken deze namiddag de presentatie. Hebben nog wat extra features toegevoegd.
+                \item Team 4 (Mato): Na vorige presentatie wouden ze het anders aanpakken, waarschijnlijk ook met een video, maar valt nog te zien, zijn momenteel laatste features nog aan het afwerken.
+                \item Team 5 (Maxim): Presentatie nog niet besproken, hebben nog een paar dingen gefixt. Hadden API issues van hun kant.
+            \end{itemize}
+            \item Op server wel checken of we nog genoeg opslag hebben. (gaat waarschijnlijk geen probleem zijn omdat we geen logs houden)
+        \end{itemize}
+
+        \topic{Status}
+
+        \subtopic{Overzicht Taken}
+            \task[]* Rapport
+            \task[]* Site overlopen
+            \task[]* Data team 3
+            \task[]* Search functie
+            \task[]* Inloggen na registreren
+            \task[]* Data generatie Sien
+            \task[]* Slides
+            \task[]* Nieuwste versie in GCP
+
+
+        \topic{Besproken Onderwerpen}
+
+        \subtopic{Rapport}
+            Iedereen heeft dit nagelezen en dit is allemaal in orde gebracht.
+
+        \subtopic{Site overlopen}
+            Sam en ik hebben nog een hele hoop kleine dingen gevonden die gefixt moesten worden. Bedankt voor de extra hulp van de rest hierbij.
+
+        \subtopic{Data team 3}
+            Na de coordinator vergadering heb ik nog een hele tijd met dit team gebeld. Het probleem bij de API was de extra ".00" op het einde van  de timestamp. Bij verdere problemen zeker laten weten aan hen. Ze gingen in de namiddag nog de links doorsturen om een specifieke drive te krijgen.
+
+        \subtopic{Search Functie}
+            Geeft nogsteeds ineens wat problemen. Tim neemt hier vandaag nog een kijkje naar.
+
+        \subtopic{Inloggen na registreren}
+            Done.
+
+        \subtopic{Data generatie Sien}
+            Werkt nu. Het probleem was dat Sien Python 3.6 had en geen Python 3.7.
+
+        \subtopic{Slides}
+            Sommige dingen hadden nog bugs, dus hebben we nog niet van alles screenshots kunnen nemen. Voor de rest zijn de slides wel af. Gefocust op de nieuwe features. Als alles werkt kan ze de slides nog toevoegen.
+
+        \subtopic{Video}
+            We gaan een video maken. Bob werkt op z'n computer, Tim en Tom op hun GSM.
+            Dit is het transcript:
+            \begin{itemize}
+            \item Arno: This is Bob.
+            \item Arno:  Bob doesn't wants to help people by offering an extra seat in his car: He wants to go carpooling.
+            \item Arno: He doesn't want that the people who ride with him, are anoyed by his music taste, so he chooses for PlaceHolder.
+            \item Sam: When you open the site, you start at a page with info about our project.
+            \item Sam: Would you like some background music? Just one click away.
+            \item  Sam: Prefer another language? No problem, you can always choose your language in the navigation bar. (switch taal van Nederlands naar engels)
+            \item  Sam: PlaceHolder is a carpooling app that takes you music preferences in account. Let's give an example.
+            \item Sien: Bob registers on the site with a minimum of personal information: a username, firstname, lastname, enter your password twice and you're ready to go.
+            \item Sien: Let's start by completing the music preferences profile, by going to the settings.
+            \item Sien: Here we can fill in our email adres, which updates our profile picture to your gravatar picture. To add our music preferences, simply enter the name and hit enter. Say we like Pop and Classic, but don't like Jazz and R&B
+            \item Tim: Now it's time to add a route. Go to the homepage, add a new route. Let's say we're going to add a route from Middelheimlaan 1 to Boekarestreet 7 on the 1st of July. Enter the number of passengers, copy your Spotify playlist ID and you're all set.
+            \item Tim: He can also add it to his calender, so he doesn't forget it.
+            \item Arno: This is Tim and this is Tom. They both already have an account on PlaceHolder. Tim also likes Pop and Classic, and doesn't like R&B. Tom likes R&B and Jazz, but doesn't like Pop and Classic.
+            \item Sam: Now they're both going to search a route from Middelheimlaan 5 to Van Iseghemlaan 4, Ostend, wich is close to Boekareststraat. As you can see, Bob's results comes earlier in Tim's overview, because they share a lot in their music taste.
+            \item Sam: Tim has found his perfect match, so decided to ride with Bob. To do this, he enters the location where he wants to be picked up and sends a request to Bob.
+            \item Sien: Oh no! Bob forgot his password :-/ No problem, he can easily recover it, by going to the login page and hitting forgot password. Since he has already given up an email adres on his account, the password reset link can only get send to that mail account, so it doesn't matter whether he enters another email adress here.
+            \item Sien: Got the mail, click the link, enter a new password, and Bob can login again.
+            \item Tim: He sees that he's got a new notification. It's the request of Tim. He takes a look at where Tim wants to be picked up and accepts the request.
+            \item Tim: Now Tim and Bob will ride together in this  trip.
+            \item Arno: Be like Bob, use placeholder.
+            \end{itemize}
+            Best dat iedereen iets inspreekt. Tim fixt vandaag de zoekfunctie, zodat Arno morgen kan opnemen en de rest hun audio daarna kan openmen om erover te zetten. Wacht even voor je begint met opnemen en wanneer je klaar bent, zodat het makkelijker te plakken. Best ook item per item opnemen.
+
+        \topic{Afspraken \& Planning}
+
+        \begin{itemize}
+
+            \item Video maken: Tim fixt woensdag zoekfunctie, Arno fixt donderdag opname, Iedereen fixt vrijdag hun voiceover.
+            \item Slides: Vanaf de zoekfunctie werkt voegt Sien de screenshots toe.
+
+        \end{itemize}
+
+
+        \topic{Varia}
+        \emph{Eventuele varia punten. Hierbij vragen we ook aan alle aanwezigen of zij nog iets te zeggen hebben.}
+        \subtopic{Sien}
+        Nee.
+        \subtopic{Sam}
+        Nee.
+        \subtopic{Tim}
+        Gelukkige Pinkstermaandag!
+        \subtopic{Arno}
+        Yeet.
+
+        \blfootnote{
+            \href{%
+                mailto:joey.depauw@uantwerpen.be%
+                ?subject=PPDB 2019-2020: Wekelijks Verslag Team \arabic{team}%
+                &body=Liefste Joey\%0D\%0A%
+                \%0D\%0A%
+                Gelieve ons wekelijks verslag terug te vinden in de bijlage.\%0D\%0A%
+                \%0D\%0A%
+                Groetjes\%0D\%0A%
+                Team \arabic{team}\%0D\%0A%
+            }{Klik hier} om mij op te sturen.
+        }
+
+
+    \end{Minutes}
+
+\end{document}
