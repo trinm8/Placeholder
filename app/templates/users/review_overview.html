@@ -3,67 +3,74 @@
 {% block body %}
 
     <section class="section">
-        <h1 class="title">{{ _("Reviews")}}</h1>
-        <h2 class="subtitle">{{ _("All reviews of and by ") + user.firstname + " " + user.lastname}}</h2>
-        <div class="columns is-multiline">
+        <h1 class="title">{{ _("Reviews") }}</h1>
+        <h2 class="subtitle">{{ _("All reviews of and by ") + user.firstname + " " + user.lastname }}</h2>
 
-            <div class="column is-half">
-            <p class="title">{{ _("Review of ") + user.firstname}}</p><br>
-            {% for review_of_me in reviews_of_me %}
-                <div class="column is-4">
-                    <div class="message
+        <div class="columns">
+            <div class="column is-6">
+                <p class="title">{{ _("Review of ") + user.firstname }}</p><br>
+                <div class="columns is-multiline">
+                    {% for review_of_me in reviews_of_me %}
+                        <div class="column is-4">
+                            <div class="message
                      {% if review_of_me.score < 2.5 %}
                         is-danger
                      {% else %}
                         is-primary
                      {% endif %}">
-                        <div class="message-body">
-                            {% if review_of_me.score > 2.5 %}
-                                <p class="tag is-success"><strong>{{ _("score:")}} </strong></p>
-                            {% elif review_of_me.score < 2.5 %}
-                                <p class="tag is-danger"><strong>{{ _("score:")}} </strong></p>
-                            {% else %}
-                                <p class="tag is-primary"><strong>{{ _("score:")}} </strong></p>
-                            {% endif %}
-                             {{ review_of_me.score }}<br>
-                            {% if review_of_me.review_text %}
-                            {{ review_of_me.review_text }}<br><br>
-                            {{_("Reviewer: ")}}<br>
-                            {{ reviewers[loop.index0].firstname + " " +  reviewers[loop.index0].lastname}}<br>
-                            {% endif %}
+                                <div class="message-body">
+                                    {% if review_of_me.score > 2.5 %}
+                                        <p class="tag is-success"><strong>{{ _("score:") }} </strong></p>
+                                    {% elif review_of_me.score < 2.5 %}
+                                        <p class="tag is-danger"><strong>{{ _("score:") }} </strong></p>
+                                    {% else %}
+                                        <p class="tag is-primary"><strong>{{ _("score:") }} </strong></p>
+                                    {% endif %}
+                                    {{ review_of_me.score }}<br>
+                                    {% if review_of_me.review_text %}
+                                        {{ review_of_me.review_text }}<br><br>
+                                        {{ _("Reviewer: ") }}<br>
+                                        {{ reviewers[loop.index0].firstname + " " +  reviewers[loop.index0].lastname }}
+                                        <br>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <br>
                         </div>
-                    </div><br>
+                    {% endfor %}
                 </div>
-            {% endfor %}
             </div>
 
-            <div class="column is-half">
-            <p class="title">{{ _("Review by ") + user.firstname}}</p><br>
-            {% for review_by_me in reviews_by_me %}
-                <div class="column is-4">
-                    <div class="message
+            <div class="column is-6">
+                <p class="title">{{ _("Review by ") + user.firstname }}</p><br>
+                <div class="columns is-multiline">
+                    {% for review_by_me in reviews_by_me %}
+                        <div class="column is-4">
+                            <div class="message
                      {% if review_by_me.score < 2.5 %}
                         is-danger
                      {% else %}
                         is-primary
                      {% endif %}">
-                        <div class="message-body">
-                            {% if review_by_me.score > 2.5 %}
-                                <p class="tag is-success"><strong>{{ _("score:")}} </strong></p>
-                            {% elif review_by_me.score < 2.5 %}
-                                <p class="tag is-danger"><strong>{{ _("score:")}} </strong></p>
-                            {% else %}
-                                <p class="tag is-primary"><strong>{{ _("score:")}} </strong></p>
-                            {% endif %}
-                             {{ review_by_me.score }}<br>
-                            {% if review_by_me.review_text %}
-                            {{ review_by_me.review_text }}<br>
-                            {% endif %}
+                                <div class="message-body">
+                                    {% if review_by_me.score > 2.5 %}
+                                        <p class="tag is-success"><strong>{{ _("score:") }} </strong></p>
+                                    {% elif review_by_me.score < 2.5 %}
+                                        <p class="tag is-danger"><strong>{{ _("score:") }} </strong></p>
+                                    {% else %}
+                                        <p class="tag is-primary"><strong>{{ _("score:") }} </strong></p>
+                                    {% endif %}
+                                    {{ review_by_me.score }}<br>
+                                    {% if review_by_me.review_text %}
+                                        {{ review_by_me.review_text }}<br>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <br>
                         </div>
-                    </div><br>
+                    {% endfor %}
                 </div>
-            {% endfor %}
-        </div>
+            </div>
         </div>
 
     </section>
