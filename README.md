@@ -2,7 +2,7 @@
 
 Select your groove while you move. 
 
-Our project video can be found [here](https://photos.app.goo.gl/t3uqQTyQM5PsRvSp9) (or if you contact one of the authors).
+Our project video can be found [here](https://youtu.be/8XnGUkQ8w-c) (or if you contact one of the authors).
 
 ## Quick start
 Credits to Joey and Len for the explenation.
