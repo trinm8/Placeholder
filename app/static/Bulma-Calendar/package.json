@@ -35,7 +35,7 @@
   "dependencies": {
     "bulma": "latest",
     "date-fns": "^1.29.0",
-    "date-and-time": "^0.6.3"
+    "date-and-time": "^0.14.2"
   },
   "devDependencies": {
     "ansi-colors": "^2.0.1",
