@@ -20,7 +20,7 @@ geopy==1.21.0
 httpie==2.1.0
 idna==2.9
 itsdangerous==1.1.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 Mako==1.1.2
 MarkupSafe==1.1.1
 mpmath==1.1.0
